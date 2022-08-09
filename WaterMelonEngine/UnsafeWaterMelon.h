@@ -61,14 +61,16 @@ public:
 #pragma endregion
 
 
-
     void InitFEN(std::string FEN);
     std::string GetFEN();
 
-	UnsafeWaterMelon();
+    UnsafeWaterMelon();
+	UnsafeWaterMelon(std::string FEN);
 	~UnsafeWaterMelon();
+
+    bool HasInit() { return m_HasInit; }
 private:
-    
+    bool m_HasInit = false;
 };
 
 UnsafeWaterMelon::UnsafeWaterMelon()
@@ -85,9 +87,28 @@ UnsafeWaterMelon::UnsafeWaterMelon()
     blackRooksPtr = BlackRooksList.occupiedPtr;
     blackQueensPtr = BlackQueensList.occupiedPtr;
 
-    boardPtr = new char[64];
+    boardPtr = new char[64]{ NULL };
 
     InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+}
+
+UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
+{
+    whitePawnsPtr = WhitePawnsList.occupiedPtr;
+    whiteKnightsPtr = WhiteKnightsList.occupiedPtr;
+    whiteBishopsPtr = WhiteBishopsList.occupiedPtr;
+    whiteRooksPtr = WhiteRooksList.occupiedPtr;
+    whiteQueensPtr = WhiteQueensList.occupiedPtr;
+
+    blackPawnsPtr = BlackPawnsList.occupiedPtr;
+    blackKnightsPtr = BlackKnightsList.occupiedPtr;
+    blackBishopsPtr = BlackBishopsList.occupiedPtr;
+    blackRooksPtr = BlackRooksList.occupiedPtr;
+    blackQueensPtr = BlackQueensList.occupiedPtr;
+
+    boardPtr = new char[64]{NULL};
+
+    InitFEN(FEN);
 }
 
 UnsafeWaterMelon::~UnsafeWaterMelon()
@@ -99,31 +120,29 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 {
     try
     {
-    int fenPtr = 0;
-    int fenBoardPtr = 0;
-    while (true)
-    {
-        char piece = FEN[fenPtr];
-        if (piece == ' ')
-            break;
-        if (piece != '/')
+        int fenPtr = 0;
+        int fenBoardPtr = 0;
+        while (true)
         {
-            if (isdigit(piece))
-                fenBoardPtr += piece - '0' - 1;
-            else
-                boardPtr[fenBoardPtr] = FENUtility::CharToInt[piece];
-            fenBoardPtr++;
+            char piece = FEN[fenPtr];
+            if (piece == ' ')
+                break;
+            if (piece != '/')
+            {
+                if (isdigit(piece))
+                    fenBoardPtr += piece - '0' - 1;
+                else
+                    boardPtr[fenBoardPtr] = FENUtility::CharToInt[piece];
+                fenBoardPtr++;
+            }
+            fenPtr++;
         }
-        fenPtr++;
-    }
+        m_HasInit = true;
     }
     catch (const std::exception&)
     {
-        std::cout << "INVALID FEN";
+        m_HasInit = false;
     }
-
-    for (int i = 0; i < 64; i++)
-        std::cout << FENUtility::IntToChar[boardPtr[i]];
 }
 
 std::string UnsafeWaterMelon::GetFEN()

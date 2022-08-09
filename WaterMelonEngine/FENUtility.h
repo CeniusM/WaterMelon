@@ -13,7 +13,8 @@ namespace FENUtility
         0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0, // 59
+        0,0,0,0,0,0,0,0,0,0,
+        0, // 59
         0, // 60
         0, // 61
         0, // 62
@@ -113,100 +114,100 @@ namespace FENUtility
             0, //29
             0, //30
             0, //31
-            ' ', //32	space
-            '!',//    33	exclamation mark
-            '"',//	34	quotation mark
-            '#',//	35	number sign
-            '$',//	36	dollar sign
-            '%',//  37	percent sign
-            '&',//  38	ampersand
-            '\'',//	39	apostrophe
-            '(',//    40	left parenthesis
-            ')',//	41	right parenthesis
-            '*',//     42	asterisk
-            '+',//     43	plus sign
-            ',',//	44	comma
-            '-',//     45	hyphen
-            '.',//	46	period
-            '/',//     47	slash
-            '0',//	48	digit 0
-            '1',//	49	digit 1
-            '2',//	50	digit 2
-            '3',//	51	digit 3
-            '4',//	52	digit 4
-            '5',//	53	digit 5
-            '6',//	54	digit 6
-            '7',//	55	digit 7
-            '8',//	56	digit 8
-            '9',//	57	digit 9
-            ':',//	58	colon
-            ';',//	59	semicolon
-            '<',//     60	less - than
-            '=',//     61	equals - to
-            '>',//	62	greater - than
-            '?',//     63	question mark
-            '@',//	64	at sign
-            'A',//	65	uppercase A
-            'B',//	66	uppercase B
-            'C',//	67	uppercase C
-            'D',//	68	uppercase D
-            'E',//	69	uppercase E
-            'F',//	70	uppercase F
-            'G',//	71	uppercase G
-            'H',//	72	uppercase H
-            'I',//	73	uppercase I
-            'J',//	74	uppercase J
-            'K',//	75	uppercase K
-            'L',//	76	uppercase L
-            'M',//	77	uppercase M
-            'N',//	78	uppercase N
-            'O',//	79	uppercase O
-            'P',//	80	uppercase P
-            'Q',//	81	uppercase Q
-            'R',//	82	uppercase R
-            'S',//	83	uppercase S
-            'T',//	84	uppercase T
-            'U',//	85	uppercase U
-            'V',//	86	uppercase V
-            'W',//	87	uppercase W
-            'X',//	88	uppercase X
-            'Y',//	89	uppercase Y
-            'Z',//	90	uppercase Z
-            '[',//    91	left square bracket
-            '\\',//	92	backslash
-            ']',//	93	right square bracket
-            '^',//     94	caret
-            '_',//	95	underscore
-            '`',//	96	grave accent
-            'a',//	97	lowercase a
-            'b',//	98	lowercase b
-            'c',//	99	lowercase c
-            'd',//	100	lowercase d
-            'e',//	101	lowercase e
-            'f',//	102	lowercase f
-            'g',//	103	lowercase g
-            'h',//	104	lowercase h
-            'i',//	105	lowercase i
-            'j',//	106	lowercase j
-            'k',//	107	lowercase k
-            'l',//	108	lowercase l
-            'm',//	109	lowercase m
-            'n',//	110	lowercase n
-            'o',//	111	lowercase o
-            'p',//	112	lowercase p
-            'q',//	113	lowercase q
-            'r',//	114	lowercase r
-            's',//	115	lowercase s
-            't',//	116	lowercase t
-            'u',//	117	lowercase u
-            'v',//	118	lowercase v
-            'w',//	119	lowercase w
-            'x',//	120	lowercase x
-            'y',//	121	lowercase y
-            'z',//	122	lowercase z
-            '{',//	123	left curly brace
-            '|',//    124	vertical bar
-            '}',//	125	right curly brace
-            '~'//    126	tilde
+            0, //32	space
+            0,//    33	exclamation mark
+            0,//	34	quotation mark
+            0,//	35	number sign
+            0,//	36	dollar sign
+            0,//  37	percent sign
+            0,//  38	ampersand
+            0,//	39	apostrophe
+            0,//    40	left parenthesis
+            0,//	41	right parenthesis
+            0,//     42	asterisk
+            0,//     43	plus sign
+            0,//	44	comma
+            0,//     45	hyphen
+            0,//	46	period
+            0,//     47	slash
+            0,//	48	digit 0
+            0,//	49	digit 1
+            0,//	50	digit 2
+            0,//	51	digit 3
+            0,//	52	digit 4
+            0,//	53	digit 5
+            0,//	54	digit 6
+            0,//	55	digit 7
+            0,//	56	digit 8
+            0,//	57	digit 9
+            0,//	58	colon
+            0,//	59	semicolon
+            0,//     60	less - than
+            0,//     61	equals - to
+            0,//	62	greater - than
+            0,//     63	question mark
+            0,//	64	at sign
+            0,//	65	uppercase A
+            0,//	66	uppercase B
+            0,//	67	uppercase C
+            0,//	68	uppercase D
+            0,//	69	uppercase E
+            0,//	70	uppercase F
+            0,//	71	uppercase G
+            0,//	72	uppercase H
+            0,//	73	uppercase I
+            0,//	74	uppercase J
+            0,//	75	uppercase K
+            0,//	76	uppercase L
+            0,//	77	uppercase M
+            0,//	78	uppercase N
+            0,//	79	uppercase O
+            0,//	80	uppercase P
+            0,//	81	uppercase Q
+            0,//	82	uppercase R
+            0,//	83	uppercase S
+            0,//	84	uppercase T
+            0,//	85	uppercase U
+            0,//	86	uppercase V
+            0,//	87	uppercase W
+            0,//	88	uppercase X
+            0,//	89	uppercase Y
+            0,//	90	uppercase Z
+            0,//    91	left square bracket
+            0,//	92	backslash
+            0,//	93	right square bracket
+            0,//     94	caret
+            0,//	95	underscore
+            0,//	96	grave accent
+            0,//	97	lowercase a
+            0,//	98	lowercase b
+            0,//	99	lowercase c
+            0,//	100	lowercase d
+            0,//	101	lowercase e
+            0,//	102	lowercase f
+            0,//	103	lowercase g
+            0,//	104	lowercase h
+            0,//	105	lowercase i
+            0,//	106	lowercase j
+            0,//	107	lowercase k
+            0,//	108	lowercase l
+            0,//	109	lowercase m
+            0,//	110	lowercase n
+            0,//	111	lowercase o
+            0,//	112	lowercase p
+            0,//	113	lowercase q
+            0,//	114	lowercase r
+            0,//	115	lowercase s
+            0,//	116	lowercase t
+            0,//	117	lowercase u
+            0,//	118	lowercase v
+            0,//	119	lowercase w
+            0,//	120	lowercase x
+            0,//	121	lowercase y
+            0,//	122	lowercase z
+            0,//	123	left curly brace
+            0,//    124	vertical bar
+            0,//	125	right curly brace
+            0//    126	tilde
     };
 }

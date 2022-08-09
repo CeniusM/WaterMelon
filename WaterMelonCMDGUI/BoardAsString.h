@@ -15,12 +15,18 @@ public:
 
 		for (int i = 0; i < 8; i++)
 		{
-			str += "   " + line + "\n";
-			str += " " + static_cast<char>((8 - i));
+			str += "   ";
+			str += line + "\n";
+			str += " ";
+			str += std::to_string(8-i);
 			str += " ";
 			for (int j = 0; j < 8; j++)
 			{
-				str += "| " + static_cast<char>(FENUtility::IntToChar[board.boardPtr[i+(j*8)]]);
+				char piece = static_cast<char>(FENUtility::IntToChar[board.boardPtr[j + (i*8)]]);
+				if (piece == 0)
+					piece = ' ';
+				str += "| ";
+				str += piece;
 				str += " ";
 			}
 			str += "|\n";
