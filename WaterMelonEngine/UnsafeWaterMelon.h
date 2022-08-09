@@ -26,10 +26,10 @@ class UnsafeWaterMelon
 public:
 
 
-	char* boardPtr;
-	int castle;
-	int EPSquare;
-	int playerTurn;
+	char board[64]{};
+	int castle{};
+	int EPSquare{};
+	int playerTurn{};
 	
 	int kingPos[2]{};
 
@@ -87,8 +87,6 @@ UnsafeWaterMelon::UnsafeWaterMelon()
     blackRooksPtr = BlackRooksList.occupiedPtr;
     blackQueensPtr = BlackQueensList.occupiedPtr;
 
-    boardPtr = new char[64]{ NULL };
-
     InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
@@ -106,14 +104,12 @@ UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
     blackRooksPtr = BlackRooksList.occupiedPtr;
     blackQueensPtr = BlackQueensList.occupiedPtr;
 
-    boardPtr = new char[64]{NULL};
-
     InitFEN(FEN);
 }
 
 UnsafeWaterMelon::~UnsafeWaterMelon()
 {
-    delete[] boardPtr;
+    delete[] board;
 }
 
 void UnsafeWaterMelon::InitFEN(std::string FEN)
@@ -132,7 +128,7 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
                 if (isdigit(piece))
                     fenBoardPtr += piece - '0' - 1;
                 else
-                    boardPtr[fenBoardPtr] = FENUtility::CharToInt[piece];
+                    board[fenBoardPtr] = FENUtility::CharToInt[piece];
                 fenBoardPtr++;
             }
             fenPtr++;
