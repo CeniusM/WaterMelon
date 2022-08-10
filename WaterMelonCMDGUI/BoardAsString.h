@@ -22,7 +22,7 @@ public:
 			str += " ";
 			for (int j = 0; j < 8; j++)
 			{
-				char piece = static_cast<char>(FENUtility::IntToChar[board.boardPtr[j + (i*8)]]);
+				char piece = static_cast<char>(FENUtility::IntToChar[board.board[j + (i*8)]]);
 				if (piece == 0)
 					piece = ' ';
 				str += "| ";
