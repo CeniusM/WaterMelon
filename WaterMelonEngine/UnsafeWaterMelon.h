@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <cctype>
 
 #include "PieceList.h"
 #include "FENUtility.h"
@@ -136,7 +135,30 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
                 fenBoardPtr++;
             }
             fenPtr++;
-        }
+        }fenPtr++;
+
+        if (FEN[fenPtr] == 'b')
+            playerTurn ^= PlayerTurnSwitch;
+        fenPtr++;
+        fenPtr++;
+
+        while (true)
+        {
+            char piece = FEN[fenPtr];
+            if (piece == ' ')
+                break;
+            if (piece == 'K')
+                castle |= WhiteKingSideCastleRight;
+            else if (piece == 'Q')
+                castle |= WhiteQueenSideCastleRight;
+            else if (piece == 'k')
+                castle |= BlackKingSideCastleRight;
+            else if (piece == 'q')
+                castle |= BlackQueenSideCastleRight;
+            fenPtr++;
+        }fenPtr++;
+
+
         m_HasInit = true;
     }
     catch (const std::exception&)
