@@ -12,11 +12,11 @@ public:
 
 
 private:
-	bool IsValidString;
+	bool IsValidString{};
 	
-	int EPSquare;
-	int Castle;
-	int playerTurn;
+	int EPSquare{};
+	int Castle{};
+	int playerTurn{};
 };
 
 inline FENString::FENString(const char* str)

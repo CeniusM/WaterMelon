@@ -33,6 +33,9 @@
     <ClCompile Include="UnsafeWaterMelon.cpp">
       <Filter>Source Files\BoardLogic</Filter>
     </ClCompile>
+    <ClCompile Include="PossibleMovesGenerator.cpp">
+      <Filter>Source Files\BoardLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SafeWaterMelon.h">
@@ -51,6 +54,18 @@
       <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
     </ClInclude>
     <ClInclude Include="FENString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PossibleMovesGenerator.h">
+      <Filter>Header Files\BoardLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Header Files\BoardLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

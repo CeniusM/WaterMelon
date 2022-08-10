@@ -45,7 +45,7 @@ public:
     PieceList BlackRooksList{};
     PieceList BlackQueensList{};
 
-    PieceList allPieceLists;
+    PieceList* allPieceLists[24]; // BQueen 23
 
     int* whitePawnsPtr;
     int* whiteKnightsPtr;
@@ -74,6 +74,23 @@ private:
 
 UnsafeWaterMelon::UnsafeWaterMelon()
 {
+    // will use the piece as index
+    for (int i = 0; i < 24; i++) // BQuenn 23
+        allPieceLists[i] = nullptr;
+    //9 WKing used with own array
+    allPieceLists[10] = &WhitePawnsList;//10 WPawn
+    allPieceLists[11] = &WhiteKnightsList;//11 WKnight
+    allPieceLists[13] = &WhiteBishopsList;//13 WBishop
+    allPieceLists[14] = &WhiteRooksList;//14 WRook
+    allPieceLists[15] = &WhiteQueensList;//15 WQueen
+    //17 BKing used with own array
+    allPieceLists[18] = &BlackPawnsList;//18 BPawn
+    allPieceLists[19] = &BlackKnightsList;//19 BKnight
+    allPieceLists[21] = &BlackBishopsList;//21 BBishop
+    allPieceLists[22] = &BlackRooksList;//22 BRook
+    allPieceLists[23] = &BlackQueensList;//23 BQueen
+
+
     whitePawnsPtr = WhitePawnsList.occupiedPtr;
     whiteKnightsPtr = WhiteKnightsList.occupiedPtr;
     whiteBishopsPtr = WhiteBishopsList.occupiedPtr;
@@ -108,7 +125,7 @@ UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
 
 UnsafeWaterMelon::~UnsafeWaterMelon()
 {
-    delete[] board;
+
 }
 
 void UnsafeWaterMelon::InitFEN(std::string FEN)

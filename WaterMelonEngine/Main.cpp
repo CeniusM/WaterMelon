@@ -7,5 +7,5 @@ int main()
 {
     std::cout << "Hello World!\n";
 
-    UnsafeWaterMelon engine();
+    UnsafeWaterMelon engine{};
 }
