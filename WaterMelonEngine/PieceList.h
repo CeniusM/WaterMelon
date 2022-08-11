@@ -22,7 +22,7 @@ public:
 
     void AddPieceAtSquare(int square)
     {
-        occupiedPtr[occupiedPtr[-1]] = square;
+        occupiedSquares[occupiedPtr[-1]] = square;
         map[square] = occupiedPtr[-1];
         occupiedPtr[-1]++;
     }
@@ -30,15 +30,15 @@ public:
     void RemovePieceAtSquare(int square)
     {
         int pieceIndex = map[square]; // get the index of this element in the occupiedSquares array
-        occupiedPtr[pieceIndex] = occupiedPtr[occupiedPtr[-1] - 1]; // move last element in array to the place of the removed element
-        map[occupiedPtr[pieceIndex]] = pieceIndex; // update map to point to the moved element's new location in the array
+        occupiedSquares[pieceIndex] = occupiedSquares[occupiedPtr[-1] - 1]; // move last element in array to the place of the removed element
+        map[occupiedSquares[pieceIndex]] = pieceIndex; // update map to point to the moved element's new location in the array
         occupiedPtr[-1]--;
     }
 
     void MovePiece(int startSquare, int targetSquare)
     {
         int pieceIndex = map[startSquare]; // get the index of this element in the occupiedSquares array
-        occupiedPtr[pieceIndex] = targetSquare;
+        occupiedSquares[pieceIndex] = targetSquare;
         map[targetSquare] = pieceIndex;
     }
 };
