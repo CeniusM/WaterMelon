@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Move.h"
 #include "UnsafeWaterMelon.h"
 
 #define PieceType(p) (p & 0b00111)

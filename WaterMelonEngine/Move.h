@@ -24,4 +24,10 @@ struct Move
         TargetSquare = t;
         MoveFlag = f;
     }
+    Move()
+    {
+        StartSquare = 0;
+        TargetSquare = 0;
+        MoveFlag = 0;
+    }
 };

@@ -4,6 +4,7 @@
 
 #include "PieceList.h"
 #include "FENUtility.h"
+#include "Move.h"
 
 #pragma region Consts
 constexpr int MaxMoves = 200;
@@ -23,7 +24,7 @@ constexpr int PlayerTurnSwitch = 0b11000;
 class UnsafeWaterMelon
 {
 public:
-
+    int gameHistory[256];
 
 	char board[64]{};
 	int castle{};
@@ -59,6 +60,8 @@ public:
     int* blackQueensPtr;
 #pragma endregion
 
+    void MakeMove(Move move);
+    void UnMakeMove();
 
     void InitFEN(std::string FEN);
     std::string GetFEN();

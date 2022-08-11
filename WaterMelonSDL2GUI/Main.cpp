@@ -9,6 +9,8 @@
 
 int main()
 {
+	UnsafeWaterMelon board{};
+	board.MakeMove(Move(0,0,0));
 
 	for (int i = 0; i < 1000; i++)
 	{
@@ -22,10 +24,6 @@ int main()
 			bool p = (((0b1111111111111111111111 << 4) & 0x8000000000000000) == 0x8000000000000000);
 		}
 	}
-
-
-
-
 
 	//SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_Window* window = SDL_CreateWindow("title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);

@@ -136,6 +136,7 @@
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="Move.h" />
+    <ClInclude Include="Perft.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceList.h" />
     <ClInclude Include="PossibleMovesGenerator.h" />
