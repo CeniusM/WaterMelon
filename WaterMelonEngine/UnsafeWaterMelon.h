@@ -60,7 +60,7 @@ public:
     int* blackQueensPtr;
 #pragma endregion
 
-    void MakeMove(Move move);
+    void MakeMove(Move* move);
     void UnMakeMove();
 
     void InitFEN(std::string FEN);

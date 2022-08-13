@@ -2,8 +2,11 @@
 
 #include "UnsafeWaterMelon.h"
 
-void UnsafeWaterMelon::MakeMove(Move move)
+void UnsafeWaterMelon::MakeMove(Move* move)
 {
+    int startSquare = move->StartSquare;
+    int targetSquare = move->TargetSquare;
+    int capturedSquare = move->MoveFlag;
 }
 
 void UnsafeWaterMelon::UnMakeMove()

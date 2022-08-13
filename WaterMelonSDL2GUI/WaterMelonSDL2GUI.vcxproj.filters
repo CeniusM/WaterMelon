@@ -21,9 +21,15 @@
     <ClCompile Include="GameOfChess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SDLHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameOfChess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

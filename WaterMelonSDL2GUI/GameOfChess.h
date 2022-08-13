@@ -2,7 +2,9 @@
 
 #include <iostream>
 
-#include "include/SDL.h"
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDLHelper.h"
 
 class GameOfChess
 {
@@ -21,15 +23,8 @@ public:
 
 private:
 	bool m_isRunning;
+	int m_Count;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
 };
-
-GameOfChess::GameOfChess()
-{
-}
-
-GameOfChess::~GameOfChess()
-{
-}
