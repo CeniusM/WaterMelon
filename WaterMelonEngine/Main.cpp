@@ -1,15 +1,30 @@
+#include <chrono>
 #include <iostream>
 
-#include "UnsafeWaterMelon.h"
+#include "SDL.h"
+#include "GameOfChess.h"
+#include "Timer.h"
 
-// used to test code in the engine
+
+#undef main
+
 int main()
 {
+	UnsafeWaterMelon board;
 
-    
-    std::cout << "Hello World!\n";
 
-    UnsafeWaterMelon engine = UnsafeWaterMelon();
+	GameOfChess game;
+	game.Init("title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false);
+	game.Render();
 
-    
+	while (game.Running())
+	{
+		Timer timer;
+		game.HandleEvents();
+		game.Update();
+		game.Render();
+	}
+	game.CLean();
+
+	return 1;
 }
