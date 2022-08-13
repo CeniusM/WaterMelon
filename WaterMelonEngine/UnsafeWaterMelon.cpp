@@ -11,9 +11,10 @@ void UnsafeWaterMelon::MakeMove(Move* move)
 
 void UnsafeWaterMelon::UnMakeMove()
 {
+
 }
 
-
+#pragma region Initilization
 UnsafeWaterMelon::UnsafeWaterMelon()
 {
     InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -109,6 +110,7 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
         m_HasInit = false;
     }
 }
+#pragma endregion
 
 std::string UnsafeWaterMelon::GetFEN()
 {
