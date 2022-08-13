@@ -6,22 +6,6 @@ SDL_Texture* playerTexture;
 SDL_Rect srcR, destR;
 SDLHelper sdlHelper;
 
-//SDL_Texture* LoadImage(std::string file, SDL_Renderer* r)
-//{
-//	SDL_Surface* loadedImage = nullptr;
-//	SDL_Texture* texture = nullptr;
-//	loadedImage = SDL_LoadBMP(file.c_str());
-//
-//	if (loadedImage != nullptr)
-//	{
-//		texture = SDL_CreateTextureFromSurface(r, loadedImage);
-//		SDL_FreeSurface(loadedImage);
-//	}
-//	else
-//		std::cout << SDL_GetError() << std::endl;
-//	return texture;
-//}
-
 void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
 {
 	int flag = 0;
@@ -81,6 +65,26 @@ void GameOfChess::Update()
 	destR.y = 100;
 
 
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			int pos = (i*8)+j;
+
+			if (board.board[pos] == 0)
+				continue;
+
+			SDL_Rect rect;
+			rect.x = j * 100;
+			rect.y = i * 100;
+			rect.h = 100;
+			rect.w = 100;
+
+			RenderPiece(&rect, sprites[board.board[pos]]);
+		}
+	}
+
+
 	//std::cout << m_Count << std::endl
 }
 
@@ -108,6 +112,13 @@ void GameOfChess::CLean()
 }
 
 bool GameOfChess::Running() { return m_isRunning; }
+
+void GameOfChess::RenderPiece(SDL_Rect* rect, SDL_Texture* sprite)
+{
+
+}
+
+
 
 
 
