@@ -74,3 +74,7 @@ public:
 private:
     bool m_HasInit = false;
 };
+
+//#ifndef UsafeWaterMelonCPP
+//#   include "UnsafeWaterMelon.cpp"
+//#endif

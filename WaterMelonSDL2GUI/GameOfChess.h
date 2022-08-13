@@ -5,8 +5,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDLHelper.h"
-#include "../WaterMelonEngine/UnsafeWaterMelon.h"
-#include "../WaterMelonEngine/UnsafeWaterMelon.cpp"
+#include "UnsafeWaterMelon.h"
 
 class GameOfChess
 {
@@ -26,7 +25,7 @@ public:
 private:
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	UnsafeWaterMelon board;
+	//UnsafeWaterMelon board;
 	
 	bool m_isRunning;
 	int m_Count;

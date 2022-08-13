@@ -18,11 +18,11 @@ public:
 			str += "   ";
 			str += line + "\n";
 			str += " ";
-			str += std::to_string(8-i);
+			str += std::to_string(8 - i);
 			str += " ";
 			for (int j = 0; j < 8; j++)
 			{
-				char piece = static_cast<char>(FENUtility::IntToChar[board.board[j + (i*8)]]);
+				char piece = static_cast<char>(FENUtility::IntToChar[board.board[j + (i * 8)]]);
 				if (piece == 0)
 					piece = ' ';
 				str += "| ";

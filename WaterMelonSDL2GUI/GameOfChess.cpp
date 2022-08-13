@@ -65,24 +65,24 @@ void GameOfChess::Update()
 	destR.y = 100;
 
 
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			int pos = (i*8)+j;
-
-			if (board.board[pos] == 0)
-				continue;
-
-			SDL_Rect rect;
-			rect.x = j * 100;
-			rect.y = i * 100;
-			rect.h = 100;
-			rect.w = 100;
-
-			RenderPiece(&rect, sprites[board.board[pos]]);
-		}
-	}
+	//for (int i = 0; i < 8; i++)
+	//{
+	//	for (int j = 0; j < 8; j++)
+	//	{
+	//		int pos = (i*8)+j;
+	//
+	//		if (board.board[pos] == 0)
+	//			continue;
+	//
+	//		SDL_Rect rect;
+	//		rect.x = j * 100;
+	//		rect.y = i * 100;
+	//		rect.h = 100;
+	//		rect.w = 100;
+	//
+	//		RenderPiece(&rect, sprites[board.board[pos]]);
+	//	}
+	//}
 
 
 	//std::cout << m_Count << std::endl

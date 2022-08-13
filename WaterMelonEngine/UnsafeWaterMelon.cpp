@@ -16,6 +16,21 @@ void UnsafeWaterMelon::UnMakeMove()
 
 UnsafeWaterMelon::UnsafeWaterMelon()
 {
+    InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+}
+
+UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
+{
+    InitFEN(FEN);
+}
+
+UnsafeWaterMelon::~UnsafeWaterMelon()
+{
+
+}
+
+void UnsafeWaterMelon::InitFEN(std::string FEN)
+{
     // will use the piece as index
     for (int i = 0; i < 24; i++) // BQuenn 23
         allPieceLists[i] = nullptr;
@@ -45,33 +60,6 @@ UnsafeWaterMelon::UnsafeWaterMelon()
     blackRooksPtr = BlackRooksList.occupiedPtr;
     blackQueensPtr = BlackQueensList.occupiedPtr;
 
-    InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-}
-
-UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
-{
-    whitePawnsPtr = WhitePawnsList.occupiedPtr;
-    whiteKnightsPtr = WhiteKnightsList.occupiedPtr;
-    whiteBishopsPtr = WhiteBishopsList.occupiedPtr;
-    whiteRooksPtr = WhiteRooksList.occupiedPtr;
-    whiteQueensPtr = WhiteQueensList.occupiedPtr;
-
-    blackPawnsPtr = BlackPawnsList.occupiedPtr;
-    blackKnightsPtr = BlackKnightsList.occupiedPtr;
-    blackBishopsPtr = BlackBishopsList.occupiedPtr;
-    blackRooksPtr = BlackRooksList.occupiedPtr;
-    blackQueensPtr = BlackQueensList.occupiedPtr;
-
-    InitFEN(FEN);
-}
-
-UnsafeWaterMelon::~UnsafeWaterMelon()
-{
-
-}
-
-void UnsafeWaterMelon::InitFEN(std::string FEN)
-{
     try
     {
         int fenPtr = 0;

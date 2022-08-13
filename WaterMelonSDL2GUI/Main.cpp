@@ -3,14 +3,16 @@
 
 #include "SDL.h"
 #include "GameOfChess.h"
-#include "../WaterMelonEngine/Timer.h"
-#include "../WaterMelonEngine/UnsafeWaterMelon.h"
-#include "../WaterMelonEngine/UnsafeWaterMelon.cpp"
+#include "Timer.h"
+
 
 #undef main
 
 int main()
 {
+	UnsafeWaterMelon board;
+
+
 	GameOfChess game;
 	game.Init("title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, false);
 	game.Render();
