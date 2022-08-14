@@ -10,9 +10,9 @@
 
 int main()
 {
-	const int RestingFPS = 20;
-	const int DragingFPS = 144;
-	int FPS = 1;
+	//const int RestingFPS = 20;
+	//const int DragingFPS = 144;
+	const int FPS = 144;
 	int frameDelay = 1000 / FPS;
 	
 	Uint32 frameStart;
@@ -30,14 +30,20 @@ int main()
 		{
 			game.HandleEvents();
 			game.Update();
-			game.Render();
+
+			// used to indicate if fx, an ai have moved, the player have clicked setting, or moved and so on
+			if (game.SomethingHappend)
+			{
+				game.Render();
+				game.SomethingHappend = false;
+			}
 		}
 
-		if (game.IsDraging())
-			FPS = DragingFPS;
-		else
-			FPS = RestingFPS;
-		frameDelay = 1000 / FPS;
+		//if (game.IsDraging())
+		//	FPS = DragingFPS;
+		//else
+		//	FPS = RestingFPS;
+		//frameDelay = 1000 / FPS;
 
  		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime)

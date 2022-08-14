@@ -61,6 +61,7 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
     blackRooksPtr = BlackRooksList.occupiedPtr;
     blackQueensPtr = BlackQueensList.occupiedPtr;
 
+    playerTurn = 8;
     try
     {
         int fenPtr = 0;

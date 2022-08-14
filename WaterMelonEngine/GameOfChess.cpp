@@ -101,13 +101,19 @@ void GameOfChess::HandleEvents()
 	int x = event.button.x / 100;
 	int y = event.button.y / 100;
 
+	// could be that the screem will be made wider or taller
+	// so just for playing chess
+	if (x < 0 || y < 0 || x > 8 || y > 8)
+		return;
+
 	if (event.type == SDL_MOUSEBUTTONDOWN)
 	{
+		SomethingHappend = true;
 		MouseDraging = true;
 		m_PieceTypeBeingDraged = board.board[x + (y * 8)];
 		m_PieceBeingDragedIndex = x + (y * 8);
 		m_IsPieceBeingDraged = true;
-		if (board.board[x + (y * 8)] == 0)
+		if ((board.board[x + (y * 8)] & 0b11000) != board.playerTurn)
 		{
 			m_IsPieceBeingDraged = false;
 			MouseDraging = 0;
@@ -115,19 +121,27 @@ void GameOfChess::HandleEvents()
 	}
 	else if (event.type == SDL_MOUSEMOTION)
 	{
+		SomethingHappend = true;
 		xMousePos = event.motion.x;
 		yMousePos = event.motion.y;
 	}
 	else if (event.type == SDL_MOUSEBUTTONUP)
 	{
+		SomethingHappend = true;
 		m_IsPieceBeingDraged = false;
 		MouseDraging = 0;
 
 		//Move move();
 		//board.MakeMove();
-		board.board[x + (y * 8)] = board.board[m_PieceBeingDragedIndex];
-		if (x + (y * 8) != m_PieceBeingDragedIndex)
-			board.board[m_PieceBeingDragedIndex] = 0;
+		if (m_IsPieceBeingDraged)
+		{
+			board.board[x + (y * 8)] = board.board[m_PieceBeingDragedIndex];
+			if (x + (y * 8) != m_PieceBeingDragedIndex)
+			{
+				board.board[m_PieceBeingDragedIndex] = 0;
+				board.playerTurn ^= PlayerTurnSwitch;
+			}
+		}
 	}
 }
 

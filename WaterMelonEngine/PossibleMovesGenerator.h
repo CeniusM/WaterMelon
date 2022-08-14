@@ -20,7 +20,7 @@ class PossibleMovesGenerator
 public:
 	Move moves[256]; // not sure what the max amount of moves is
 	Move* movesPtr= NULL; // for copying
-	int movesCount;
+	int movesCount = 0;
 
 	// make attack bitboard for all the pieces
 	// also make a bitboard where its the attack pos and end square where it 
@@ -70,23 +70,11 @@ public:
 	int* EnemyQueens;
 
 	void GenerateMoves();
+	void GetMoves(Move* movesPtr);
+	int GetCount();
 
-	PossibleMovesGenerator(UnsafeWaterMelon& boardRef);
+	PossibleMovesGenerator(UnsafeWaterMelon* boardRef);
 	~PossibleMovesGenerator();
 private:
 	void Init();
 };
-
-PossibleMovesGenerator::PossibleMovesGenerator(UnsafeWaterMelon& boardRef)
-{
-	for (int i = 0; i < 256; i++)
-		moves[i] = Move(0,0,0);
-
-	otherBoardPtr = (long long*) & boardRef.board[0];
-	castlePtr = &boardRef.castle;
-	EPSquarePtr = &boardRef.EPSquare;	
-}
-
-PossibleMovesGenerator::~PossibleMovesGenerator()
-{
-}

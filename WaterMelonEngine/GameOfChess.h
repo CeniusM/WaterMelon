@@ -23,6 +23,8 @@ public:
 	bool IsDraging() { return MouseDraging; }
 	bool Running();
 
+	bool SomethingHappend = false;
+
 private:
 	bool NeedToRender = false; // used later so that if nothing is happening it wont need to render
 
