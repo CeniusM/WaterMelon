@@ -18,19 +18,35 @@ public:
 	void HandleEvents();
 	void Update();
 	void Render();
-	void CLean();
+	void Clean();
 
+	bool IsDraging() { return MouseDraging; }
 	bool Running();
 
+	bool SomethingHappend = false;
+
 private:
+	bool NeedToRender = false; // used later so that if nothing is happening it wont need to render
+
+	void RenderBackGround();
+	// the int is if the player is draging a piece
+	void RenderAllPieces(int PieceToLeaveOut = -1);
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	//UnsafeWaterMelon board;
+	UnsafeWaterMelon board;
 	
 	bool m_isRunning;
-	int m_Count;
+	long m_Count;
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
 	SDL_Texture* sprites[24]; // black queen is at index 23
+
+
+	int xMousePos = 0;
+	int yMousePos = 0;
+	bool m_IsPieceBeingDraged;
+	int m_PieceTypeBeingDraged;
+	int m_PieceBeingDragedIndex;
+	bool MouseDraging = false;
 };

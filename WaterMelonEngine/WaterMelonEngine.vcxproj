@@ -104,10 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\GitHub\SDL2_image-2.0.1\include;C:\GitHub\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\GitHub\SDL2_image-2.0.1\lib\x64;C:\GitHub\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,20 +130,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameOfChess.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PossibleMovesGenerator.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
+    <ClCompile Include="SDLHelper.cpp" />
     <ClCompile Include="UnsafeWaterMelon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
+    <ClInclude Include="GameOfChess.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Perft.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceList.h" />
     <ClInclude Include="PossibleMovesGenerator.h" />
     <ClInclude Include="SafeWaterMelon.h" />
+    <ClInclude Include="SDLHelper.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnsafeWaterMelon.h" />

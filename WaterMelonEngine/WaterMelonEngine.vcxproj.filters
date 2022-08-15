@@ -22,6 +22,9 @@
     <Filter Include="Header Files\BoardLogic\PreInitializeData">
       <UniqueIdentifier>{d5eccfc2-4b56-4dcd-b537-3b2b628a553f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{fd211810-4267-4554-9328-769f1203f771}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -35,6 +38,12 @@
     </ClCompile>
     <ClCompile Include="PossibleMovesGenerator.cpp">
       <Filter>Source Files\BoardLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLHelper.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOfChess.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="Perft.h">
       <Filter>Header Files\BoardLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLHelper.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOfChess.h">
+      <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

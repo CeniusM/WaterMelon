@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-// for later
+// for later, used for loading and saving boards both has varibles and a fen
 
 class FENString
 {

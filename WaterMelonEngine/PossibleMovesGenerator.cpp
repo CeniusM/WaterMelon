@@ -1,11 +1,39 @@
-
+#include <cstdlib>
 
 #include "PossibleMovesGenerator.h"
 
 void PossibleMovesGenerator::GenerateMoves()
 {
 	Init();
+
+	// first to generate random moves to test all the other stuff
+	for (int i = 0; i < 64; i++)
+	{
+		if (Colour(board[i]) == ourColour)
+		{
+			for (int movesCount = 0; movesCount < 10; movesCount++)
+			{
+				int move = rand() % 64;
+				if (move == i)
+					continue;
+				moves[movesCount] = Move(i, move, 0);
+				movesCount++;
+			}
+		}
+	}
 }
+
+void PossibleMovesGenerator::GetMoves(Move* movesPtr)
+{
+	for (int i = 0; i < movesCount; i++)
+		movesPtr[i] = moves[i];
+}
+
+int PossibleMovesGenerator::GetCount()
+{
+	return movesCount;
+}
+
 
 void PossibleMovesGenerator::Init()
 {
@@ -30,4 +58,18 @@ void PossibleMovesGenerator::Init()
 	whiteToMove = (ourColour == 8);
 	enemyColour = ourColour ^ PlayerTurnSwitch;
 	castle = *castlePtr;
+}
+
+PossibleMovesGenerator::PossibleMovesGenerator(UnsafeWaterMelon* boardRef)
+{
+	for (int i = 0; i < 256; i++)
+		moves[i] = Move(0, 0, 0);
+
+	otherBoardPtr = (long long*)&(*boardRef).board[0];
+	castlePtr = &(*boardRef).castle;
+	EPSquarePtr = &(*boardRef).EPSquare;
+}
+
+PossibleMovesGenerator::~PossibleMovesGenerator()
+{
 }
