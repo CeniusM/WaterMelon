@@ -40,7 +40,7 @@ bool SafeWaterMelon::UnMakeMove()
 	return false;
 }
 
-int SafeWaterMelon::GetPiece(int pos)
+int SafeWaterMelon::GetPos(int pos)
 {
 	if (pos > 63 || pos < 0)
 		throw std::out_of_range("pos out of range");
@@ -53,9 +53,14 @@ int SafeWaterMelon::GetPlayerColour()
 	return _board->playerTurn;
 }
 
-void SafeWaterMelon::GetMoves(Move* moves)
+void SafeWaterMelon::GetMovesCopy(Move* moves)
 {
 	_movesGenerator->GetMoves(moves);
+}
+
+Move* SafeWaterMelon::GetMovePointer()
+{
+	return &_moves[0];
 }
 
 int SafeWaterMelon::GetMovesCount()

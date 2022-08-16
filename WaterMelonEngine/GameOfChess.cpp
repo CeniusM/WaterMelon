@@ -100,6 +100,7 @@ void GameOfChess::HandleEvents()
 
 	int x = event.button.x / 100;
 	int y = event.button.y / 100;
+	int clickedPos = x + (y * 8);
 
 	// could be that the screem will be made wider or taller
 	// so just for playing chess
@@ -108,15 +109,20 @@ void GameOfChess::HandleEvents()
 
 	if (event.type == SDL_MOUSEBUTTONDOWN)
 	{
+		std::cout << "mouseDown" << std::endl;
+		xMousePos = event.button.x;
+		yMousePos = event.button.y;
 		SomethingHappend = true;
 		MouseDraging = true;
-		m_PieceTypeBeingDraged = board.board[x + (y * 8)];
-		m_PieceBeingDragedIndex = x + (y * 8);
+		m_PieceTypeBeingDraged = board.GetPos(clickedPos);
+		m_piecePickedIndex = clickedPos;
 		m_IsPieceBeingDraged = true;
-		if ((board.board[x + (y * 8)] & 0b11000) != board.playerTurn)
+		pieceHaveBeenPicked = true;
+		if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
 		{
 			m_IsPieceBeingDraged = false;
 			MouseDraging = 0;
+			//pieceHaveBeenPicked = false;
 		}
 	}
 	else if (event.type == SDL_MOUSEMOTION)
@@ -127,20 +133,18 @@ void GameOfChess::HandleEvents()
 	}
 	else if (event.type == SDL_MOUSEBUTTONUP)
 	{
-		SomethingHappend = true;
-		m_IsPieceBeingDraged = false;
-		MouseDraging = 0;
 
 		//Move move();
 		//board.MakeMove();
-		if (m_IsPieceBeingDraged)
+
+		SomethingHappend = true;
+		m_IsPieceBeingDraged = false;
+		MouseDraging = 0;
+		//pieceHaveBeenPicked = false;
+
+		if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
 		{
-			board.board[x + (y * 8)] = board.board[m_PieceBeingDragedIndex];
-			if (x + (y * 8) != m_PieceBeingDragedIndex)
-			{
-				board.board[m_PieceBeingDragedIndex] = 0;
-				board.playerTurn ^= PlayerTurnSwitch;
-			}
+			pieceHaveBeenPicked = true;
 		}
 	}
 }
@@ -158,8 +162,13 @@ void GameOfChess::Render()
 
 	RenderBackGround();
 
+	if (pieceHaveBeenPicked)
+		std::cout << "true" << std::endl;
+	if (pieceHaveBeenPicked)
+		RenderPossibleMoves();
+
 	if (m_IsPieceBeingDraged)
-		RenderAllPieces(m_PieceBeingDragedIndex);
+		RenderAllPieces(m_piecePickedIndex);
 	else
 		RenderAllPieces();
 
@@ -211,6 +220,22 @@ void GameOfChess::RenderBackGround()
 	}
 }
 
+void GameOfChess::RenderPossibleMoves()
+{
+	Move* moves = board.GetMovePointer();
+	int movesCount = board.GetMovesCount();
+	for (int i = 0; i < movesCount; i++)
+	{
+		if (moves[i].StartSquare == m_piecePickedIndex)
+		{
+			if (((moves[i].TargetSquare > 3) + (moves[i].TargetSquare & 8)) % 2 == 0) // light square
+				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
+			else
+				SDL_SetRenderDrawColor(renderer, 50, 200, 50, 255);
+		}
+	}
+}
+
 void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 {
 	for (int i = 0; i < 8; i++)
@@ -219,7 +244,7 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 		{
 			int pos = (i*8)+j;
 	
-			if (board.board[pos] == 0)
+			if (board.GetPos(pos) == 0)
 				continue;
 
 			if (pos == PieceToLeaveOut) // instead of removing it, just put another tranparent layer on it, so its ghost like
@@ -231,7 +256,7 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 			rect.h = 100;
 			rect.w = 100;
 	
-			RenderPiece(&rect, sprites[board.board[pos]]);
+			RenderPiece(&rect, sprites[board.GetPos(pos)]);
 		}
 	}
 }

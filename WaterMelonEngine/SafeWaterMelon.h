@@ -15,9 +15,10 @@ public:
 	bool MakeMove(Move move);
 	bool UnMakeMove();
 
-	int GetPiece(int pos);
+	int GetPos(int pos);
 	int GetPlayerColour();
-	void GetMoves(Move* moves);
+	void GetMovesCopy(Move* moves);
+	Move* GetMovePointer();
 	int GetMovesCount();
 	bool IsKingInCheck();
 

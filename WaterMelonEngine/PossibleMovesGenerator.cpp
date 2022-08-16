@@ -11,7 +11,7 @@ void PossibleMovesGenerator::GenerateMoves()
 	{
 		if (Colour(board[i]) == ourColour)
 		{
-			for (int movesCount = 0; movesCount < 10; movesCount++)
+			for (int forMoveCount = 0; forMoveCount < 10; forMoveCount++)
 			{
 				int move = rand() % 64;
 				if (move == i)
@@ -66,6 +66,8 @@ PossibleMovesGenerator::PossibleMovesGenerator(UnsafeWaterMelon* boardRef)
 		moves[i] = Move(0, 0, 0);
 
 	otherBoardPtr = (long long*)&(*boardRef).board[0];
+	thisBoardPtr = (long long*)&board[0];
+	playerTurn = &(*boardRef).playerTurn;
 	castlePtr = &(*boardRef).castle;
 	EPSquarePtr = &(*boardRef).EPSquare;
 }
