@@ -121,13 +121,15 @@ void GameOfChess::HandleEvents()
 		if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
 		{
 			m_IsPieceBeingDraged = false;
+			pieceHaveBeenPicked = false;
 			MouseDraging = 0;
 			//pieceHaveBeenPicked = false;
 		}
 	}
 	else if (event.type == SDL_MOUSEMOTION)
 	{
-		SomethingHappend = true;
+		if (m_IsPieceBeingDraged)
+			SomethingHappend = true;
 		xMousePos = event.motion.x;
 		yMousePos = event.motion.y;
 	}
@@ -141,7 +143,7 @@ void GameOfChess::HandleEvents()
 		m_IsPieceBeingDraged = false;
 		MouseDraging = 0;
 		//pieceHaveBeenPicked = false;
-
+		if (pieceHaveBeenPicked)
 		if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
 		{
 			pieceHaveBeenPicked = true;

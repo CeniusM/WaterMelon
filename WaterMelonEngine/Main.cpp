@@ -12,7 +12,8 @@ int main()
 {
 	//const int RestingFPS = 20;
 	//const int DragingFPS = 144;
-	const int FPS = 142; // makes it go from 144=6,9... 142=7
+	const int FPS = 30; // for debuging
+	//const int FPS = 142; // makes it go from 144=6,9... 142=7
 	int frameDelay = 1000 / FPS;
 	
 	Uint32 frameStart;
