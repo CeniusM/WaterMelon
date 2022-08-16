@@ -12,7 +12,7 @@ int main()
 {
 	//const int RestingFPS = 20;
 	//const int DragingFPS = 144;
-	const int FPS = 144;
+	const int FPS = 142; // makes it go from 144=6,9... 142=7
 	int frameDelay = 1000 / FPS;
 	
 	Uint32 frameStart;
@@ -30,7 +30,7 @@ int main()
 		{
 			game.HandleEvents();
 			game.Update();
-
+		
 			// used to indicate if fx, an ai have moved, the player have clicked setting, or moved and so on
 			if (game.SomethingHappend)
 			{
