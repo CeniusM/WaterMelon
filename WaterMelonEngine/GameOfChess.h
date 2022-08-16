@@ -5,7 +5,7 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDLHelper.h"
-#include "UnsafeWaterMelon.h"
+#include "SafeWaterMelon.h"
 
 class GameOfChess
 {
@@ -29,11 +29,12 @@ private:
 	bool NeedToRender = false; // used later so that if nothing is happening it wont need to render
 
 	void RenderBackGround();
+	void RenderPossibleMoves();
 	// the int is if the player is draging a piece
 	void RenderAllPieces(int PieceToLeaveOut = -1);
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	UnsafeWaterMelon board;
+	SafeWaterMelon board;
 	
 	bool m_isRunning;
 	long m_Count;
@@ -45,8 +46,9 @@ private:
 
 	int xMousePos = 0;
 	int yMousePos = 0;
+	bool pieceHaveBeenPicked;
 	bool m_IsPieceBeingDraged;
 	int m_PieceTypeBeingDraged;
-	int m_PieceBeingDragedIndex;
+	int m_piecePickedIndex;
 	bool MouseDraging = false;
 };
