@@ -58,93 +58,96 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 }
 
 void GameOfChess::HandleEvents()
-{
+{	
 	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type)
+	while (SDL_PollEvent(&event) == 1)
 	{
-	case SDL_QUIT:
-		m_isRunning = false;
-		break;
-	default:
-		break;
-	}
-
-
-
-	/*
-	
-
-
-
-	if (mouse down)
-		piecetype = board
-		pieceindex = index
-		mouseDown = true
-	else if (motion)
-	mouseXYPos = x and y
-		mousedraging = false
-		if piece != 0
-			piecebeing draged = 0;
-		else
-			¨piece being draged = 1;
-	else if (mouseup)
-		click(xy)
-
-		ispeiecedrag = false
-		mousedrag = false
-
-
-	
-	*/
-
-	int x = event.button.x / 100;
-	int y = event.button.y / 100;
-	int clickedPos = x + (y * 8);
-
-	// could be that the screem will be made wider or taller
-	// so just for playing chess
-	if (x < 0 || y < 0 || x > 8 || y > 8)
-		return;
-
-	if (event.type == SDL_MOUSEBUTTONDOWN)
-	{
-		std::cout << "mouseDown" << std::endl;
-		xMousePos = event.button.x;
-		yMousePos = event.button.y;
-		SomethingHappend = true;
-		MouseDraging = true;
-		m_PieceTypeBeingDraged = board.GetPos(clickedPos);
-		m_piecePickedIndex = clickedPos;
-		m_IsPieceBeingDraged = true;
-		pieceHaveBeenPicked = true;
-		if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
+		switch (event.type)
 		{
+		case SDL_QUIT:
+			m_isRunning = false;
+			break;
+		default:
+			break;
+		}
+
+
+
+		/*
+
+
+
+
+		if (mouse down)
+			piecetype = board
+			pieceindex = index
+			mouseDown = true
+		else if (motion)
+		mouseXYPos = x and y
+			mousedraging = false
+			if piece != 0
+				piecebeing draged = 0;
+			else
+				¨piece being draged = 1;
+		else if (mouseup)
+			click(xy)
+
+			ispeiecedrag = false
+			mousedrag = false
+
+
+
+		*/
+
+		int x = event.button.x / 100;
+		int y = event.button.y / 100;
+		int clickedPos = x + (y * 8);
+
+		// could be that the screem will be made wider or taller
+		// so just for playing chess
+		if (x < 0 || y < 0 || x > 8 || y > 8)
+			return;
+
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			std::cout << "mouseDown" << std::endl;
+			xMousePos = event.button.x;
+			yMousePos = event.button.y;
+			SomethingHappend = true;
+			MouseDraging = true;
+			m_PieceTypeBeingDraged = board.GetPos(clickedPos);
+			m_piecePickedIndex = clickedPos;
+			m_IsPieceBeingDraged = true;
+			pieceHaveBeenPicked = true;
+			if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
+			{
+				m_IsPieceBeingDraged = false;
+				MouseDraging = 0;
+				//pieceHaveBeenPicked = false;
+			}
+		}
+		else if (event.type == SDL_MOUSEMOTION)
+		{
+			if (m_IsPieceBeingDraged)
+				SomethingHappend = true;
+			xMousePos = event.motion.x;
+			yMousePos = event.motion.y;
+		}
+		else if (event.type == SDL_MOUSEBUTTONUP)
+		{
+
+			//Move move();
+			//board.MakeMove();
+
+			SomethingHappend = true;
 			m_IsPieceBeingDraged = false;
 			MouseDraging = 0;
 			//pieceHaveBeenPicked = false;
-		}
-	}
-	else if (event.type == SDL_MOUSEMOTION)
-	{
-		SomethingHappend = true;
-		xMousePos = event.motion.x;
-		yMousePos = event.motion.y;
-	}
-	else if (event.type == SDL_MOUSEBUTTONUP)
-	{
 
-		//Move move();
-		//board.MakeMove();
-
-		SomethingHappend = true;
-		m_IsPieceBeingDraged = false;
-		MouseDraging = 0;
-		//pieceHaveBeenPicked = false;
-
-		if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
-		{
-			pieceHaveBeenPicked = true;
+			if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
+			{
+				pieceHaveBeenPicked = true;
+			}
 		}
 	}
 }
@@ -228,10 +231,16 @@ void GameOfChess::RenderPossibleMoves()
 	{
 		if (moves[i].StartSquare == m_piecePickedIndex)
 		{
-			if (((moves[i].TargetSquare > 3) + (moves[i].TargetSquare & 8)) % 2 == 0) // light square
-				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
+			SDL_Rect rect;
+			rect.w = 100;
+			rect.h = 100;
+			rect.x = (moves[i].TargetSquare % 8) * 100;
+			rect.y = (moves[i].TargetSquare >> 3) * 100;
+			if (((moves[i].TargetSquare >> 3) + (moves[i].TargetSquare % 8)) % 2 == 0) // light square
+				SDL_SetRenderDrawColor(renderer, 200, 100, 100, 255);
 			else
-				SDL_SetRenderDrawColor(renderer, 50, 200, 50, 255);
+				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
+			SDL_RenderFillRect(renderer, &rect);
 		}
 	}
 }
