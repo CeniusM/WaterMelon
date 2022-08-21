@@ -7,12 +7,16 @@ void UnsafeWaterMelon::MakeMove(Move* move)
     int startSquare = move->StartSquare;
     int targetSquare = move->TargetSquare;
     int capturedSquare = move->MoveFlag;
+
+    bool WhiteToMove = (playerTurn == 8);
 }
 
 void UnsafeWaterMelon::UnMakeMove()
 {
 
 }
+
+
 
 #pragma region Initilization
 UnsafeWaterMelon::UnsafeWaterMelon()
@@ -32,8 +36,6 @@ UnsafeWaterMelon::~UnsafeWaterMelon()
 
 void UnsafeWaterMelon::InitFEN(std::string FEN)
 {
-
-
     // will use the piece as index
     for (int i = 0; i < 24; i++) // BQuenn 23
         allPieceLists[i] = nullptr;

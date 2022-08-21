@@ -38,6 +38,8 @@ int PossibleMovesGenerator::GetCount()
 void PossibleMovesGenerator::Init()
 {
 	// should be faster becous there will be alot of board derfrences otherwise
+	// this still takes 10 * 8 operations
+	// and stack board vs board ptr only saves one operation per call
 	thisBoardPtr[0] = otherBoardPtr[0];
 	thisBoardPtr[1] = otherBoardPtr[1];
 	thisBoardPtr[2] = otherBoardPtr[2];
