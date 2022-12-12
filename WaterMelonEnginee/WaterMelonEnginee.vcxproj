@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b0d18fd1-6ca7-4699-8797-07775244688a}</ProjectGuid>
-    <RootNamespace>WaterMelonEngine</RootNamespace>
+    <ProjectGuid>{00b1025b-c45a-4c4a-9cad-4a7a8f820a56}</ProjectGuid>
+    <RootNamespace>WaterMelonEnginee</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>WaterMelonEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -104,13 +105,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\GitHub\SDL2_image-2.0.1\include;C:\GitHub\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\GitHub\SDL2_image-2.0.1\lib\x64;C:\GitHub\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -130,30 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameOfChess.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PossibleMovesGenerator.cpp" />
-    <ClCompile Include="SafeWaterMelon.cpp" />
-    <ClCompile Include="SDLHelper.cpp" />
-    <ClCompile Include="UnsafeWaterMelon.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="FENString.h" />
-    <ClInclude Include="FENUtility.h" />
-    <ClInclude Include="GameOfChess.h" />
-    <ClInclude Include="Move.h" />
-    <ClInclude Include="Perft.h" />
-    <ClInclude Include="Piece.h" />
-    <ClInclude Include="PieceList.h" />
-    <ClInclude Include="PossibleMovesGenerator.h" />
-    <ClInclude Include="SafeWaterMelon.h" />
-    <ClInclude Include="SDLHelper.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="UnsafeWaterMelon.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Todo" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
