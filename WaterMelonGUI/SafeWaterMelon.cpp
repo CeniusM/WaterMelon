@@ -1,14 +1,15 @@
 
 
 #include "SafeWaterMelon.h"
+#include "Move.h"
 
 SafeWaterMelon::SafeWaterMelon()
 {
 	_board = new UnsafeWaterMelon();
 	_movesGenerator = new PossibleMovesGenerator(_board);
-	(*_movesGenerator).GenerateMoves();
-	(*_movesGenerator).GetMoves(_moves);
-	Count = (*_movesGenerator).GetCount();
+	_movesGenerator->GenerateMoves();
+	_movesGenerator->GetMovesCopy(_moves);
+	Count = _movesGenerator->GetCount();
 }
 
 SafeWaterMelon::~SafeWaterMelon()
@@ -21,14 +22,16 @@ bool SafeWaterMelon::MakeMove(Move move)
 {
 	for (int i = 0; i < Count; i++)
 	{
-		if (move.StartSquare == _moves[i].StartSquare && 
-			move.TargetSquare == _moves[i].TargetSquare &&
-			move.MoveFlag == _moves[i].MoveFlag)
+		//if (GetMoveStart(move) == GetMoveStart(_moves[i]) &&
+		//	GetMoveTarget(move) == GetMoveTarget(_moves[i]) &&
+		//	GetMoveFlag(move) == GetMoveFlag(_moves[i]))
+		if (move == _moves[i])
 		{
-			_board->MakeMove(&move);
+			_board->MakeMove(move);
 			_movesGenerator->GenerateMoves();
-			_movesGenerator->GetMoves(_moves);
+			_movesGenerator->GetMovesCopy(_moves);
 			Count = _movesGenerator->GetCount();
+
 			return true;
 		}
 	}
@@ -55,7 +58,7 @@ int SafeWaterMelon::GetPlayerColour()
 
 void SafeWaterMelon::GetMovesCopy(Move* moves)
 {
-	_movesGenerator->GetMoves(moves);
+	_movesGenerator->GetMovesCopy(moves);
 }
 
 Move* SafeWaterMelon::GetMovePointer()

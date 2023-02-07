@@ -1,72 +1,79 @@
 #pragma once
 
-namespace Piece
+#define UsingIntForPiece
+
+#ifdef UsingIntForPiece
+#define Piece int
+#else
+#define Piece char
+#endif
+
+
+constexpr Piece White = 8;
+constexpr Piece Black = 16;
+
+constexpr Piece NoPiece = 0;
+constexpr Piece King = 1;
+constexpr Piece Pawn = 2;
+constexpr Piece Knight = 3;
+constexpr Piece Bishop = 5;
+constexpr Piece Rook = 6;
+constexpr Piece Queen = 7;
+
+constexpr Piece WKing = King + White;
+constexpr Piece WPawn = Pawn + White;
+constexpr Piece WKnight = Knight + White;
+constexpr Piece WBishop = Bishop + White;
+constexpr Piece WRook = Rook + White;
+constexpr Piece WQueen = Queen + White;
+
+constexpr Piece BKing = King + Black;
+constexpr Piece BPawn = Pawn + Black;
+constexpr Piece BKnight = Knight + Black;
+constexpr Piece BBishop = Bishop + Black;
+constexpr Piece BRook = Rook + Black;
+constexpr Piece BQueen = Queen + Black;
+
+constexpr Piece typeMask = 0b00111;
+constexpr Piece blackMask = 0b10000;
+constexpr Piece whiteMask = 0b01000;
+constexpr Piece colourMask = whiteMask | blackMask;
+
+constexpr bool IsColour(Piece piece, Piece colour)
 {
-    constexpr char White = 8;
-    constexpr char Black = 16;
-              
-    constexpr char None = 0;
-    constexpr char King = 1;
-    constexpr char Pawn = 2;
-    constexpr char Knight = 3;
-    constexpr char Bishop = 5;
-    constexpr char Rook = 6;
-    constexpr char Queen = 7;
-              
-    constexpr char WKing = King + White;
-    constexpr char WPawn = Pawn + White;
-    constexpr char WKnight = Knight + White;
-    constexpr char WBishop = Bishop + White;
-    constexpr char WRook = Rook + White;
-    constexpr char WQueen = Queen + White;
-              
-    constexpr char BKing = King + Black;
-    constexpr char BPawn = Pawn + Black;
-    constexpr char BKnight = Knight + Black;
-    constexpr char BBishop = Bishop + Black;
-    constexpr char BRook = Rook + Black;
-    constexpr char BQueen = Queen + Black;
-              
-    constexpr char typeMask = 0b00111;
-    constexpr char blackMask = 0b10000;
-    constexpr char whiteMask = 0b01000;
-    constexpr char colourMask = whiteMask | blackMask;
-
-    constexpr bool IsColour(int piece, int colour)
-    {
-        return (piece & colourMask) == colour;
-    }
-
-    constexpr char Colour(int piece)
-    {
-        return piece & colourMask;
-    }
-
-    constexpr char PieceType(int piece)
-    {
-        return piece & typeMask;
-    }
-
-    constexpr bool IsKing(int piece)
-    {
-        return (piece & typeMask) == King;
-    }
-
-    constexpr bool IsRookOrQueen(int piece)
-    {
-        return (piece & 0b110) == 0b110;
-    }
-
-    constexpr bool IsBishopOrQueen(int piece)
-    {
-        return (piece & 0b101) == 0b101;
-    }
-
-    constexpr bool IsSlidingPiece(int piece)
-    {
-        return (piece & 0b100) != 0;
-    }
+	return (piece & colourMask) == colour;
 }
+
+constexpr Piece Colour(Piece piece)
+{
+	return piece & colourMask;
+}
+
+constexpr Piece PieceType(Piece piece)
+{
+	return piece & typeMask;
+}
+
+constexpr bool IsKing(Piece piece)
+{
+	return (piece & typeMask) == King;
+}
+
+constexpr bool IsRookOrQueen(Piece piece)
+{
+	return (piece & 0b110) == 0b110;
+}
+
+constexpr bool IsBishopOrQueen(Piece piece)
+{
+	return (piece & 0b101) == 0b101;
+}
+
+constexpr bool IsSlidingPiece(Piece piece)
+{
+	return (piece & 0b100) != 0;
+}
+
 
 /*
 King	= 0b001

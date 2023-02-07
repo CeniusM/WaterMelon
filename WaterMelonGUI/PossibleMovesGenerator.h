@@ -10,7 +10,7 @@
 
 #define BitBoardContains(bitboard, pos) (((bitboard << pos) & 0x8000000000000000) == 0x8000000000000000)
 
-
+#define MaxMovesCount 512
 
 
 
@@ -18,7 +18,7 @@
 class PossibleMovesGenerator
 {
 public:
-	Move moves[256]; // not sure what the max amount of moves is
+	Move moves[MaxMovesCount]; // not sure what the max amount of moves is
 	Move* movesPtr= NULL; // for copying
 	int movesCount = 0;
 
@@ -47,9 +47,11 @@ public:
 	int enemyKingPos;
 	
 
-	char board[64]; // stack var that needs to be coppied
-	long long* thisBoardPtr; // boardPtr for copying
-	long long* otherBoardPtr; // boardPtr for copying
+	Piece board[64]; // stack varible that needs to be coppied
+	// Pointer to Generator board
+	void* thisBoard;
+	// Pointer to UnsafeWaterMelon board
+	void* otherBoard;
 
 	int* castlePtr;
 	int castle;
@@ -58,19 +60,33 @@ public:
 	int* playerTurn;
 
 	// piece lists
-	int* OurPawns;
-	int* OurKnights;
-	int* OurBishops;
-	int* OurRooks;
-	int* OurQueens;
-	int* EnemyPawns;
-	int* EnemyKnights;
-	int* EnemyBishops;
-	int* EnemyRooks;
-	int* EnemyQueens;
+	Piece* OurPawns;
+	Piece* OurKnights;
+	Piece* OurBishops;
+	Piece* OurRooks;
+	Piece* OurQueens;
+	Piece* EnemyPawns;
+	Piece* EnemyKnights;
+	Piece* EnemyBishops;
+	Piece* EnemyRooks;
+	Piece* EnemyQueens;
 
+	/// <summary>
+	/// Generates the moves...
+	/// </summary>
 	void GenerateMoves();
-	void GetMoves(Move* movesPtr);
+
+	/// <summary>
+	/// Used to copy the generated moves into the given pointer
+	/// </summary>
+	/// <param name="movesPtr">The pointer size is expected to be atlist "MaxMovesCount"</param>
+	/// <returns>The moves copied count</returns>
+	int GetMovesCopy(Move* movesPtr);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns>The currently amount of moves generated</returns>
 	int GetCount();
 
 	PossibleMovesGenerator(UnsafeWaterMelon* boardRef);
@@ -78,3 +94,14 @@ public:
 private:
 	void Init();
 };
+
+
+/*
+Graveyard for old code
+
+	long long* thisBoardPtr; // boardPtr for copying
+	long long* otherBoardPtr; // boardPtr for copying
+
+
+
+*/

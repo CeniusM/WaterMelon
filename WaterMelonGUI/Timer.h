@@ -3,20 +3,22 @@
 #include <chrono>
 #include <iostream>
 
+using namespace std::chrono;
+
 class Timer
 {
-	std::chrono::time_point<std::chrono::steady_clock> start, end;
-	std::chrono::duration<float> duration;
+	time_point<steady_clock> start, end;
+	duration<float> duration;
 public:
 
 	Timer()
 	{
-		start = std::chrono::high_resolution_clock::now();
+		start = high_resolution_clock::now();
 	}
 
 	~Timer()
 	{
-		end = std::chrono::high_resolution_clock::now();
+		end = high_resolution_clock::now();
 		duration = end - start;
 
 		float ms = duration.count() * 1000;

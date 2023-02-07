@@ -229,14 +229,14 @@ void GameOfChess::RenderPossibleMoves()
 	int movesCount = board.GetMovesCount();
 	for (int i = 0; i < movesCount; i++)
 	{
-		if (moves[i].StartSquare == m_piecePickedIndex)
+		if (GetMoveStart(moves[i]) == m_piecePickedIndex)
 		{
 			SDL_Rect rect;
 			rect.w = 100;
 			rect.h = 100;
-			rect.x = (moves[i].TargetSquare % 8) * 100;
-			rect.y = (moves[i].TargetSquare >> 3) * 100;
-			if (((moves[i].TargetSquare >> 3) + (moves[i].TargetSquare % 8)) % 2 == 0) // light square
+			rect.x = (GetMoveTarget(moves[i]) % 8) * 100;
+			rect.y = (GetMoveTarget(moves[i]) >> 3) * 100;
+			if (((GetMoveTarget(moves[i]) >> 3) + (GetMoveTarget(moves[i]) % 8)) % 2 == 0) // light square
 				SDL_SetRenderDrawColor(renderer, 200, 100, 100, 255);
 			else
 				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
