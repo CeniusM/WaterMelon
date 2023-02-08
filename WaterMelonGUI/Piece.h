@@ -8,7 +8,6 @@
 #define Piece char
 #endif
 
-
 constexpr Piece White = 8;
 constexpr Piece Black = 16;
 

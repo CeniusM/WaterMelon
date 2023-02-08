@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "PossibleMovesGenerator.h"
-#include "Piece.h"
 
 void PossibleMovesGenerator::Init()
 {
@@ -19,32 +18,36 @@ void PossibleMovesGenerator::Init()
 	whiteToMove = (ourColour == White);
 	enemyColour = ourColour ^ PlayerTurnSwitch;
 	castle = *castlePtr;
-}
 
-void PossibleMovesGenerator::GenerateMoves()
-{
-	Init();
-
-	// first to generate random moves to test all the other stuff
-	for (int i = 0; i < 64; i++)
+	if (whiteToMove)
 	{
-		if (Colour(board[i]) == ourColour)
-		{
-			for (int forMoveCount = 0; forMoveCount < 10; forMoveCount++)
-			{
-				int move = rand() % ExclusiveUpperBoundPos;
-				if (move == i)
-					continue;
-				moves[movesCount] = GetMove(i, move, NoFlag);
-				movesCount++;
-			}
-		}
+		ourKingPos = unsafeBoard->kingPos[0];
+		enemyKingPos = unsafeBoard->kingPos[1];
+		OurPawns = unsafeBoard->whitePawnsPtr;
+		OurKnights = unsafeBoard->whiteKnightsPtr;
+		OurBishops = unsafeBoard->whiteBishopsPtr;
+		OurRooks = unsafeBoard->whiteRooksPtr;
+		OurQueens = unsafeBoard->whiteQueensPtr;
+		EnemyPawns = unsafeBoard->blackPawnsPtr;
+		EnemyKnights = unsafeBoard->blackKnightsPtr;
+		EnemyBishops = unsafeBoard->blackBishopsPtr;
+		EnemyRooks = unsafeBoard->blackRooksPtr;
+		EnemyQueens = unsafeBoard->blackQueensPtr;
 	}
-
-	for (size_t i = 0; i < movesCount; i++)
+	else
 	{
-		//std::cout << FENUtility::IntToChar[board[i]];
-		std::cout << moves[movesCount];
+		ourKingPos = unsafeBoard->kingPos[1];
+		enemyKingPos = unsafeBoard->kingPos[0];
+		EnemyPawns = unsafeBoard->whitePawnsPtr;
+		EnemyKnights = unsafeBoard->whiteKnightsPtr;
+		EnemyBishops = unsafeBoard->whiteBishopsPtr;
+		EnemyRooks = unsafeBoard->whiteRooksPtr;
+		EnemyQueens = unsafeBoard->whiteQueensPtr;
+		OurPawns = unsafeBoard->blackPawnsPtr;
+		OurKnights = unsafeBoard->blackKnightsPtr;
+		OurBishops = unsafeBoard->blackBishopsPtr;
+		OurRooks = unsafeBoard->blackRooksPtr;
+		OurQueens = unsafeBoard->blackQueensPtr;
 	}
 }
 
@@ -52,7 +55,7 @@ int PossibleMovesGenerator::GetMovesCopy(Move* movesPtr)
 {
 	/*for (int i = 0; i < movesCount; i++)
 		movesPtr[i] = moves[i];*/
-	//_memccpy(movesPtr, moves, 0, sizeof(Move) * movesCount);
+		//_memccpy(movesPtr, moves, 0, sizeof(Move) * movesCount);
 	memcpy_s(movesPtr, sizeof(Move) * MaxMovesCount, moves, sizeof(Move) * movesCount);
 	return movesCount;
 }
@@ -64,6 +67,8 @@ int PossibleMovesGenerator::GetCount()
 
 PossibleMovesGenerator::PossibleMovesGenerator(UnsafeWaterMelon* boardRef)
 {
+	unsafeBoard = boardRef;
+
 	for (int i = 0; i < 256; i++)
 		//moves[i] = Move(0, 0, 0);
 		moves[i] = InvalidPos;
@@ -80,6 +85,59 @@ PossibleMovesGenerator::~PossibleMovesGenerator()
 {
 }
 
+#pragma region Move_Generation
+
+void PossibleMovesGenerator::GeneratePawnMoves()
+{
+	int count = OurPawns[-1];
+	for (size_t i = 0; i < count; i++)
+	{
+		moves[movesCount] = CreateMove(OurPawns[i], OurPawns[i] - 8, NoFlag);
+		movesCount++;
+	}
+}
+
+void PossibleMovesGenerator::GenerateKnightMoves()
+{
+	int count = OurKnights[-1];
+	for (size_t i = 0; i < count; i++)
+	{
+		moves[movesCount] = CreateMove(OurKnights[i], OurKnights[i] - 16, NoFlag);
+		movesCount++;
+	}
+}
+
+void PossibleMovesGenerator::GenerateMoves()
+{
+	Init();
+
+	GeneratePawnMoves();
+	GenerateKnightMoves();
+
+	// first to generate random moves to test all the other stuff
+	/*for (int i = 0; i < 64; i++)
+	{
+		if (Colour(board[i]) == ourColour)
+		{
+			for (int forMoveCount = 0; forMoveCount < 10; forMoveCount++)
+			{
+				int move = rand() % ExclusiveUpperBoundPos;
+				if (move == i)
+					continue;
+				moves[movesCount] = GetMove(i, move, NoFlag);
+				movesCount++;
+			}
+		}
+	}*/
+
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		//std::cout << FENUtility::IntToChar[board[i]];
+		std::cout << moves[movesCount];
+	}
+}
+
+#pragma endregion
 
 /*
 Graveyard for old code

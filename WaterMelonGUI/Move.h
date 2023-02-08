@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.h"
+
 // Number between [0 - 63], and uses -1 to indicate an invalid pos or none initialized pos
 #define Pos int
 // Number between [0 - 7]
@@ -21,36 +23,17 @@ constexpr Pos InclusiveUpperBoundPos = 63;
 constexpr Pos ExclusiveLowerBoundPos = -1;
 constexpr Pos ExclusiveUpperBoundPos = 64;
 
-//#define UsingMoveClass
-
-#ifdef UsingMoveClass
-
-struct Move
-{
-	Pos StartSquare;
-	Pos TargetSquare;
-	MoveFlag Flag;
-
-	Move(Pos s, Pos t, MoveFlag f)
-	{
-		StartSquare = s;
-		TargetSquare = t;
-		Flag = f;
-	}
-	Move()
-	{
-		StartSquare = 0;
-		TargetSquare = 0;
-		Flag = 0;
-	}
-};
-
-#else
-
 #define Move int
-#define GetMoveStart(move) (move & 0x3f) // Get 0 - 5 bits
-#define GetMoveTarget(move) ((move & 0x7e0) >> 5) // Get 6 - 10 bits 
-#define GetMoveFlag(move) ((move & 0x3c00) >> 10) // Get 11 - 14 bits
-#define GetMove(start, target, flag) (start | (target << 5) | (flag << 10))
+#define GetMoveStart(move) ((move) & 0x3f) // Get 0 - 6 bits
+#define GetMoveTarget(move) (((move) >> 6) & 0x3f) // Get 7 - 12 bits 
+#define GetMoveFlag(move) (((move)>> 12) & 0x3c00) // Get 13 - 14 bits
 
+#ifdef DEBUG_DoChecks
+int CreateMove(int start, int target, int flag)
+{
+	//if (!IsInBo)
+	return ((start) | ((target) << 6) | ((flag) << 12));
+}
+#elif
+#define CreateMove(start, target, flag) ((start) | ((target) << 6) | ((flag) << 12))
 #endif

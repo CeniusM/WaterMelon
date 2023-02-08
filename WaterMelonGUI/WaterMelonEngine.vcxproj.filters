@@ -86,6 +86,9 @@
     <ClInclude Include="GameOfChess.h">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo">

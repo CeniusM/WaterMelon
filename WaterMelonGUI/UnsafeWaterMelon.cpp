@@ -88,8 +88,15 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 					fenBoardPtr += piece - '0' - 1;
 				else
 				{
-					board[fenBoardPtr] = FENUtility::CharToInt[piece];
-					//board[fenBoardPtr] == 
+					Piece pieceVal = FENUtility::CharToInt[piece];
+					board[fenBoardPtr] = pieceVal;
+
+					if (pieceVal == WKing)
+						kingPos[0] = fenBoardPtr;
+					else if (pieceVal == BKing)
+						kingPos[1] = fenBoardPtr;
+					else
+						allPieceLists[pieceVal]->AddPieceAtSquare(fenBoardPtr);
 				}
 				fenBoardPtr++;
 			}

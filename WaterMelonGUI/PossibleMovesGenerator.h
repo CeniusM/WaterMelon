@@ -6,7 +6,7 @@
 #define Colour(p) (p & 0b11000)
 
 // works between 65535 and -65472 
-#define InBounds(pos) ((pos & 0xFFC0) == 0)
+#define IsInBounds(pos) ((pos & 0xFFC0) == 0)
 
 #define BitBoardContains(bitboard, pos) (((bitboard << pos) & 0x8000000000000000) == 0x8000000000000000)
 
@@ -14,12 +14,23 @@
 
 
 
-
+/// <summary>
+/// When this class is constructed, it will bind it self to the UnsafeBoard, it will NOT change anything, only copy from it.
+/// </summary>
 class PossibleMovesGenerator
 {
+private:
+	UnsafeWaterMelon* unsafeBoard = NULL;
+
+	void GeneratePawnMoves();
+	void GenerateKnightMoves();
+	void GenerateBishopMoves();
+	void GenerateRookMoves();
+	void GenerateQueenMoves();
+	void GenerateKingMoves();
+	void KingInCheck_Check();
 public:
 	Move moves[MaxMovesCount]; // not sure what the max amount of moves is
-	Move* movesPtr= NULL; // for copying
 	int movesCount = 0;
 
 	// make attack bitboard for all the pieces
@@ -31,13 +42,13 @@ public:
 	// 1000
 	// 0100
 	// 0010
-	// 00k0
+	// 000k
 	long long pinningPiecesAttack[64]; // use the pos of the piece as index
 	long long pinnedPieces; // bitboard
 
 	bool KingInCheck;
 	bool KingInDoubleCheck;
-	
+
 	bool whiteToMove;
 
 	int ourColour;
@@ -45,7 +56,7 @@ public:
 
 	int enemyColour;
 	int enemyKingPos;
-	
+
 
 	Piece board[64]; // stack varible that needs to be coppied
 	// Pointer to Generator board
@@ -59,7 +70,7 @@ public:
 	int EPSquare;
 	int* playerTurn;
 
-	// piece lists
+	// piece lists, -1 is the count
 	Piece* OurPawns;
 	Piece* OurKnights;
 	Piece* OurBishops;

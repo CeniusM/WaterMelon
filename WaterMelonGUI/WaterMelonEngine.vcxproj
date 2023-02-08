@@ -139,6 +139,7 @@
     <ClCompile Include="UnsafeWaterMelon.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="GameOfChess.h" />

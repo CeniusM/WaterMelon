@@ -4,7 +4,7 @@
 
 #include "PieceList.h"
 #include "FENUtility.h"
-#include "Move.h"
+#include "Piece.h"
 
 #define GameState int
 

@@ -143,10 +143,14 @@ void GameOfChess::HandleEvents()
 			m_IsPieceBeingDraged = false;
 			MouseDraging = 0;
 			//pieceHaveBeenPicked = false;
-
-			if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
+			int indexPlacements = (xMousePos / 100) + ((yMousePos / 100) * 8);
+			if (indexPlacements == m_piecePickedIndex) // peice landed on same square
 			{
 				pieceHaveBeenPicked = true;
+			}
+			else
+			{
+				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 			}
 		}
 	}
@@ -229,14 +233,16 @@ void GameOfChess::RenderPossibleMoves()
 	int movesCount = board.GetMovesCount();
 	for (int i = 0; i < movesCount; i++)
 	{
-		if (GetMoveStart(moves[i]) == m_piecePickedIndex)
+		int move = moves[i];
+		int target = GetMoveTarget(move);
+		if (GetMoveStart(move) == m_piecePickedIndex)
 		{
 			SDL_Rect rect;
 			rect.w = 100;
 			rect.h = 100;
-			rect.x = (GetMoveTarget(moves[i]) % 8) * 100;
-			rect.y = (GetMoveTarget(moves[i]) >> 3) * 100;
-			if (((GetMoveTarget(moves[i]) >> 3) + (GetMoveTarget(moves[i]) % 8)) % 2 == 0) // light square
+			rect.x = (target % 8) * 100;
+			rect.y = (target >> 3) * 100;
+			if (((target >> 3) + (target % 8)) % 2 == 0) // light square
 				SDL_SetRenderDrawColor(renderer, 200, 100, 100, 255);
 			else
 				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
