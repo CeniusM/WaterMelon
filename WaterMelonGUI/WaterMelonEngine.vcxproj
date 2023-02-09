@@ -152,6 +152,7 @@
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="GameOfChess.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveFlag.h" />

@@ -6,4 +6,4 @@
 #include "MoveFlag.h"
 #include "Piece.h"
 #include "Pos.h"
-
+#include "GameState.h"

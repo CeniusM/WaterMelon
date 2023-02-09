@@ -6,8 +6,8 @@
 #include "FENUtility.h"
 #include "Piece.h"
 #include "Logger.h"
+#include "TypesIncludes.h"
 
-#define GameState int
 
 #pragma region Consts
 constexpr int MaxMoves = 200;
@@ -23,11 +23,6 @@ constexpr int BlackCastleRights = 0b0011;
 constexpr int BlackQueenSideCastleRight = 0b0001;
 
 constexpr int PlayerTurnSwitch = 0b11000;
-
-constexpr GameState Running = 2;
-constexpr GameState WhiteWon = 1;
-constexpr GameState Draw = 0;
-constexpr GameState BlackWon = -1;
 #pragma endregion
 
 
@@ -36,7 +31,7 @@ constexpr GameState BlackWon = -1;
 class UnsafeWaterMelon
 {
 public:
-	GameState gameState = Running;
+	GameState gameState = GameStates::Running;
 
 	Move gameHistory[256];
 

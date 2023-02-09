@@ -4,8 +4,6 @@
 
 #define MaxMovesCount 512
 
-
-
 /// <summary>
 /// When this class is constructed, it will bind it self to the UnsafeBoard, it will NOT change anything, only copy from it.
 /// </summary>
