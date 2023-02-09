@@ -6,7 +6,10 @@ void UnsafeWaterMelon::MakeMove(Move move)
 {
 	Pos startSquare = GetMoveStart(move);
 	Pos targetSquare = GetMoveTarget(move);
-	Pos capturedSquare = GetMoveFlag(move);
+	MoveFlag flag = GetMoveFlag(move);
+
+	Piece movingPiece = GetPieceType(board[startSquare]);
+	Piece capturedPiece = GetPieceType(board[targetSquare]);
 
 	bool WhiteToMove = (playerTurn == 8);
 

@@ -13,7 +13,8 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 	if (fullscreen)
 		flag = SDL_WINDOW_FULLSCREEN;
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	//if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (SDL_Init(SDL_INIT_VIDEO) == 0)
 	{
 		std::cout << "Subsystem has initilized!" << std::endl;
 
@@ -40,7 +41,7 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 	//playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	//SDL_FreeSurface(tmpSurface);
 	//playerTexture = sdlHelper.LoadImage("Assets/n.bmp", renderer);
-	
+
 	for (int i = 0; i < 24; i++)
 		sprites[i] = nullptr;
 	sprites[9] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wking.bmp", renderer); //9 WKing
@@ -58,7 +59,7 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 }
 
 void GameOfChess::HandleEvents()
-{	
+{
 	SDL_Event event;
 	while (SDL_PollEvent(&event) == 1)
 	{
@@ -150,7 +151,9 @@ void GameOfChess::HandleEvents()
 			}
 			else
 			{
+				Log("Making a move");
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
+				board.MakeMove(move);
 			}
 		}
 	}
@@ -169,8 +172,8 @@ void GameOfChess::Render()
 
 	RenderBackGround();
 
-	if (pieceHaveBeenPicked)
-		std::cout << "true" << std::endl;
+	//if (pieceHaveBeenPicked)
+	//	std::cout << "true" << std::endl;
 	if (pieceHaveBeenPicked)
 		RenderPossibleMoves();
 
@@ -185,6 +188,7 @@ void GameOfChess::Render()
 		RenderPiece(&r, sprites[m_PieceTypeBeingDraged]);
 
 	SDL_RenderPresent(renderer);
+	SomethingHappend = false;
 }
 
 void GameOfChess::Clean()
@@ -257,20 +261,20 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			int pos = (i*8)+j;
-	
+			int pos = (i * 8) + j;
+
 			if (board.GetPos(pos) == 0)
 				continue;
 
 			if (pos == PieceToLeaveOut) // instead of removing it, just put another tranparent layer on it, so its ghost like
 				continue;
-	
+
 			SDL_Rect rect;
 			rect.x = j * 100;
 			rect.y = i * 100;
 			rect.h = 100;
 			rect.w = 100;
-	
+
 			RenderPiece(&rect, sprites[board.GetPos(pos)]);
 		}
 	}

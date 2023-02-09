@@ -134,6 +134,12 @@
     <ClInclude Include="CastleRight.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
+    <ClInclude Include="BoardStateSave.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="EnPassantPos.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Todo">

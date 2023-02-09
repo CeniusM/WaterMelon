@@ -25,7 +25,7 @@ int main()
 
 	while (game.Running())
 	{
-		Timer timer;
+		//Timer timer;
 		frameStart = SDL_GetTicks();
 
 		{
@@ -36,7 +36,6 @@ int main()
 			if (game.SomethingHappend)
 			{
 				game.Render();
-				game.SomethingHappend = false;
 			}
 		}
 

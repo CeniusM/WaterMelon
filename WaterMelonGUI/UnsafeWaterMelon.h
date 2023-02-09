@@ -4,7 +4,6 @@
 
 #include "PieceList.h"
 #include "FENUtility.h"
-#include "Piece.h"
 #include "Logger.h"
 #include "TypesIncludes.h"
 
@@ -63,6 +62,7 @@ public:
 	Piece* blackQueensPtr;
 #pragma endregion
 
+	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
 	void MakeMove(Move move);
 	void UnMakeMove();
 

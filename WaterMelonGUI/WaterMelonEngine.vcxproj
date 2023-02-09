@@ -148,8 +148,10 @@
   <ItemGroup>
     <ClInclude Include="Bitboard.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardStateSave.h" />
     <ClInclude Include="CastleRight.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="EnPassantPos.h" />
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="GameOfChess.h" />
