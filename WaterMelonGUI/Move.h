@@ -29,11 +29,12 @@ constexpr Pos ExclusiveUpperBoundPos = 64;
 #define GetMoveFlag(move) (((move)>> 12) & 0x3c00) // Get 13 - 14 bits
 
 #ifdef DEBUG_DoChecks
-int CreateMove(int start, int target, int flag)
+//#undef int __cdecl CreateMove(int,int,int)
+constexpr Move CreateMove(Pos start, Pos target, MoveFlag flag)
 {
 	//if (!IsInBo)
 	return ((start) | ((target) << 6) | ((flag) << 12));
 }
-#elif
+#else
 #define CreateMove(start, target, flag) ((start) | ((target) << 6) | ((flag) << 12))
 #endif
