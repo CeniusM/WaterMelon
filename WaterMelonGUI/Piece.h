@@ -3,21 +3,28 @@
 #define UsingIntForPiece
 
 #ifdef UsingIntForPiece
-#define Piece int
+typedef int Piece;
+typedef int Color;
+typedef int PieceType;
+typedef int Mask;
 #else
-#define Piece char
+typedef char Piece;
+typedef char Color;
+typedef char PieceType;
+typedef char Mask;
 #endif
+#define SizeOfPiece sizeof(Piece);
 
-constexpr Piece White = 8;
-constexpr Piece Black = 16;
+constexpr Color White = 8;
+constexpr Color Black = 16;
 
-constexpr Piece NoPiece = 0;
-constexpr Piece King = 1;
-constexpr Piece Pawn = 2;
-constexpr Piece Knight = 3;
-constexpr Piece Bishop = 5;
-constexpr Piece Rook = 6;
-constexpr Piece Queen = 7;
+constexpr PieceType NoPiece = 0;
+constexpr PieceType King = 1;
+constexpr PieceType Pawn = 2;
+constexpr PieceType Knight = 3;
+constexpr PieceType Bishop = 5;
+constexpr PieceType Rook = 6;
+constexpr PieceType Queen = 7;
 
 constexpr Piece WKing = King + White;
 constexpr Piece WPawn = Pawn + White;
@@ -33,22 +40,27 @@ constexpr Piece BBishop = Bishop + Black;
 constexpr Piece BRook = Rook + Black;
 constexpr Piece BQueen = Queen + Black;
 
-constexpr Piece typeMask = 0b00111;
-constexpr Piece blackMask = 0b10000;
-constexpr Piece whiteMask = 0b01000;
-constexpr Piece colourMask = whiteMask | blackMask;
+constexpr Mask typeMask = 0b00111;
+constexpr Mask blackMask = 0b10000;
+constexpr Mask whiteMask = 0b01000;
+constexpr Mask colorMask = whiteMask | blackMask;
 
-constexpr bool IsColour(Piece piece, Piece colour)
+constexpr Piece CreatePiece(PieceType type, Color color)
 {
-	return (piece & colourMask) == colour;
+	return type | color;
 }
 
-constexpr Piece Colour(Piece piece)
+constexpr bool IsColor(Color piece, Color color)
 {
-	return piece & colourMask;
+	return (piece & colorMask) == color;
 }
 
-constexpr Piece PieceType(Piece piece)
+constexpr Color GetColor(Piece piece)
+{
+	return piece & colorMask;
+}
+
+constexpr PieceType GetPieceType(Piece piece)
 {
 	return piece & typeMask;
 }
@@ -72,7 +84,6 @@ constexpr bool IsSlidingPiece(Piece piece)
 {
 	return (piece & 0b100) != 0;
 }
-
 
 /*
 King	= 0b001

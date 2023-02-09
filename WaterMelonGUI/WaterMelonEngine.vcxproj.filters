@@ -25,6 +25,9 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{fd211810-4267-4554-9328-769f1203f771}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\BoardLogic\PreInitializeData\Types">
+      <UniqueIdentifier>{a17d3070-b4ef-4879-8a8c-1464498befb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -51,6 +54,9 @@
     <ClCompile Include="ThrowHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TypesIncludes.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SafeWaterMelon.h">
@@ -65,16 +71,10 @@
     <ClInclude Include="FENUtility.h">
       <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
     </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
     <ClInclude Include="FENString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PossibleMovesGenerator.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="Move.h">
       <Filter>Header Files\BoardLogic</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
@@ -100,6 +100,24 @@
     </ClInclude>
     <ClInclude Include="ThrowHelper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Piece.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Move.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Pos.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Bitboard.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveFlag.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

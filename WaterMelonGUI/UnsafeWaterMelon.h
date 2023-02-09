@@ -62,16 +62,16 @@ public:
 
 	PieceList* allPieceLists[24]; // BQueen 23
 
-	int* whitePawnsPtr;
-	int* whiteKnightsPtr;
-	int* whiteBishopsPtr;
-	int* whiteRooksPtr;
-	int* whiteQueensPtr;
-	int* blackPawnsPtr;
-	int* blackKnightsPtr;
-	int* blackBishopsPtr;
-	int* blackRooksPtr;
-	int* blackQueensPtr;
+	Piece* whitePawnsPtr;
+	Piece* whiteKnightsPtr;
+	Piece* whiteBishopsPtr;
+	Piece* whiteRooksPtr;
+	Piece* whiteQueensPtr;
+	Piece* blackPawnsPtr;
+	Piece* blackKnightsPtr;
+	Piece* blackBishopsPtr;
+	Piece* blackRooksPtr;
+	Piece* blackQueensPtr;
 #pragma endregion
 
 	void MakeMove(Move move);

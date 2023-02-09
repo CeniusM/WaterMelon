@@ -2,14 +2,6 @@
 
 #include "UnsafeWaterMelon.h"
 
-#define PieceType(p) (p & 0b00111)
-#define Colour(p) (p & 0b11000)
-
-// works between 65535 and -65472 
-#define IsInBounds(pos) ((pos & 0xFFC0) == 0)
-
-#define BitBoardContains(bitboard, pos) (((bitboard << pos) & 0x8000000000000000) == 0x8000000000000000)
-
 #define MaxMovesCount 512
 
 

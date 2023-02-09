@@ -8,7 +8,7 @@ SafeWaterMelon::SafeWaterMelon()
 	_movesGenerator = new PossibleMovesGenerator(_board);
 	_movesGenerator->GenerateMoves();
 	_movesGenerator->GetMovesCopy(_moves);
-	Count = _movesGenerator->GetCount();
+	_movesCount = _movesGenerator->GetCount();
 }
 
 SafeWaterMelon::~SafeWaterMelon()
@@ -19,7 +19,7 @@ SafeWaterMelon::~SafeWaterMelon()
 
 bool SafeWaterMelon::MakeMove(Move move)
 {
-	for (int i = 0; i < Count; i++)
+	for (int i = 0; i < _movesCount; i++)
 	{
 		//if (GetMoveStart(move) == GetMoveStart(_moves[i]) &&
 		//	GetMoveTarget(move) == GetMoveTarget(_moves[i]) &&
@@ -29,7 +29,7 @@ bool SafeWaterMelon::MakeMove(Move move)
 			_board->MakeMove(move);
 			_movesGenerator->GenerateMoves();
 			_movesGenerator->GetMovesCopy(_moves);
-			Count = _movesGenerator->GetCount();
+			_movesCount = _movesGenerator->GetCount();
 
 			return true;
 		}

@@ -29,7 +29,7 @@ private:
 	UnsafeWaterMelon* _board;
 	PossibleMovesGenerator* _movesGenerator;
 	Move _moves[256];
-	int Count = 0;
+	int _movesCount = 0;
 
 
 };
