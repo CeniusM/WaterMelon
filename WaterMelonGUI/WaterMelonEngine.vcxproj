@@ -160,6 +160,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceList.h" />
     <ClInclude Include="Pos.h" />
+    <ClInclude Include="PossibleMovesForSlidingPieces.h" />
     <ClInclude Include="PossibleMovesGenerator.h" />
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="SDLHelper.h" />

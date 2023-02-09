@@ -17,12 +17,12 @@ constexpr bool BitboardContains(Bitboard bitboard, Pos pos)
 
 constexpr bool PosOnLeftSide(Pos pos)
 {
-	return ((LeftSide < pos) & SignificantBit) == SignificantBit;
+	return ((LeftSide << pos) & SignificantBit) == SignificantBit;
 }
 
 constexpr bool PosOnRightSide(Pos pos)
 {
-	return ((RightSide < pos) & SignificantBit) == SignificantBit;
+	return ((RightSide << pos) & SignificantBit) == SignificantBit;
 }
 
 // Black side
