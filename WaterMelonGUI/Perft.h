@@ -41,7 +41,7 @@ long PerftRunner::GoPerft(int depth)
 
 	for (int i = 0; i < movesCount; i++)
 	{
-		boardPtr->
+		//boardPtr->
 	}
 
 

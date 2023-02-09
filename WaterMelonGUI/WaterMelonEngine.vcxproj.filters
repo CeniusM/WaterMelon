@@ -45,6 +45,12 @@
     <ClCompile Include="GameOfChess.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThrowHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SafeWaterMelon.h">
@@ -87,6 +93,12 @@
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThrowHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

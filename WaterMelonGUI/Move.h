@@ -32,7 +32,8 @@ constexpr Pos ExclusiveUpperBoundPos = 64;
 //#undef int __cdecl CreateMove(int,int,int)
 constexpr Move CreateMove(Pos start, Pos target, MoveFlag flag)
 {
-	//if (!IsInBo)
+	//if (start < 0 || start > 63)
+		
 	return ((start) | ((target) << 6) | ((flag) << 12));
 }
 #else

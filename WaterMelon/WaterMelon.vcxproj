@@ -22,8 +22,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{00b1025b-c45a-4c4a-9cad-4a7a8f820a56}</ProjectGuid>
-    <RootNamespace>WaterMelonEnginee</RootNamespace>
+    <ProjectGuid>{24e25ebc-fa54-4a42-8ce3-f3d4db86a7a3}</ProjectGuid>
+    <RootNamespace>WaterMelon</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

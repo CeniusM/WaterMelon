@@ -75,7 +75,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\GitHub\SDL2_image-2.0.1\include;C:\GitHub\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -132,10 +132,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameOfChess.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PossibleMovesGenerator.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="SDLHelper.cpp" />
+    <ClCompile Include="ThrowHelper.cpp" />
     <ClCompile Include="UnsafeWaterMelon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +145,7 @@
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="GameOfChess.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Perft.h" />
     <ClInclude Include="Piece.h" />
@@ -151,6 +154,7 @@
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="SDLHelper.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="ThrowHelper.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnsafeWaterMelon.h" />
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include "PieceList.h"
 #include "FENUtility.h"
 #include "Piece.h"
+#include "Logger.h"
 
 #define GameState int
 
