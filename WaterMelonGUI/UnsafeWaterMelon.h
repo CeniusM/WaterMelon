@@ -14,20 +14,14 @@ constexpr int MaxMoves = 200;
 constexpr int WhiteIndex = 0;
 constexpr int BlackIndex = 1;
 
-constexpr int AllCastleRights = 0b1111;
-constexpr int WhiteCastleRights = 0b1100;
-constexpr int WhiteKingSideCastleRight = 0b1000;
-constexpr int WhiteQueenSideCastleRight = 0b0100;
-constexpr int BlackKingSideCastleRight = 0b0010;
-constexpr int BlackCastleRights = 0b0011;
-constexpr int BlackQueenSideCastleRight = 0b0001;
-
 constexpr int PlayerTurnSwitch = 0b11000;
 #pragma endregion
 
 
 
-
+/// <summary>
+/// Used to make moves on the board, and can generate possible moves from the given position
+/// </summary>
 class UnsafeWaterMelon
 {
 public:
@@ -36,7 +30,7 @@ public:
 	Move gameHistory[256];
 
 	Piece board[64]{};
-	int castle{};
+	CastleRight castle{};
 	int EPSquare{};
 	int playerTurn{};
 

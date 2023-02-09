@@ -114,13 +114,13 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 			if (piece == ' ')
 				break;
 			if (piece == 'K')
-				castle |= WhiteKingSideCastleRight;
+				castle |= CastleRights::WhiteKingSide;
 			else if (piece == 'Q')
-				castle |= WhiteQueenSideCastleRight;
+				castle |= CastleRights::WhiteQueenSide;
 			else if (piece == 'k')
-				castle |= BlackKingSideCastleRight;
+				castle |= CastleRights::BlackKingSide;
 			else if (piece == 'q')
-				castle |= BlackQueenSideCastleRight;
+				castle |= CastleRights::BlackQueenSide;
 			fenPtr++;
 		}fenPtr++;
 

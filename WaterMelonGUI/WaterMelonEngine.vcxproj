@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="Bitboard.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="CastleRight.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
@@ -156,12 +157,14 @@
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveFlag.h" />
+    <ClInclude Include="Offset.h" />
     <ClInclude Include="Perft.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceList.h" />
+    <ClInclude Include="PieceOffsetMoves.h" />
     <ClInclude Include="Pos.h" />
-    <ClInclude Include="PossibleMovesForSlidingPieces.h" />
     <ClInclude Include="PossibleMovesGenerator.h" />
+    <ClInclude Include="PieceBitboardMoves.h" />
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="SDLHelper.h" />
     <ClInclude Include="Settings.h" />

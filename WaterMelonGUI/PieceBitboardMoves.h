@@ -3,12 +3,17 @@
 #include "Bitboard.h"
 
 // Returns a bitmap for the possible moves 
-constexpr Bitboard RookMoves[]
+constexpr Bitboard QueenMoves[]
 {
-	3, 3, 3, 3, 3, 3, 3,
+	1
 };
 
 constexpr Bitboard RookMoves[]
 {
 	3, 3, 3, 3, 3, 3, 3,
+};
+
+constexpr Bitboard BishopMoves[]
+{
+	1
 };
