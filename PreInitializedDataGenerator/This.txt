@@ -1,0 +1,1 @@
+﻿This app is used to generate the data to put into the constexpr arrays
