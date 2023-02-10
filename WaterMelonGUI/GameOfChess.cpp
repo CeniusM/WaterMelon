@@ -203,7 +203,7 @@ void GameOfChess::Clean()
 
 
 
-	SDL_Quit;
+	SDL_Quit();
 	std::cout << "finished cleanup\n";
 }
 

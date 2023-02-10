@@ -24,7 +24,7 @@ bool SafeWaterMelon::MakeMove(Move move)
 		//if (GetMoveStart(move) == GetMoveStart(_moves[i]) &&
 		//	GetMoveTarget(move) == GetMoveTarget(_moves[i]) &&
 		//	GetMoveFlag(move) == GetMoveFlag(_moves[i]))
-		if (move & 0b1111111111111 == _moves[i] & 0b1111111111111) // not flags
+		if ((move & 0b1111111111111) == (_moves[i] & 0b1111111111111)) // not flags
 		{
 			move = _moves[i]; // Get flag
 			_board->MakeMove(move);

@@ -7,9 +7,11 @@
 #include "Logger.h"
 #include "TypesIncludes.h"
 
+#define MaxMovesCount 512
+
 
 #pragma region Consts
-constexpr int MaxMoves = 200;
+constexpr int MaxMoves = MaxMovesCount;
 constexpr int WhiteIndex = 0;
 constexpr int BlackIndex = 1;
 
@@ -26,12 +28,33 @@ class UnsafeWaterMelon
 public:
 	GameState gameState = GameStates::Running;
 
-	Move gameHistory[256];
+	BoardStateSave boardStateHistory[256];
 
 	Piece board[64]{};
 	CastleRight castle{};
 	int EPSquare{};
 	int playerTurn{};
+
+
+	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
+	void MakeMove(Move move);
+	void UnMakeMove();
+
+	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
+	int GetPossibleMoves(Move* moves);
+
+	void InitFEN(std::string FEN);
+	std::string GetFEN();
+
+	UnsafeWaterMelon();
+	UnsafeWaterMelon(std::string FEN);
+	~UnsafeWaterMelon();
+
+	bool HasInit() { return m_HasInit; }
+	bool m_HasInit = false;
+
+
+#pragma region Move generation code
 
 	int kingPos[2]{};
 
@@ -62,20 +85,13 @@ public:
 	Piece* blackQueensPtr;
 #pragma endregion
 
-	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
-	void MakeMove(Move move);
-	void UnMakeMove();
+	Bitboard kingPins{};
 
-	void InitFEN(std::string FEN);
-	std::string GetFEN();
+	Move* tempMoves;
+	int tempMovesCount;
 
-	UnsafeWaterMelon();
-	UnsafeWaterMelon(std::string FEN);
-	~UnsafeWaterMelon();
-
-	bool HasInit() { return m_HasInit; }
+#pragma endregion
 private:
-	bool m_HasInit = false;
 };
 
 //#ifndef UsafeWaterMelonCPP

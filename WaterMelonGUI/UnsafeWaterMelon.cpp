@@ -143,3 +143,19 @@ std::string UnsafeWaterMelon::GetFEN()
 
 	return str;
 }
+
+#pragma region Move generation code
+
+#define PushMove(move) tempMoves[tempMovesCount] = (move); tempMovesCount++;
+
+int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
+{
+	tempMoves = moves;
+	tempMovesCount = 0;
+
+
+
+	return 0;
+}
+
+#pragma endregion

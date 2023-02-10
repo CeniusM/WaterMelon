@@ -2,7 +2,7 @@
 
 #include "Bitboard.h"
 
-// Returns a bitmap for the possible moves 
+// Returns a bitmap for the possible attacks/moves
 constexpr Bitboard QueenMoves[]
 {
 	1

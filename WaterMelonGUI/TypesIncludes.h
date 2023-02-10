@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "BoardStateSave.h"
 #include "CastleRight.h"
+#include "Direction.h"
 #include "EnPassantPos.h"
 #include "GameState.h"
 #include "Move.h"
