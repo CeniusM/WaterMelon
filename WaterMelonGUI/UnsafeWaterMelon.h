@@ -50,8 +50,6 @@ public:
 	UnsafeWaterMelon(std::string FEN);
 	~UnsafeWaterMelon();
 
-	bool HasInit() { return m_HasInit; }
-	bool m_HasInit = false;
 
 
 #pragma region Move generation code
@@ -90,10 +88,153 @@ public:
 	Move* tempMoves;
 	int tempMovesCount;
 
+
+	// make attack bitboard for all the pieces
+	// also make a bitboard where its the attack pos and end square where it 
+	// then returns a bitboard with 1's from the atacking square to the attacked square
+	// long long BitboardAttacksFromSquareToSquare[square1][square2]
+	// but must allways must be valid direction, must include square 1 and 2 in bitboard
+	// so if its like 4x4 and the attack goes from 0-10
+	// 1000
+	// 0100
+	// 0010
+	// 000k
+	long long pinningPiecesAttack[64]; // use the pos of the piece as index
+	long long pinnedPieces; // bitboard
+
+	bool KingInCheck;
+	bool KingInDoubleCheck;
+
+	bool whiteToMove;
+
+	int ourColour;
+	int ourKingPos;
+
+	int enemyColour;
+	int enemyKingPos;
+
 #pragma endregion
+
+	bool HasInit() { return m_HasInit; }
 private:
+	bool m_HasInit = false;
 };
 
 //#ifndef UsafeWaterMelonCPP
 //#   include "UnsafeWaterMelon.cpp"
 //#endif
+
+
+
+
+/*
+
+
+
+
+void PossibleMovesGenerator::Init()
+{
+	//_memccpy(thisBoard, otherBoard, INT32_MAX, sizeof(Piece) * 64);
+	memcpy_s(thisBoard, sizeof(Piece) * 64, otherBoard, sizeof(Piece) * 64);
+
+	movesCount = 0;
+	pinnedPieces = 0;
+
+	KingInCheck = false;
+	KingInDoubleCheck = false;
+
+	ourColour = *playerTurn;
+	whiteToMove = (ourColour == White);
+	enemyColour = ourColour ^ PlayerTurnSwitch;
+	castle = *castlePtr;
+
+	if (whiteToMove)
+	{
+		ourKingPos = unsafeBoard->kingPos[0];
+		enemyKingPos = unsafeBoard->kingPos[1];
+		OurPawns = unsafeBoard->whitePawnsPtr;
+		OurKnights = unsafeBoard->whiteKnightsPtr;
+		OurBishops = unsafeBoard->whiteBishopsPtr;
+		OurRooks = unsafeBoard->whiteRooksPtr;
+		OurQueens = unsafeBoard->whiteQueensPtr;
+		EnemyPawns = unsafeBoard->blackPawnsPtr;
+		EnemyKnights = unsafeBoard->blackKnightsPtr;
+		EnemyBishops = unsafeBoard->blackBishopsPtr;
+		EnemyRooks = unsafeBoard->blackRooksPtr;
+		EnemyQueens = unsafeBoard->blackQueensPtr;
+	}
+	else
+	{
+		ourKingPos = unsafeBoard->kingPos[1];
+		enemyKingPos = unsafeBoard->kingPos[0];
+		EnemyPawns = unsafeBoard->whitePawnsPtr;
+		EnemyKnights = unsafeBoard->whiteKnightsPtr;
+		EnemyBishops = unsafeBoard->whiteBishopsPtr;
+		EnemyRooks = unsafeBoard->whiteRooksPtr;
+		EnemyQueens = unsafeBoard->whiteQueensPtr;
+		OurPawns = unsafeBoard->blackPawnsPtr;
+		OurKnights = unsafeBoard->blackKnightsPtr;
+		OurBishops = unsafeBoard->blackBishopsPtr;
+		OurRooks = unsafeBoard->blackRooksPtr;
+		OurQueens = unsafeBoard->blackQueensPtr;
+	}
+}
+
+int PossibleMovesGenerator::GetMovesCopy(Move* movesPtr)
+{
+	//for (int i = 0; i < movesCount; i++)
+	//	movesPtr[i] = moves[i];
+		//_memccpy(movesPtr, moves, 0, sizeof(Move) * movesCount);
+memcpy_s(movesPtr, sizeof(Move)* MaxMovesCount, moves, sizeof(Move)* movesCount);
+return movesCount;
+}
+
+int PossibleMovesGenerator::GetCount()
+{
+	return movesCount;
+}
+
+PossibleMovesGenerator::PossibleMovesGenerator(UnsafeWaterMelon* boardRef)
+{
+	unsafeBoard = boardRef;
+
+	for (int i = 0; i < 256; i++)
+		//moves[i] = Move(0, 0, 0);
+		moves[i] = InvalidPos;
+
+	thisBoard = board;
+	otherBoard = boardRef->board;
+
+	playerTurn = &(*boardRef).playerTurn;
+	castlePtr = &(*boardRef).castle;
+	EPSquarePtr = &(*boardRef).EPSquare;
+}
+
+PossibleMovesGenerator::~PossibleMovesGenerator()
+{
+}
+
+#pragma region Move_Generation
+
+void PossibleMovesGenerator::GeneratePawnMoves()
+{
+	int count = OurPawns[-1];
+	for (size_t i = 0; i < count; i++)
+	{
+		moves[movesCount] = CreateMove(OurPawns[i], OurPawns[i] - 8, NoFlag);
+		movesCount++;
+	}
+}
+
+void PossibleMovesGenerator::GenerateKnightMoves()
+{
+	int count = OurKnights[-1];
+	for (size_t i = 0; i < count; i++)
+	{
+		moves[movesCount] = CreateMove(OurKnights[i], OurKnights[i] - 16, NoFlag);
+		movesCount++;
+	}
+}
+
+
+*/

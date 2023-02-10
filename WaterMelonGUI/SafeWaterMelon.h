@@ -2,9 +2,7 @@
 #include <iostream>
 #include <stdexcept>
 
-//#include "UnsafeWaterMelon.h"
-#include "PossibleMovesGenerator.h"
-
+#include "UnsafeWaterMelon.h"
 
 class SafeWaterMelon
 {
@@ -20,16 +18,12 @@ public:
 	void GetMovesCopy(Move* moves);
 	Move* GetMovePointer();
 	int GetMovesCount();
-	bool IsKingInCheck();
+	//bool IsKingInCheck();
 
 	UnsafeWaterMelon* GetUnsafeBoardPtr();
-	PossibleMovesGenerator* GetUnsafeGeneratorPtr();
 
 private:
 	UnsafeWaterMelon* _board;
-	PossibleMovesGenerator* _movesGenerator;
 	Move _moves[256];
 	int _movesCount = 0;
-
-
 };

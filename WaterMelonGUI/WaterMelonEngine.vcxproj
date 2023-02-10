@@ -138,7 +138,6 @@
     <ClCompile Include="GameOfChess.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PossibleMovesGenerator.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="SDLHelper.cpp" />
     <ClCompile Include="ThrowHelper.cpp" />
@@ -166,7 +165,6 @@
     <ClInclude Include="PieceList.h" />
     <ClInclude Include="PieceOffsetMoves.h" />
     <ClInclude Include="Square.h" />
-    <ClInclude Include="PossibleMovesGenerator.h" />
     <ClInclude Include="PieceBitboardMoves.h" />
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="SDLHelper.h" />

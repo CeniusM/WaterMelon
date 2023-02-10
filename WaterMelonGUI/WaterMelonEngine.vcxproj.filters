@@ -39,9 +39,6 @@
     <ClCompile Include="UnsafeWaterMelon.cpp">
       <Filter>Source Files\BoardLogic</Filter>
     </ClCompile>
-    <ClCompile Include="PossibleMovesGenerator.cpp">
-      <Filter>Source Files\BoardLogic</Filter>
-    </ClCompile>
     <ClCompile Include="SDLHelper.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
@@ -73,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="FENString.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PossibleMovesGenerator.h">
-      <Filter>Header Files\BoardLogic</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files</Filter>

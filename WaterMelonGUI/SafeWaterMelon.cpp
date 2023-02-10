@@ -5,16 +5,11 @@
 SafeWaterMelon::SafeWaterMelon()
 {
 	_board = new UnsafeWaterMelon();
-	_movesGenerator = new PossibleMovesGenerator(_board);
-	_movesGenerator->GenerateMoves();
-	_movesGenerator->GetMovesCopy(_moves);
-	_movesCount = _movesGenerator->GetCount();
 }
 
 SafeWaterMelon::~SafeWaterMelon()
 {
 	delete _board;
-	delete _movesGenerator;
 }
 
 bool SafeWaterMelon::MakeMove(Move move)
@@ -28,9 +23,7 @@ bool SafeWaterMelon::MakeMove(Move move)
 		{
 			move = _moves[i]; // Get flag
 			_board->MakeMove(move);
-			_movesGenerator->GenerateMoves();
-			_movesGenerator->GetMovesCopy(_moves);
-			_movesCount = _movesGenerator->GetCount();
+			_movesCount = _board->GetPossibleMoves(_moves);
 
 			return true;
 		}
@@ -58,7 +51,7 @@ int SafeWaterMelon::GetPlayerColour()
 
 void SafeWaterMelon::GetMovesCopy(Move* moves)
 {
-	_movesGenerator->GetMovesCopy(moves);
+	memcpy_s(moves, MaxMoves * sizeof(Move), _moves, MaxMoves * sizeof(Move));
 }
 
 Move* SafeWaterMelon::GetMovePointer()
@@ -68,20 +61,10 @@ Move* SafeWaterMelon::GetMovePointer()
 
 int SafeWaterMelon::GetMovesCount()
 {
-	return _movesGenerator->GetCount();
-}
-
-bool SafeWaterMelon::IsKingInCheck()
-{
-	return _movesGenerator->KingInCheck;
+	return _movesCount;
 }
 
 UnsafeWaterMelon* SafeWaterMelon::GetUnsafeBoardPtr()
 {
 	return _board;
-}
-
-PossibleMovesGenerator* SafeWaterMelon::GetUnsafeGeneratorPtr()
-{
-	return _movesGenerator;
 }
