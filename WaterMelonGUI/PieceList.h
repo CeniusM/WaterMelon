@@ -18,24 +18,24 @@ public:
 	{
 	}
 
-	void AddPieceAtSquare(Pos square)
+	void AddPieceAtSquare(Square square)
 	{
 		OccupiedSquares[PieceNum] = square;
 		Map[square] = PieceNum;
 		PieceNum++;
 	}
 
-	void RemovePieceAtSquare(Pos square)
+	void RemovePieceAtSquare(Square square)
 	{
-		Pos pieceIndex = Map[square]; // get the index of this element in the occupiedSquares array
+		Square pieceIndex = Map[square]; // get the index of this element in the occupiedSquares array
 		OccupiedSquares[pieceIndex] = OccupiedSquares[PieceNum - 1]; // move last element in array to the place of the removed element
 		Map[OccupiedSquares[pieceIndex]] = pieceIndex; // update map to point to the moved element's new location in the array
 		PieceNum--;
 	}
 
-	void MovePiece(Pos startSquare, Pos targetSquare)
+	void MovePiece(Square startSquare, Square targetSquare)
 	{
-		Pos pieceIndex = Map[startSquare]; // get the index of this element in the occupiedSquares array
+		Square pieceIndex = Map[startSquare]; // get the index of this element in the occupiedSquares array
 		OccupiedSquares[pieceIndex] = targetSquare;
 		Map[targetSquare] = pieceIndex;
 	}

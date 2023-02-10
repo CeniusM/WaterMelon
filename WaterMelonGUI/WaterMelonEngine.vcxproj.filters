@@ -107,7 +107,7 @@
     <ClInclude Include="Move.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Pos.h">
+    <ClInclude Include="Square.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
     <ClInclude Include="Bitboard.h">

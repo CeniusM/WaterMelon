@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pos.h"
+#include "Square.h"
 
 /*
 Board is so that the heigher numbers is on the buttom, where white also is.

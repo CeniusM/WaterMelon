@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pos.h"
+#include "Square.h"
 
-typedef Pos EnPassantPos;
+typedef Square EnPassantPos;
 

@@ -4,8 +4,8 @@
 
 void UnsafeWaterMelon::MakeMove(Move move)
 {
-	Pos startSquare = GetMoveStart(move);
-	Pos targetSquare = GetMoveTarget(move);
+	Square startSquare = GetMoveStart(move);
+	Square targetSquare = GetMoveTarget(move);
 	MoveFlag flag = GetMoveFlag(move);
 
 	Piece movingPiece = GetPieceType(board[startSquare]);

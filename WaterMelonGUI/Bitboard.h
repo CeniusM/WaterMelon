@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pos.h"
+#include "Square.h"
 
 typedef unsigned long long Bitboard;
 
@@ -18,29 +18,29 @@ constexpr Bitboard BlackTwoMoveLine = 0xFF00;
 constexpr Bitboard RightSideIs0 = 0b0111111101111111011111110111111101111111011111110111111101111111;
 constexpr Bitboard LeftSideIs0 = 0b1111111011111110111111101111111011111110111111101111111011111110;
 
-constexpr bool BitboardContains(Bitboard bitboard, Pos pos)
+constexpr bool BitboardContains(Bitboard bitboard, Square pos)
 {
 	return ((bitboard << pos) & SignificantBit) == SignificantBit;
 }
 
-constexpr bool PosOnLeftSide(Pos pos)
+constexpr bool PosOnLeftSide(Square pos)
 {
 	return ((LeftSide << pos) & SignificantBit) == SignificantBit;
 }
 
-constexpr bool PosOnRightSide(Pos pos)
+constexpr bool PosOnRightSide(Square pos)
 {
 	return ((RightSide << pos) & SignificantBit) == SignificantBit;
 }
 
 // Black side
-constexpr bool OnTop(Pos pos)
+constexpr bool OnTop(Square pos)
 {
 	return ((TopSide << pos) & SignificantBit) == SignificantBit;
 }
 
 // White side
-constexpr bool OnButtom(Pos pos)
+constexpr bool OnButtom(Square pos)
 {
 	return ((ButtomSide << pos) & SignificantBit) == SignificantBit;
 }

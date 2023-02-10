@@ -10,4 +10,4 @@
 #include "MoveFlag.h"
 #include "Offset.h"
 #include "Piece.h"
-#include "Pos.h"
+#include "Square.h"
