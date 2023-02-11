@@ -6,6 +6,7 @@
 #include "FENUtility.h"
 #include "Logger.h"
 #include "TypesIncludes.h"
+#include "ThrowHelper.h"
 
 #define MaxMovesCount 512
 

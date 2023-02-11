@@ -116,11 +116,11 @@ void GameOfChess::HandleEvents()
 			yMousePos = event.button.y;
 			SomethingHappend = true;
 			MouseDraging = true;
-			m_PieceTypeBeingDraged = board.GetPos(clickedPos);
+			m_PieceTypeBeingDraged = board.GetSquare(clickedPos);
 			m_piecePickedIndex = clickedPos;
 			m_IsPieceBeingDraged = true;
 			pieceHaveBeenPicked = true;
-			if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
+			if ((board.GetSquare(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
 			{
 				m_IsPieceBeingDraged = false;
 				MouseDraging = 0;
@@ -263,7 +263,7 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 		{
 			int pos = (i * 8) + j;
 
-			if (board.GetPos(pos) == 0)
+			if (board.GetSquare(pos) == 0)
 				continue;
 
 			if (pos == PieceToLeaveOut) // instead of removing it, just put another tranparent layer on it, so its ghost like
@@ -275,7 +275,7 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 			rect.h = 100;
 			rect.w = 100;
 
-			RenderPiece(&rect, sprites[board.GetPos(pos)]);
+			RenderPiece(&rect, sprites[board.GetSquare(pos)]);
 		}
 	}
 }

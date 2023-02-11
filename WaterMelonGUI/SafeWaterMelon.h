@@ -1,6 +1,4 @@
 #pragma once
-#include <iostream>
-#include <stdexcept>
 
 #include "UnsafeWaterMelon.h"
 
@@ -13,8 +11,8 @@ public:
 	bool MakeMove(Move move);
 	bool UnMakeMove();
 
-	int GetPos(int pos);
-	int GetPlayerColour();
+	Piece GetSquare(Square square);
+	Color GetPlayerColour();
 	void GetMovesCopy(Move* moves);
 	Move* GetMovePointer();
 	int GetMovesCount();

@@ -20,27 +20,27 @@ constexpr Bitboard LeftSideIs0 = 0b111111101111111011111110111111101111111011111
 
 constexpr bool BitboardContains(Bitboard bitboard, Square pos)
 {
-	return ((bitboard << pos) & SignificantBit) == SignificantBit;
+	return ((bitboard >> pos) & SignificantBit) == SignificantBit;
 }
 
 constexpr bool PosOnLeftSide(Square pos)
 {
-	return ((LeftSide << pos) & SignificantBit) == SignificantBit;
+	return ((LeftSide >> pos) & SignificantBit) == SignificantBit;
 }
 
 constexpr bool PosOnRightSide(Square pos)
 {
-	return ((RightSide << pos) & SignificantBit) == SignificantBit;
+	return ((RightSide >> pos) & SignificantBit) == SignificantBit;
 }
 
 // Black side
 constexpr bool OnTop(Square pos)
 {
-	return ((TopSide << pos) & SignificantBit) == SignificantBit;
+	return ((TopSide >> pos) & SignificantBit) == SignificantBit;
 }
 
 // White side
 constexpr bool OnButtom(Square pos)
 {
-	return ((ButtomSide << pos) & SignificantBit) == SignificantBit;
+	return ((ButtomSide >> pos) & SignificantBit) == SignificantBit;
 }

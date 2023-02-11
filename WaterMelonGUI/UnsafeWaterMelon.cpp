@@ -11,7 +11,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	Piece movingPiece = GetPieceType(board[startSquare]);
 	Piece capturedPiece = GetPieceType(board[targetSquare]);
 
-	bool WhiteToMove = (playerTurn == 8);
+	whiteToMove = (playerTurn == 8);
 
 
 
@@ -22,7 +22,6 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 void UnsafeWaterMelon::UnMakeMove()
 {
-
 
 	playerTurn ^= PlayerTurnSwitch;
 }
@@ -139,6 +138,7 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 
 std::string UnsafeWaterMelon::GetFEN()
 {
+	ThrowNotImplementedException("The GetFEN function is not implemented");
 	std::string str = "";
 
 	return str;

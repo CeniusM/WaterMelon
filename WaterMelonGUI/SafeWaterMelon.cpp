@@ -36,12 +36,12 @@ bool SafeWaterMelon::UnMakeMove()
 	return false;
 }
 
-int SafeWaterMelon::GetPos(int pos)
+int SafeWaterMelon::GetSquare(int square)
 {
-	if (pos > 63 || pos < 0)
-		throw std::out_of_range("pos out of range");
+	if (square > 63 || square < 0)
+		ThrowOutOfRangeException("Square out of range");
 
-	return _board->board[pos];
+	return _board->board[square];
 }
 
 int SafeWaterMelon::GetPlayerColour()

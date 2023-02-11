@@ -7,6 +7,11 @@ void ThrowNotImplementedException(std::string message)
 
 void ThrowInvalidArgumentException(std::string message)
 {
-	throw std::logic_error("__InvalidArgumentException__ " + message);
+	throw std::invalid_argument("__InvalidArgumentException__ " + message);
+}
+
+void ThrowOutOfRangeException(std::string message)
+{
+	throw std::out_of_range("__OutOfRangeException__ " + message);
 }
 
