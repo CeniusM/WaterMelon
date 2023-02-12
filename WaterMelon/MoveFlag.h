@@ -16,6 +16,12 @@ enum MoveFlags
 	PromoteToRook = 5,
 	PromoteToKnight = 6,
 	PromoteToBishop = 7,
+	//NoFlagCapture = 0 | 0b1000,
+	//EnPassantCaptureCapture = 2 | 0b1000,
+	//PromoteToQueenCapture = 4 | 0b1000,
+	//PromoteToRookCapture = 5 | 0b1000,
+	//PromoteToKnightCapture = 6 | 0b1000,
+	//PromoteToBishopCapture = 7 | 0b1000,
 };
 
 constexpr bool IsPromotion(MoveFlag flag)
