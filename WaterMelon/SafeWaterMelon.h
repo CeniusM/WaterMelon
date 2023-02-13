@@ -22,6 +22,6 @@ public:
 
 private:
 	UnsafeWaterMelon* _board;
-	Move _moves[256];
+	Move _moves[MaxMovesCount];
 	int _movesCount = 0;
 };

@@ -84,24 +84,24 @@ public:
 	Piece* blackQueensPtr;
 #pragma endregion
 
-	Bitboard kingPins{};
-
-	Move* tempMoves;
+	Move tempMoves[MaxMovesCount];
 	int tempMovesCount;
 
 
 	// make attack bitboard for all the pieces
 	// also make a bitboard where its the attack pos and end square where it 
 	// then returns a bitboard with 1's from the atacking square to the attacked square
-	// long long BitboardAttacksFromSquareToSquare[square1][square2]
+	// Bitboard BitboardAttacksFromSquareToSquare[square1][square2]
 	// but must allways must be valid direction, must include square 1 and 2 in bitboard
 	// so if its like 4x4 and the attack goes from 0-10
 	// 1000
 	// 0100
 	// 0010
 	// 000k
-	long long pinningPiecesAttack[64]; // use the pos of the piece as index
-	long long pinnedPieces; // bitboard
+	Bitboard pinningPiecesAttack[64]; // use the pos of the piece as index
+	Bitboard pinnedPieces; // bitboard
+
+	Bitboard kingPins{};
 
 	bool KingInCheck;
 	bool KingInDoubleCheck;

@@ -5,6 +5,8 @@
 SafeWaterMelon::SafeWaterMelon()
 {
 	_board = new UnsafeWaterMelon();
+
+	_movesCount = _board->GetPossibleMoves(_moves);
 }
 
 SafeWaterMelon::~SafeWaterMelon()

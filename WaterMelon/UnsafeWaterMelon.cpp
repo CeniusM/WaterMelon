@@ -150,12 +150,15 @@ std::string UnsafeWaterMelon::GetFEN()
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
 {
-	tempMoves = moves;
 	tempMovesCount = 0;
 
+	for (size_t i = 0; i < 63; i++)
+	{
+		PushMove(CreateMove(i, 16, 0));
+	}
 
-
-	return 0;
+	memcpy_s(moves, MaxMovesCount * sizeof(Move), tempMoves, tempMovesCount * sizeof(Move));
+	return tempMovesCount;
 }
 
 #pragma endregion

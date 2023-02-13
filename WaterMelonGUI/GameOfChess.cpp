@@ -44,18 +44,18 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 
 	for (int i = 0; i < 24; i++)
 		sprites[i] = nullptr;
-	sprites[9] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wking.bmp", renderer); //9 WKing
-	sprites[10] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wpawn.bmp", renderer); //10 WPawn
-	sprites[11] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wknight.bmp", renderer); //11 WKnight
-	sprites[13] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wbishop.bmp", renderer); //13 WBishop
-	sprites[14] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wrook.bmp", renderer); //14 WRook
-	sprites[15] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wqueen.bmp", renderer); //15 WQueen
-	sprites[17] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bking.bmp", renderer); //17 BKing
-	sprites[18] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bpawn.bmp", renderer); //18 BPawn
-	sprites[19] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bknight.bmp", renderer); //19 BKnight
-	sprites[21] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bbishop.bmp", renderer); //21 BBishop
-	sprites[22] = sdlHelper.LoadImage(std::string(AssetsPath) + "Brook.bmp", renderer); //22 BRook
-	sprites[23] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bqueen.bmp", renderer); //23 BQueen
+	sprites[WKing] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wking.bmp", renderer);
+	sprites[WPawn] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wpawn.bmp", renderer);
+	sprites[WKnight] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wknight.bmp", renderer);
+	sprites[WBishop] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wbishop.bmp", renderer);
+	sprites[WRook] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wrook.bmp", renderer);
+	sprites[WQueen] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wqueen.bmp", renderer);
+	sprites[BKing] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bking.bmp", renderer);
+	sprites[BPawn] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bpawn.bmp", renderer);
+	sprites[BKnight] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bknight.bmp", renderer);
+	sprites[BBishop] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bbishop.bmp", renderer);
+	sprites[BRook] = sdlHelper.LoadImage(std::string(AssetsPath) + "Brook.bmp", renderer);
+	sprites[BQueen] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bqueen.bmp", renderer);
 }
 
 void GameOfChess::HandleEvents()
