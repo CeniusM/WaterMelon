@@ -152,8 +152,10 @@ void GameOfChess::HandleEvents()
 			else
 			{
 				//Log("Making a move");
+				std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
+				
 			}
 		}
 	}

@@ -8,12 +8,15 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	Square targetSquare = GetMoveTarget(move);
 	MoveFlag flag = GetMoveFlag(move);
 
-	Piece movingPiece = GetPieceType(board[startSquare]);
-	Piece capturedPiece = GetPieceType(board[targetSquare]);
+	Piece movingPiece = board[startSquare];
+	PieceType movingPieceType = GetPieceType(movingPiece);
+	Piece capturedPiece = board[targetSquare];
+	PieceType capturedPieceType = GetPieceType(capturedPiece);
 
 	whiteToMove = (playerTurn == 8);
 
-
+	board[startSquare] = 0;
+	board[targetSquare] = movingPiece;
 
 
 
