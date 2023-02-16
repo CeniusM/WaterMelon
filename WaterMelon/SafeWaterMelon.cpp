@@ -4,7 +4,8 @@
 
 SafeWaterMelon::SafeWaterMelon()
 {
-	_board = new UnsafeWaterMelon();
+	//_board = new UnsafeWaterMelon();
+	_board = new UnsafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
 
 	_movesCount = _board->GetPossibleMoves(_moves);
 }

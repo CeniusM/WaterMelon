@@ -99,7 +99,9 @@ public:
 	// 0010
 	// 000k
 	Bitboard pinningPiecesAttack[64]; // use the pos of the piece as index
-	Bitboard pinnedPieces; // bitboard
+	Bitboard pinnedPieces;
+
+	Bitboard allEnemyAttacks;
 
 	Bitboard kingPins{};
 
@@ -110,9 +112,11 @@ public:
 
 	int ourColour;
 	int ourKingPos;
+	int ourColorIndex;
 
 	int enemyColour;
 	int enemyKingPos;
+	int enemyColorIndex;
 
 #pragma endregion
 
@@ -120,7 +124,11 @@ public:
 private:
 	bool m_HasInit = false;
 
-	void GeneratePins();
+	/// <summary>
+	/// Generate the bitboards for the pinned pieces to the king. AND the bitboard for all the enemy attacks, wich the evaluator could also use
+	/// </summary>
+	void GeneratePinsAndAttacks();
+	void AddKingMoves();
 };
 
 //#ifndef UsafeWaterMelonCPP

@@ -151,19 +151,50 @@ std::string UnsafeWaterMelon::GetFEN()
 
 #define PushMove(move) tempMoves[tempMovesCount] = (move); tempMovesCount++;
 
-void UnsafeWaterMelon::GeneratePins()
+void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
 	pinnedPieces = 0;
-	
+	allEnemyAttacks = 0;
+
+}
+
+void UnsafeWaterMelon::AddKingMoves()
+{
+
 }
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
 {
+	// -- Init --
 	tempMovesCount = 0;
 
-	for (size_t i = 0; i < 63; i++)
+	KingInCheck = false;
+	KingInDoubleCheck = false;
+	whiteToMove = playerTurn == 8;
+
+	ourColorIndex = (int)whiteToMove;
+	enemyColorIndex = (int)!whiteToMove;
+
+	ourColour = playerTurn;
+	enemyColour = playerTurn ^ PlayerTurnSwitch;
+
+	ourKingPos = kingPos[ourColour >> 4];
+	enemyKingPos = kingPos[enemyColour >> 4];
+
+	GeneratePins();
+
+	AddKingMoves();
+
+	if (KingInDoubleCheck)
+		return;
+
+	if (KingInCheck) // If king in check, only king moves and moves that block the attack works
 	{
-		PushMove(CreateMove(i, 16, 0));
+
+	}
+	else
+	{
+
 	}
 
 	memcpy_s(moves, MaxMovesCount * sizeof(Move), tempMoves, tempMovesCount * sizeof(Move));
