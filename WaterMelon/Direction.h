@@ -41,6 +41,18 @@ constexpr Offset offsetsIndexed[]
 	DirectionOffsets::NorthWestO,
 };
 
+constexpr int lineDiffs[]
+{
+	-1,
+	0,
+	1,
+	0,
+	-1,
+	1,
+	1,
+	-1,
+};
+
 constexpr DirectionIndex RookStartDirectionIndex = 0;
 constexpr DirectionIndex BishopStartDirectionIndex = 4;
 constexpr DirectionIndex QueenStartDirectionIndex = 0;

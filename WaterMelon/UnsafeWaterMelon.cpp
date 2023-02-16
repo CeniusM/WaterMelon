@@ -151,6 +151,12 @@ std::string UnsafeWaterMelon::GetFEN()
 
 #define PushMove(move) tempMoves[tempMovesCount] = (move); tempMovesCount++;
 
+void UnsafeWaterMelon::GeneratePins()
+{
+	pinnedPieces = 0;
+	
+}
+
 int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
 {
 	tempMovesCount = 0;

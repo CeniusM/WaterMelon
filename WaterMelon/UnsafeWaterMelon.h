@@ -119,6 +119,8 @@ public:
 	bool HasInit() { return m_HasInit; }
 private:
 	bool m_HasInit = false;
+
+	void GeneratePins();
 };
 
 //#ifndef UsafeWaterMelonCPP

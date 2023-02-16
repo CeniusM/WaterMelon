@@ -10,10 +10,10 @@ constexpr Bitboard RightSide = 0x0101010101010101;
 constexpr Bitboard TopSide = 0xff;
 constexpr Bitboard ButtomSide = 0xff00000000000000;
 
-constexpr Bitboard WhitePromotionLine = 0xFF;
-constexpr Bitboard WhiteTwoMoveLine = 0xFF000000000000;
-constexpr Bitboard BlackPromotionLine = 0xFF00000000000000;
-constexpr Bitboard BlackTwoMoveLine = 0xFF00;
+constexpr Bitboard WhitePromotionLine = ButtomSide;
+constexpr Bitboard WhiteTwoMoveLine = 0xFF00;
+constexpr Bitboard BlackPromotionLine = 0xff;
+constexpr Bitboard BlackTwoMoveLine = 0xFF000000000000;
 
 constexpr Bitboard RightSideIs0 = 0b0111111101111111011111110111111101111111011111110111111101111111;
 constexpr Bitboard LeftSideIs0 = 0b1111111011111110111111101111111011111110111111101111111011111110;
