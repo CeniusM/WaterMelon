@@ -42,7 +42,7 @@ public:
 
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
 	int GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false);
-	
+
 	/// WARNING: ONLY CALL THIS AFTER GetPossibleMoves() IS CALLED. Positiv is good for white and negativ is good for black.
 	int GetEvaluation();
 
@@ -104,7 +104,7 @@ public:
 	// 000k
 	Bitboard pinningPiecesAttack[64]; // use the pos of the piece as index
 	Bitboard pinnedPieces;
-	 
+
 	Bitboard whitePawnAttacksBitboard = 0;
 	Bitboard blackPawnAttacksBitboard = 0;
 
@@ -125,6 +125,19 @@ public:
 	int enemyColour;
 	int enemyKingPos;
 	int enemyColorIndex;
+
+
+	// -- Work In Progress --
+	// 50 move rule and 3 repetetion rule
+	// Ideer, for when we are unmaking moves, we can just make a long array somewhere else to store the BoardSave, and one by one load them back in
+	// An array of like 1000 or somewhere to store them, maby in a stack
+	BoardSave boardSaves[6];
+	int boardSaveIndex = 0; // used to go around the array from start to end and back around again
+#define Is3RepetionRuleMet()\
+(AllBoardSavesEquel(board[0], board[2], board[4]) && AllBoardSavesEquel(board[1], board[3], board[5]))
+
+	// 50 move rule, increament by one every move, and set to 0 at pawn move or capture, pretty simple
+	int MoveWithoutCaptureOrPawnMove = 0;
 
 #pragma endregion
 

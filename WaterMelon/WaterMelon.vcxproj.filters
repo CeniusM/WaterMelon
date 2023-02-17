@@ -102,6 +102,9 @@
     <ClInclude Include="AllPiecesBitboardMoves.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
+    <ClInclude Include="BoardSave.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">

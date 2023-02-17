@@ -1,6 +1,9 @@
 #pragma once
 
-#define UsingIntForPiece
+//#define UsingIntForPiece
+
+// i hope there is not a diifrence between using int and char, beacouse char is probely faster to copy and -
+// you can do some cool u64 magic
 
 #ifdef UsingIntForPiece
 typedef int Piece;

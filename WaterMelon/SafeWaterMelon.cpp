@@ -41,7 +41,7 @@ bool SafeWaterMelon::UnMakeMove()
 	return false;
 }
 
-int SafeWaterMelon::GetSquare(int square)
+Piece SafeWaterMelon::GetSquare(Square square)
 {
 	if (square > 63 || square < 0)
 		ThrowOutOfRangeException("Square out of range");
@@ -49,7 +49,7 @@ int SafeWaterMelon::GetSquare(int square)
 	return _board->board[square];
 }
 
-int SafeWaterMelon::GetPlayerColour()
+Color SafeWaterMelon::GetPlayerColour()
 {
 	return _board->playerTurn;
 }

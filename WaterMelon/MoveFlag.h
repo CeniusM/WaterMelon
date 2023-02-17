@@ -4,19 +4,33 @@
 #include "ThrowHelper.h"
 
 // Number between [0 - 7] // Maby 15 later so we can see if it was a capture
-typedef int MoveFlag;
+typedef unsigned short MoveFlag;
+
+constexpr unsigned short CapturedPieceBitFlag = 0b1000000000000000;
 
 // in order of what is most likly to happend
 enum MoveFlags
 {
 	NoFlag = 0,
 	PawnTwoForward = 1,
-	EnPassantCapture = 2,
+	EnPassantCapture = 2 | 0b1000,
 	Castling = 3,
 	PromoteToQueen = 4,
 	PromoteToRook = 5,
 	PromoteToKnight = 6,
 	PromoteToBishop = 7,
+
+	NoFlagCapture = 0 | 0b1000,
+	PromoteToQueenCapture = 4 | 0b1000,
+	PromoteToRookCapture = 5 | 0b1000,
+	PromoteToKnightCapture = 6 | 0b1000,
+	PromoteToBishopCapture = 7 | 0b1000,
+};
+
+enum CaptureFlag : unsigned short
+{
+	WasACapture = 0b1000000000000000,
+	WasNotACapture = 0,
 };
 
 //enum MoveFlagWasCapture

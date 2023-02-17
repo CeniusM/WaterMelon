@@ -3,6 +3,7 @@
 #include "AllPiecesBitboardMoves.h"
 #include "Bitboard.h"
 #include "Board.h"
+#include "BoardSave.h"
 #include "BoardStateSave.h"
 #include "CastleRight.h"
 #include "Direction.h"

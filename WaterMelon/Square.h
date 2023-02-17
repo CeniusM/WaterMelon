@@ -3,6 +3,12 @@
 // Number between [0 - 63], and uses -1 to indicate an invalid square or none initialized square
 typedef int Square;
 
+constexpr Square InvalidPos = -1;
+constexpr Square InclusiveLowerBoundPos = 0;
+constexpr Square InclusiveUpperBoundPos = 63;
+constexpr Square ExclusiveLowerBoundPos = -1;
+constexpr Square ExclusiveUpperBoundPos = 64;
+
 // works between 65535 and -65472 
 constexpr bool IsSquareInside(Square square)
 {

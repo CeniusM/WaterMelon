@@ -5,31 +5,31 @@
 
 //#define DEBUG_DoChecks
 
-constexpr Square InvalidPos = -1;
-constexpr Square InclusiveLowerBoundPos = 0;
-constexpr Square InclusiveUpperBoundPos = 63;
-constexpr Square ExclusiveLowerBoundPos = -1;
-constexpr Square ExclusiveUpperBoundPos = 64;
-
 /// <summary>
-/// 0-6 bits is the StartSquare. 7-12 bits is the TargetSquare. 13-15 bits is the Flag.
+/// 0-5 bits is the StartSquare. 6-11 bits is the TargetSquare. 12-14 bits is the Flag. 
+/// the 15th bit could be used as a flag for if the move was a caputure
 /// </summary>
-typedef int Move;
+typedef unsigned short Move;
 
-// Get 0 - 6 bits
+// Get 0 - 5 bits
 constexpr Square GetMoveStart(Move move)
 {
 	return move & 0x3f;
 }
-// Get 7 - 12 bits 
+// Get 6 - 11 bits 
 constexpr Square GetMoveTarget(Move move)
 {
 	return (move >> 6) & 0x3f;
 }
-// Get 13 - 15 bits
+// Get 12 - 14 bits
 constexpr MoveFlag GetMoveFlag(Move move)
 {
 	return (move >> 12) & 0x3c00;
+}
+// Get 15 bit
+constexpr MoveFlag IsMoveCapture(Move move)
+{
+	return (move & CapturedPieceBitFlag) == CapturedPieceBitFlag;
 }
 
 #ifdef DEBUG_DoChecks

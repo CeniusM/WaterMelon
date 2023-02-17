@@ -30,7 +30,6 @@ void UnsafeWaterMelon::UnMakeMove()
 }
 
 
-
 #pragma region Initilization
 UnsafeWaterMelon::UnsafeWaterMelon()
 {
@@ -193,7 +192,7 @@ void UnsafeWaterMelon::RemoveNoneCaptures()
 	int newMovesCount = 0;
 	for (size_t i = 0; i < movesCount; i++)
 	{
-		if (board[GetMoveTarget(moves[i])] != 0) // is capture
+		if (IsMoveCapture(moves[i]))
 		{
 			moves[newMovesCount] = moves[i];
 			newMovesCount++;
@@ -219,7 +218,7 @@ MovesGoneOver++;
 	}
 	for (size_t i = MovesGoneOver; i < movesCount; i++) // Captures
 	{
-		if (board[GetMoveTarget(moves[i])] != 0)
+		if (IsMoveCapture(moves[i]))
 			SwapMoves(i, MovesGoneOver);
 	}
 	for (size_t i = MovesGoneOver; i < movesCount; i++) // EnPassent

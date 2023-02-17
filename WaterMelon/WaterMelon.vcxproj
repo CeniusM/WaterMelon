@@ -141,6 +141,7 @@
     <ClCompile Include="UnsafeWaterMelon.cpp" />
     <ClInclude Include="Bitboard.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardSave.h" />
     <ClInclude Include="BoardStateSave.h" />
     <ClInclude Include="CastleRight.h" />
     <ClInclude Include="Defines.h" />
