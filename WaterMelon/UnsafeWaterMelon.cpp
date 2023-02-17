@@ -147,14 +147,50 @@ std::string UnsafeWaterMelon::GetFEN()
 	return str;
 }
 
+#pragma region Evaluation code
+
+int UnsafeWaterMelon::GetEvaluation()
+{
+	// Bonus for material
+	// Bonus for placement
+	// Bonus for king safty, like maby bonus for pieces infront of the king early/mid game atlist
+	// Bonus for being in team pawn attacks, and negBonus for being in oponent pawn -
+	// - and use allready created bitboards
+	// Early/Mid game, very low and heigh king moves count is bad, just need something in the middle -
+	// -to many moves means its probely not protected enough, and less than 2 is probely also pretty bad
+	// Ideer, give negBonus for pieces that have not moved, but a little tricky to implement
+	// Bonus pawns for closing in on promotion, tricky to implement
+	// Bonus for lategame getting agresiv torwards the enemy king to checkmate
+	// Bonus for the bishop on the opesit color of the major pawn structor -
+	// -so the fewer pawns the bishop shares space with the better, but this mostly counts for the mid of the board, -
+	// -not so much far behind
+
+	if (movesCount)
+	{
+		if (KingInCheck) // King in check
+			return playerTurn == White ? -999999 : 999999;
+		return 0;
+	}
+
+
+
+
+
+	return 0;
+}
+
+#pragma endregion
+
+
 #pragma region Move generation code
 
-#define PushMove(move) tempMoves[tempMovesCount] = (move); tempMovesCount++;
+#define PushMove(move) moves[movesCount] = (move); movesCount++;
 
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
 	pinnedPieces = 0;
 	allEnemyAttacks = 0;
+
 
 }
 
@@ -163,10 +199,39 @@ void UnsafeWaterMelon::AddKingMoves()
 
 }
 
-int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
+void UnsafeWaterMelon::AddPawnMoves()
+{
+	// Generate bitmaps for the pawn attacks
+	if (whiteToMove)
+	{
+		for (size_t i = 0; i < WhitePawnsList.PieceNum; i++)
+		{
+			int pos = WhitePawnsList.OccupiedSquares[i];
+			if (BitboardContains(pinnedPieces, pos))
+				continue;
+			whitePawnAttacksBitboard |= GetWhitePawnAttacks(pos);
+			PushMove(CreateMove(pos, pos + 7, NoFlag));
+			PushMove(CreateMove(pos, pos + 9, NoFlag));
+		}
+	}
+	else
+	{
+		for (size_t i = 0; i < BlackPawnsList.PieceNum; i++)
+		{
+			int pos = BlackPawnsList.OccupiedSquares[i];
+			if (BitboardContains(pinnedPieces, pos))
+				continue;
+			blackPawnAttacksBitboard |= GetBlackPawnAttacks(BlackPawnsList.OccupiedSquares[i]);
+			PushMove(CreateMove(pos, pos - 7, NoFlag));
+			PushMove(CreateMove(pos, pos - 9, NoFlag));
+		}
+	}
+}
+
+int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 {
 	// -- Init --
-	tempMovesCount = 0;
+	movesCount = 0;
 
 	KingInCheck = false;
 	KingInDoubleCheck = false;
@@ -181,15 +246,21 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
 	ourKingPos = kingPos[ourColour >> 4];
 	enemyKingPos = kingPos[enemyColour >> 4];
 
-	GeneratePins();
+	GeneratePinsAndAttacks();
 
 	AddKingMoves();
 
 	if (KingInDoubleCheck)
-		return;
+		return movesCount;
 
-	if (KingInCheck) // If king in check, only king moves and moves that block the attack works
+	if (KingInCheck)
 	{
+		// If king in check, only king moves and moves that block the attack works
+		// So would only have to check if moves can block the line or capture the piece
+		// So we know only one piece is attacking
+		// If the attacking peice is a knight or a pawn, we create a bitmap with only the postision of the piece
+		// So only moves where the non pinned piece move to the bitmap
+		// And the same can be done with sliding pieces, where you have to move into any of the bitmap squares
 
 	}
 	else
@@ -197,8 +268,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* moves)
 
 	}
 
-	memcpy_s(moves, MaxMovesCount * sizeof(Move), tempMoves, tempMovesCount * sizeof(Move));
-	return tempMovesCount;
+	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
+	return movesCount;
 }
 
 #pragma endregion

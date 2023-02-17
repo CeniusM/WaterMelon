@@ -10,7 +10,7 @@ class PieceList
 public:
 	int PieceNum = 0;
 	// Indices of squares occupied by given piece type (only elements up to Count are valid, the rest are unused/garbage)
-	int OccupiedSquares[64]{};
+	Square OccupiedSquares[64]{};
 	// Map to go from index of a square, to the index in the occupiedSquares array where that square is stored
 	int Map[64]{};
 

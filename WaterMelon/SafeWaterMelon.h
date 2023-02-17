@@ -16,6 +16,7 @@ public:
 	void GetMovesCopy(Move* moves);
 	Move* GetMovePointer();
 	int GetMovesCount();
+	//void TurnBoard180();
 	//bool IsKingInCheck();
 
 	UnsafeWaterMelon* GetUnsafeBoardPtr();

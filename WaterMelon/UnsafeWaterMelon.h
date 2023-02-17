@@ -8,8 +8,7 @@
 #include "TypesIncludes.h"
 #include "ThrowHelper.h"
 
-#define MaxMovesCount 512
-
+#define MaxMovesCount 256
 
 #pragma region Consts
 constexpr int MaxMoves = MaxMovesCount;
@@ -19,10 +18,8 @@ constexpr int BlackIndex = 1;
 constexpr int PlayerTurnSwitch = 0b11000;
 #pragma endregion
 
-
-
 /// <summary>
-/// Used to make moves on the board, and can generate possible moves from the given position
+/// Used to make moves on the board, and can generate possible moves from the given position.
 /// </summary>
 class UnsafeWaterMelon
 {
@@ -42,7 +39,11 @@ public:
 	void UnMakeMove();
 
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
-	int GetPossibleMoves(Move* moves);
+	int GetPossibleMoves(Move* movesPtr);
+	
+	/// WARNING: ONLY CALL THIS AFTER GetPossibleMoves() IS CALLED. Positiv is good for white and negativ is good for black.
+	int GetEvaluation();
+
 
 	void InitFEN(std::string FEN);
 	std::string GetFEN();
@@ -84,9 +85,10 @@ public:
 	Piece* blackQueensPtr;
 #pragma endregion
 
-	Move tempMoves[MaxMovesCount];
-	int tempMovesCount;
+	Move moves[MaxMovesCount];
+	int movesCount;
 
+#pragma region Bitboards
 
 	// make attack bitboard for all the pieces
 	// also make a bitboard where its the attack pos and end square where it 
@@ -100,10 +102,14 @@ public:
 	// 000k
 	Bitboard pinningPiecesAttack[64]; // use the pos of the piece as index
 	Bitboard pinnedPieces;
+	 
+	Bitboard whitePawnAttacksBitboard = 0;
+	Bitboard blackPawnAttacksBitboard = 0;
 
 	Bitboard allEnemyAttacks;
 
 	Bitboard kingPins{};
+#pragma endregion
 
 	bool KingInCheck;
 	bool KingInDoubleCheck;
@@ -129,6 +135,7 @@ private:
 	/// </summary>
 	void GeneratePinsAndAttacks();
 	void AddKingMoves();
+	void AddPawnMoves();
 };
 
 //#ifndef UsafeWaterMelonCPP

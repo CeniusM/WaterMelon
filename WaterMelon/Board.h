@@ -66,3 +66,20 @@ constexpr Collum GetCollum(Square sq)
 {
 	return sq % 8;
 }
+
+constexpr Square GetSquareFromRankAndCollum(Rank rank, Collum collum)
+{
+	return (rank << 3) | (collum * 8);
+}
+
+
+/// <summary>
+/// Flips the board since the unsafe board and the human board is not oriantated together.
+/// It just flips the y axis
+/// </summary>
+constexpr int FlipSquareY(Square square)
+{
+	Rank rank = GetRank(square);
+	Collum col = GetCollum(square);
+	return GetSquareFromRankAndCollum(7 - rank, col);
+}

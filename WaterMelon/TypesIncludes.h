@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AllPiecesBitboardMoves.h"
 #include "Bitboard.h"
 #include "Board.h"
 #include "BoardStateSave.h"
