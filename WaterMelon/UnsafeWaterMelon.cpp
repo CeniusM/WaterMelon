@@ -94,14 +94,14 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 				else
 				{
 					Piece pieceVal = FENUtility::CharToInt[piece];
-					board[fenBoardPtr] = pieceVal;
+					board[FlipSquareY(fenBoardPtr)] = pieceVal;
 
 					if (pieceVal == WKing)
-						kingPos[0] = fenBoardPtr;
+						kingPos[0] = FlipSquareY(fenBoardPtr);
 					else if (pieceVal == BKing)
-						kingPos[1] = fenBoardPtr;
+						kingPos[1] = FlipSquareY(fenBoardPtr);
 					else
-						allPieceLists[pieceVal]->AddPieceAtSquare(fenBoardPtr);
+						allPieceLists[pieceVal]->AddPieceAtSquare(FlipSquareY(fenBoardPtr));
 				}
 				fenBoardPtr++;
 			}
@@ -210,7 +210,7 @@ moves[index1] = moves[index2]; \
 moves[index2] = tempMove; \
 MovesGoneOver++;
 
-	for (size_t i = 0; i < movesCount; i++) // QueenPromotions
+	for (size_t i = MovesGoneOver; i < movesCount; i++) // QueenPromotions
 	{
 		if (GetMoveFlag(moves[i]) == MoveFlags::PromoteToQueen)
 			SwapMoves(i, MovesGoneOver);
@@ -275,7 +275,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 	}
 }
 
-int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false)
+int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
 	// -- Init --
 	movesCount = 0;
