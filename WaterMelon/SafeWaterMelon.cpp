@@ -45,7 +45,7 @@ int SafeWaterMelon::GetSquare(int square)
 {
 	if (square > 63 || square < 0)
 		ThrowOutOfRangeException("Square out of range");
-	square = TransformSquareToUnsafe(square);
+	square = TransformSquare(square);
 	return _board->board[square];
 }
 
@@ -88,21 +88,13 @@ UnsafeWaterMelon* SafeWaterMelon::GetUnsafeBoardPtr()
 Move SafeWaterMelon::TransfomMove(Move move)
 {
 	return CreateMove(
-		TransformSquareToHuman(GetMoveStart(move)),
-		TransformSquareToHuman(GetMoveTarget(move)),
+		TransformSquare(GetMoveStart(move)),
+		TransformSquare(GetMoveTarget(move)),
 		GetMoveFlag(move)
 	);
 }
 
-Square SafeWaterMelon::TransformSquareToUnsafe(Square square)
-{
-	Square s = FlipSquareY(square);
-	if (isBoardRotated180)
-		s = FlipSquareXY(s);
-	return s;
-}
-
-Square SafeWaterMelon::TransformSquareToHuman(Square square)
+Square SafeWaterMelon::TransformSquare(Square square)
 {
 	Square s = FlipSquareY(square);
 	if (isBoardRotated180)

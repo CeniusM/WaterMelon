@@ -30,9 +30,7 @@ private:
 	/// Transforms the move Start and Target square
 	Move TransfomMove(Move move);
 
-	/// Turns a human square into a unsafe square
-	Square TransformSquareToUnsafe(Square square);
-	/// Turns a unsafe square into a human square
-	Square TransformSquareToHuman(Square square);
-	bool isBoardRotated180 = true;
+	/// Flips the square between Unsafe and UI square
+	Square TransformSquare(Square square);
+	bool isBoardRotated180 = false;
 };
