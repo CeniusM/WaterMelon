@@ -127,7 +127,8 @@ public:
 	int enemyColorIndex;
 
 
-	// -- Work In Progress --
+	/*
+	// -- Work In Progress -- Very very much a work in progress, need to read up on some rules....
 	// 50 move rule and 3 repetetion rule
 	// Ideer, for when we are unmaking moves, we can just make a long array somewhere else to store the BoardSave, and one by one load them back in
 	// An array of like 1000 or somewhere to store them, maby in a stack
@@ -138,7 +139,7 @@ public:
 
 	// 50 move rule, increament by one every move, and set to 0 at pawn move or capture, pretty simple
 	// BUT, it has to go to 100 beacous its 50 moves for EACH side
-	int MoveWithoutCaptureOrPawnMove = 0;
+	int MoveWithoutCaptureOrPawnMove = 0;*/
 
 #pragma endregion
 
