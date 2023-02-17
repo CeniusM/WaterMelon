@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Piece.h"
+#include "ThrowHelper.h"
 
 // Number between [0 - 7] // Maby 15 later so we can see if it was a capture
 typedef int MoveFlag;
