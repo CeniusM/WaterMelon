@@ -69,12 +69,6 @@
     <ClInclude Include="FENUtility.h">
       <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
     </ClInclude>
-    <ClInclude Include="PieceBitboardMoves.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
-    <ClInclude Include="PieceOffsetMoves.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
     <ClInclude Include="Perft.h">
       <Filter>Header Files\BoardLogic</Filter>
     </ClInclude>

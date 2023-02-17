@@ -155,9 +155,7 @@
     <ClInclude Include="Offset.h" />
     <ClInclude Include="Perft.h" />
     <ClInclude Include="Piece.h" />
-    <ClInclude Include="PieceBitboardMoves.h" />
     <ClInclude Include="PieceList.h" />
-    <ClInclude Include="PieceOffsetMoves.h" />
     <ClInclude Include="AllPiecesBitboardMoves.h" />
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="Settings.h" />
