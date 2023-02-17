@@ -167,7 +167,7 @@ int UnsafeWaterMelon::GetEvaluation()
 	// -so the fewer pawns the bishop shares space with the better, but this mostly counts for the mid of the board, -
 	// -not so much far behind
 
-	if (movesCount)
+	if (movesCount == 0)
 	{
 		if (KingInCheck) // King in check
 			return playerTurn == White ? -999999 : 999999;
@@ -205,7 +205,7 @@ void UnsafeWaterMelon::RemoveNoneCaptures()
 void UnsafeWaterMelon::OrderMoves()
 {
 	int MovesGoneOver = 0;
-	Move tempMove;
+	Move tempMove = 0;
 #define SwapMoves(index1, index2) \
 tempMove = moves[index1]; \
 moves[index1] = moves[index2]; \

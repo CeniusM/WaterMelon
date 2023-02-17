@@ -19,7 +19,9 @@ constexpr int PlayerTurnSwitch = 0b11000;
 #pragma endregion
 
 /// <summary>
-/// Used to make moves on the board, and can generate possible moves from the given position.
+/// Used to make moves on the board, and can generate possible moves from the given position, and evaluate a position.
+/// And is very very error prone, so be care full. Very much optimized for speed.
+/// Use the SafeWaterMelon for error handling and eas of use.
 /// </summary>
 class UnsafeWaterMelon
 {

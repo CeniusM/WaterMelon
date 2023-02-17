@@ -96,8 +96,13 @@ Move SafeWaterMelon::TransfomMove(Move move)
 
 Square SafeWaterMelon::TransformSquare(Square square)
 {
-	Square s = FlipSquareY(square);
-	if (isBoardRotated180)
-		s = FlipSquareXY(s);
-	return s;
+	if (EnableSquareTransform)
+	{
+		Square s = FlipSquareY(square);
+		if (isBoardRotated180)
+			s = FlipSquareXY(s);
+		return s;
+	}
+	else
+		return square;
 }

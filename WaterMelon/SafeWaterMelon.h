@@ -1,7 +1,12 @@
 #pragma once
 
+#define EnableSquareTransform false
+
 #include "UnsafeWaterMelon.h"
 
+/// <summary>
+/// This created to be used as an interface between the fast and very unsafe engine UnsafeWaterMelon
+/// </summary>
 class SafeWaterMelon
 {
 public:
