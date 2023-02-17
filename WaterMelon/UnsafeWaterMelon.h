@@ -137,6 +137,7 @@ public:
 (AllBoardSavesEquel(board[0], board[2], board[4]) && AllBoardSavesEquel(board[1], board[3], board[5]))
 
 	// 50 move rule, increament by one every move, and set to 0 at pawn move or capture, pretty simple
+	// BUT, it has to go to 100 beacous its 50 moves for EACH side
 	int MoveWithoutCaptureOrPawnMove = 0;
 
 #pragma endregion
