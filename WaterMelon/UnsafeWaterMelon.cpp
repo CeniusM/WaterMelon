@@ -165,6 +165,8 @@ int UnsafeWaterMelon::GetEvaluation()
 	// Bonus for the bishop on the opesit color of the major pawn structor -
 	// -so the fewer pawns the bishop shares space with the better, but this mostly counts for the mid of the board, -
 	// -not so much far behind
+	// Bonus for moving pawns up the board (unless they defend the king, and bonus for pawns closer to the enemy king -
+	// but still the best bonuses for good pawn structure, the mentioned bonuses is just for something to work torwards
 
 	if (movesCount == 0)
 	{
