@@ -1,16 +1,14 @@
 #pragma once
 
-#include "PossibleMovesGenerator.h"
+#include "UnsafeWaterMelon.h"
 
 class PerftRunner
 {
 public:
-	PerftRunner(UnsafeWaterMelon* board, PossibleMovesGenerator* generator);
+	PerftRunner(UnsafeWaterMelon* board);
 	~PerftRunner();
 
 	UnsafeWaterMelon* boardPtr;
-	PossibleMovesGenerator* generatorPtr;
-	Move* generatorMovesPtr;
 
 	long GoPerft(int depth);
 
@@ -19,10 +17,9 @@ private:
 
 };
 
-PerftRunner::PerftRunner(UnsafeWaterMelon* board, PossibleMovesGenerator* generator)
+PerftRunner::PerftRunner(UnsafeWaterMelon* board)
 {
 	boardPtr = board;
-	generatorPtr = generator;
 }
 
 PerftRunner::~PerftRunner()
@@ -33,11 +30,8 @@ long PerftRunner::GoPerft(int depth)
 {
 	long Count;
 
-	generatorPtr->GenerateMoves();
-	int movesCount = generatorPtr->movesCount;
 	Move moves[256];
-	for (int i = 0; i < movesCount; i++)
-		moves[i] = generatorMovesPtr[i];
+	int movesCount = boardPtr->GetPossibleMoves(moves);
 
 	for (int i = 0; i < movesCount; i++)
 	{

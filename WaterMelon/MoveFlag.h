@@ -42,7 +42,7 @@ constexpr PieceType GetPromotionPieceType(MoveFlag flag)
 	case MoveFlags::PromoteToBishop:
 		return Bishop;
 	default:
-		break;
+		ThrowNotImplementedException("Invalid Move Flag");
 	}
 }
 
