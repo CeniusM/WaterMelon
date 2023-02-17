@@ -30,7 +30,7 @@ long PerftRunner::GoPerft(int depth)
 {
 	long Count;
 
-	Move moves[256];
+	Move moves[MaxMovesCount];
 	int movesCount = boardPtr->GetPossibleMoves(moves);
 
 	for (int i = 0; i < movesCount; i++)

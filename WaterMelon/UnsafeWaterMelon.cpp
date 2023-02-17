@@ -186,6 +186,53 @@ int UnsafeWaterMelon::GetEvaluation()
 
 #define PushMove(move) moves[movesCount] = (move); movesCount++;
 
+void UnsafeWaterMelon::RemoveNoneCaptures()
+{
+	int newMovesCount = 0;
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		if (board[GetMoveTarget(moves[i])] != 0) // is capture
+		{
+			moves[newMovesCount] = moves[i];
+			newMovesCount++;
+		}
+	}
+	movesCount = newMovesCount;
+}
+
+void UnsafeWaterMelon::OrderMoves()
+{
+	int MovesGoneOver = 0;
+	Move tempMove;
+#define SwapMoves(index1, index2) \
+tempMove = moves[index1]; \
+moves[index1] = moves[index2]; \
+moves[index2] = tempMove; \
+MovesGoneOver++;
+
+	for (size_t i = 0; i < movesCount; i++) // QueenPromotions
+	{
+		if (GetMoveFlag(moves[i]) == MoveFlags::PromoteToQueen)
+			SwapMoves(i, MovesGoneOver);
+	}
+	for (size_t i = MovesGoneOver; i < movesCount; i++) // Captures
+	{
+		if (board[GetMoveTarget(moves[i])] != 0)
+			SwapMoves(i, MovesGoneOver);
+	}
+	for (size_t i = MovesGoneOver; i < movesCount; i++) // EnPassent
+	{
+		if (GetMoveFlag(moves[i]) == MoveFlags::EnPassantCapture)
+			SwapMoves(i, MovesGoneOver);
+	}
+	for (size_t i = MovesGoneOver; i < movesCount; i++) // RestOfThePromotions
+	{
+		if (IsPromotion(GetMoveFlag(moves[i])))
+			SwapMoves(i, MovesGoneOver);
+	}
+	// Rest of moves
+}
+
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
 	pinnedPieces = 0;
@@ -228,7 +275,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 	}
 }
 
-int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
+int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false)
 {
 	// -- Init --
 	movesCount = 0;
@@ -267,6 +314,12 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 	{
 
 	}
+
+
+	if (onlyCaptures)
+		RemoveNoneCaptures();
+	if (moveOrder)
+		OrderMoves();
 
 	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 	return movesCount;
