@@ -6,7 +6,6 @@
 #include "SDL_image.h"
 #include "SDLHelper.h"
 #include "SafeWaterMelon.h"
-//#include "../WaterMelon/SafeWaterMelon.h"
 
 class GameOfChess
 {
@@ -35,7 +34,10 @@ private:
 	void RenderAllPieces(int PieceToLeaveOut = -1);
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	SafeWaterMelon board;
+	SafeWaterMelon board = SafeWaterMelon();
+	//SafeWaterMelon board = SafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
+	//SafeWaterMelon board = SafeWaterMelon("");
+	//SafeWaterMelon board = SafeWaterMelon("");
 	
 	bool m_isRunning;
 	long m_Count;

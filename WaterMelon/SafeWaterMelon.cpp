@@ -4,10 +4,14 @@
 
 SafeWaterMelon::SafeWaterMelon()
 {
-	//_board = new UnsafeWaterMelon();
-	_board = new UnsafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
+	_board = new UnsafeWaterMelon();
 
 	_movesCount = _board->GetPossibleMoves(_moves);
+}
+
+SafeWaterMelon::SafeWaterMelon(std::string FEN)
+{
+	_board = new UnsafeWaterMelon(FEN);
 }
 
 SafeWaterMelon::~SafeWaterMelon()
@@ -17,6 +21,7 @@ SafeWaterMelon::~SafeWaterMelon()
 
 bool SafeWaterMelon::MakeMove(Move move)
 {
+	move = TransfomMove(move);
 	for (int i = 0; i < _movesCount; i++)
 	{
 		if ((move & 0b1111111111111) == (_moves[i] & 0b1111111111111)) // not flags
@@ -40,7 +45,7 @@ int SafeWaterMelon::GetSquare(int square)
 {
 	if (square > 63 || square < 0)
 		ThrowOutOfRangeException("Square out of range");
-
+	square = TransformSquareToUnsafe(square);
 	return _board->board[square];
 }
 
@@ -52,6 +57,10 @@ int SafeWaterMelon::GetPlayerColour()
 void SafeWaterMelon::GetMovesCopy(Move* moves)
 {
 	memcpy_s(moves, MaxMoves * sizeof(Move), _moves, MaxMoves * sizeof(Move));
+	for (size_t i = 0; i < _movesCount; i++)
+	{
+		moves[i] = TransfomMove(moves[i]);
+	}
 }
 
 Move* SafeWaterMelon::GetMovePointer()
@@ -64,7 +73,39 @@ int SafeWaterMelon::GetMovesCount()
 	return _movesCount;
 }
 
+void SafeWaterMelon::TurnBoard180()
+{
+	isBoardRotated180 = !isBoardRotated180;
+}
+
 UnsafeWaterMelon* SafeWaterMelon::GetUnsafeBoardPtr()
 {
 	return _board;
+}
+
+
+
+Move SafeWaterMelon::TransfomMove(Move move)
+{
+	return CreateMove(
+		TransformSquareToHuman(GetMoveStart(move)),
+		TransformSquareToHuman(GetMoveTarget(move)),
+		GetMoveFlag(move)
+	);
+}
+
+Square SafeWaterMelon::TransformSquareToUnsafe(Square square)
+{
+	Square s = FlipSquareY(square);
+	if (isBoardRotated180)
+		s = FlipSquareXY(s);
+	return s;
+}
+
+Square SafeWaterMelon::TransformSquareToHuman(Square square)
+{
+	Square s = FlipSquareY(square);
+	if (isBoardRotated180)
+		s = FlipSquareXY(s);
+	return s;
 }

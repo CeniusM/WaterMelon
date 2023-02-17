@@ -69,7 +69,7 @@ constexpr Collum GetCollum(Square sq)
 
 constexpr Square GetSquareFromRankAndCollum(Rank rank, Collum collum)
 {
-	return (rank << 3) + (collum * 8);
+	return (rank << 3) + collum;
 }
 
 
@@ -82,6 +82,16 @@ constexpr int FlipSquareY(Square square)
 	Rank rank = GetRank(square);
 	Collum col = GetCollum(square);
 	return GetSquareFromRankAndCollum(7 - rank, col);
+}
+
+/// <summary>
+/// Flips the square on the X axis
+/// </summary>
+constexpr int FlipSquareX(Square square)
+{
+	Rank rank = GetRank(square);
+	Collum col = GetCollum(square);
+	return GetSquareFromRankAndCollum(rank, 7 - col);
 }
 
 /// <summary>

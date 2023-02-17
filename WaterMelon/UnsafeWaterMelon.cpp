@@ -49,6 +49,8 @@ UnsafeWaterMelon::~UnsafeWaterMelon()
 
 void UnsafeWaterMelon::InitFEN(std::string FEN)
 {
+	// Validate the FEN String...
+
 	// will use the piece as index
 	for (int i = 0; i < 24; i++) // BQuenn 23
 		allPieceLists[i] = nullptr;
