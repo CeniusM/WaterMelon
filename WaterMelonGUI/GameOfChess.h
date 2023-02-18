@@ -34,8 +34,12 @@ private:
 	void RenderAllPieces(int PieceToLeaveOut = -1);
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	SafeWaterMelon board = SafeWaterMelon();
+	//SafeWaterMelon board = SafeWaterMelon();
+	//SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/ppp2p2/8/8/p4p1p/3p4/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
+	//SafeWaterMelon board = SafeWaterMelon("");
+	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	

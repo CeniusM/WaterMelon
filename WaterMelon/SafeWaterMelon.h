@@ -14,6 +14,8 @@ public:
 	SafeWaterMelon(std::string FEN);
 	~SafeWaterMelon();
 
+	void InitFEN(std::string FEN);
+
 	bool MakeMove(Move move);
 	bool UnMakeMove();
 

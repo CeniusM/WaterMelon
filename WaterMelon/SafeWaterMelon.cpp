@@ -4,19 +4,24 @@
 
 SafeWaterMelon::SafeWaterMelon()
 {
-	_board = new UnsafeWaterMelon();
-
-	_movesCount = _board->GetPossibleMoves(_moves);
+	InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 SafeWaterMelon::SafeWaterMelon(std::string FEN)
 {
-	_board = new UnsafeWaterMelon(FEN);
+	InitFEN(FEN);
 }
 
 SafeWaterMelon::~SafeWaterMelon()
 {
 	delete _board;
+}
+
+void SafeWaterMelon::InitFEN(std::string FEN)
+{
+	_board = new UnsafeWaterMelon(FEN);
+
+	_movesCount = _board->GetPossibleMoves(_moves);
 }
 
 bool SafeWaterMelon::MakeMove(Move move)
@@ -56,7 +61,7 @@ Color SafeWaterMelon::GetPlayerColour()
 
 void SafeWaterMelon::GetMovesCopy(Move* moves)
 {
-	memcpy_s(moves, MaxMoves * sizeof(Move), _moves, MaxMoves * sizeof(Move));
+	memcpy_s(moves, MaxMovesCount * sizeof(Move), _moves, MaxMovesCount * sizeof(Move));
 	for (size_t i = 0; i < _movesCount; i++)
 	{
 		moves[i] = TransfomMove(moves[i]);

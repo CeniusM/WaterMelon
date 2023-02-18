@@ -230,10 +230,22 @@ MovesGoneOver++;
 	}
 	for (size_t i = MovesGoneOver; i < movesCount; i++) // RestOfThePromotions
 	{
-		if (IsPromotion(GetMoveFlag(moves[i])))
+		if (IsMovePromotion(moves[i]))
 			SwapMoves(i, MovesGoneOver);
 	}
 	// Rest of moves
+}
+
+void UnsafeWaterMelon::GenerateBitboards()
+{
+	whitePawnAttacksBitboard = 0;
+	blackPawnAttacksBitboard = 0;
+	for (size_t i = 0; i < WhitePawnsList.PieceNum; i++)
+		whitePawnAttacksBitboard |= GetWhitePawnAttacks(WhitePawnsList.OccupiedSquares[i]);
+	for (size_t i = 0; i < BlackPawnsList.PieceNum; i++)
+		blackPawnAttacksBitboard |= GetBlackPawnAttacks(BlackPawnsList.OccupiedSquares[i]);
+
+
 }
 
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
@@ -257,25 +269,53 @@ void UnsafeWaterMelon::AddPawnMoves()
 		for (size_t i = 0; i < WhitePawnsList.PieceNum; i++)
 		{
 			int pos = WhitePawnsList.OccupiedSquares[i];
-			if (BitboardContains(pinnedPieces, pos))
-				continue;
-			whitePawnAttacksBitboard |= GetWhitePawnAttacks(pos);
-			PushMove(CreateMove(pos, pos + 7, NoFlag));
-			PushMove(CreateMove(pos, pos + 9, NoFlag));
+			int leftPos = pos + 7;
+			int rightPos = pos + 9;
+			int oneMove = pos + 8;
+			int twoMove = pos + 16;
+
+			if (IsPiecePinned(pos))
+			{
+				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
+					if (IsColor(GetColor(board[leftPos]), Black))
+						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
+				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
+					if (IsColor(GetColor(board[rightPos]), Black))
+						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
+
+				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move is in pin, two move is also in pin
+				{
+					if (board[oneMove] == 0)
+					{
+						PushMove(CreateMove(pos, oneMove, NoFlag));
+						if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
+							PushMove(CreateMove(pos, twoMove, PawnDoubleForward));
+					}
+				}
+			}
+			else
+			{
+				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
+					if (IsColor(GetColor(board[leftPos]), Black))
+						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
+				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
+					if (IsColor(GetColor(board[rightPos]), Black))
+						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
+
+				if (board[oneMove] == 0)
+				{
+					PushMove(CreateMove(pos, oneMove, NoFlag));
+					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
+						PushMove(CreateMove(pos, twoMove, PawnDoubleForward));
+				}
+			}
 		}
-	}
-	else
-	{
-		for (size_t i = 0; i < BlackPawnsList.PieceNum; i++)
+		if (EPSquare != EmptyEnPassantPos)
 		{
-			int pos = BlackPawnsList.OccupiedSquares[i];
-			if (BitboardContains(pinnedPieces, pos))
-				continue;
-			blackPawnAttacksBitboard |= GetBlackPawnAttacks(BlackPawnsList.OccupiedSquares[i]);
-			PushMove(CreateMove(pos, pos - 7, NoFlag));
-			PushMove(CreateMove(pos, pos - 9, NoFlag));
+
 		}
 	}
+
 }
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
@@ -296,6 +336,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	ourKingPos = kingPos[ourColour >> 4];
 	enemyKingPos = kingPos[enemyColour >> 4];
 
+	GenerateBitboards();
+
 	GeneratePinsAndAttacks();
 
 	AddKingMoves();
@@ -311,11 +353,12 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		// If the attacking peice is a knight or a pawn, we create a bitmap with only the postision of the piece
 		// So only moves where the non pinned piece move to the bitmap
 		// And the same can be done with sliding pieces, where you have to move into any of the bitmap squares
-
+		
+		// Here we could combine the pinned piece and the attack on the king so we dont do more bitboard checks than needed
 	}
 	else
 	{
-
+		AddPawnMoves();
 	}
 
 
