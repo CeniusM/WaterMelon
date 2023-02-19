@@ -4,9 +4,10 @@
 #include "CastleRight.h"
 #include "EnPassantPos.h"
 
-struct BoardStateSave
-{
-	Move move;
-	CastleRight castleRights;
-	EnPassantPos epPos;
-};
+// [0,15] Bits Move
+// [16-20] Captured Piece
+// [21,26] ep pos
+// [25,31] castle
+// 50 move rule
+// 
+typedef unsigned long long BoardStateSave;

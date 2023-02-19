@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Move.h"
 #include "Piece.h"
 #include "ThrowHelper.h"
 
@@ -7,65 +8,23 @@
 typedef unsigned short MoveFlag;
 
 constexpr unsigned short CapturedPieceBitFlag = 0b1000000000000000;
+constexpr unsigned short MoveFlagMask = 0b111000000000000;
 
 // in order of what is most likly to happend
-enum MoveFlags
+enum MoveFlags : unsigned short
 {
 	NoFlag = 0,
-	PawnTwoForward = 1,
-	EnPassantCapture = 2 | 0b1000,
-	Castling = 3,
-	PromoteToQueen = 4,
-	PromoteToRook = 5,
-	PromoteToKnight = 6,
-	PromoteToBishop = 7,
+	PawnDoubleForward = 0b001000000000000,
+	EnPassantCapture = 0b010000000000000 | CapturedPieceBitFlag,
+	Castling = 0b011000000000000,
+	PromoteToQueen = 0b100000000000000,
+	PromoteToRook = 0b101000000000000,
+	PromoteToKnight = 0b110000000000000,
+	PromoteToBishop = 0b111000000000000,
 
-	NoFlagCapture = 0 | 0b1000,
-	PromoteToQueenCapture = 4 | 0b1000,
-	PromoteToRookCapture = 5 | 0b1000,
-	PromoteToKnightCapture = 6 | 0b1000,
-	PromoteToBishopCapture = 7 | 0b1000,
+	NoFlagCapture = 0 | CapturedPieceBitFlag,
+	PromoteToQueenCapture = 0b100000000000000 | CapturedPieceBitFlag,
+	PromoteToRookCapture = 0b101000000000000 | CapturedPieceBitFlag,
+	PromoteToKnightCapture = 0b110000000000000 | CapturedPieceBitFlag,
+	PromoteToBishopCapture = 0b111000000000000 | CapturedPieceBitFlag,
 };
-
-enum CaptureFlag : unsigned short
-{
-	WasACapture = 0b1000000000000000,
-	WasNotACapture = 0,
-};
-
-//enum MoveFlagWasCapture
-//{
-//	WasNotCapture = 0,
-//	WasCapture = 0b1000,
-//};
-
-constexpr bool IsPromotion(MoveFlag flag)
-{
-	return (flag & 0b1110000) != 0;
-}
-
-constexpr PieceType GetPromotionPieceType(MoveFlag flag)
-{
-	switch (flag)
-	{
-	case MoveFlags::PromoteToQueen:
-		return Queen;
-	case MoveFlags::PromoteToRook:
-		return Rook;
-	case MoveFlags::PromoteToKnight:
-		return Knight;
-	case MoveFlags::PromoteToBishop:
-		return Bishop;
-	default:
-		ThrowNotImplementedException("Invalid Move Flag");
-	}
-}
-
-//constexpr MoveFlag NoFlag = 0;
-//constexpr MoveFlag PawnTwoForward = 1;
-//constexpr MoveFlag EnPassantCapture = 2;
-//constexpr MoveFlag Castling = 3;
-//constexpr MoveFlag PromoteToQueen = 4;
-//constexpr MoveFlag PromoteToKnight = 5;
-//constexpr MoveFlag PromoteToRook = 6;
-//constexpr MoveFlag PromoteToBishop = 7;

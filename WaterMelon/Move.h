@@ -6,7 +6,7 @@
 //#define DEBUG_DoChecks
 
 /// <summary>
-/// 0-5 bits is the StartSquare. 6-11 bits is the TargetSquare. 12-14 bits is the Flag. 
+/// [0-5] bits is the StartSquare. [6-11] bits is the TargetSquare. [12-14] bits is the Flag. 15 bit for is capture
 /// the 15th bit could be used as a flag for if the move was a caputure
 /// </summary>
 typedef unsigned short Move;
@@ -24,8 +24,31 @@ constexpr Square GetMoveTarget(Move move)
 // Get 12 - 14 bits
 constexpr MoveFlag GetMoveFlag(Move move)
 {
-	return (move >> 12) & 0x3c00;
+	return move & MoveFlagMask;
 }
+
+constexpr bool IsMovePromotion(Move flag)
+{
+	return (flag & 0b100000000000000) == 0b100000000000000;
+}
+
+constexpr PieceType GetPromotionPieceType(MoveFlag flag)
+{
+	switch (flag)
+	{
+	case MoveFlags::PromoteToQueen:
+		return Queen;
+	case MoveFlags::PromoteToRook:
+		return Rook;
+	case MoveFlags::PromoteToKnight:
+		return Knight;
+	case MoveFlags::PromoteToBishop:
+		return Bishop;
+	default:
+		ThrowNotImplementedException("Invalid Move Flag");
+	}
+}
+
 // Get 15 bit
 constexpr MoveFlag IsMoveCapture(Move move)
 {

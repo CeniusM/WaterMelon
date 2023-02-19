@@ -9,9 +9,10 @@
 #include "ThrowHelper.h"
 
 #define MaxMovesCount 256
+//512, if each side had half an hour, they have 7 seconds for each move, this hould be enough
+#define MaxGameMovesCount 512
 
 #pragma region Consts
-constexpr int MaxMoves = MaxMovesCount;
 constexpr int WhiteIndex = 0;
 constexpr int BlackIndex = 1;
 
@@ -28,12 +29,13 @@ class UnsafeWaterMelon
 public:
 	GameState gameState = GameStates::Running;
 
-	BoardStateSave boardStateHistory[256];
+	BoardStateSave boardStateHistory[MaxGameMovesCount];
+	int currentBoardStateCount = 0;
 
 	Piece board[64]{};
 	CastleRight castle{};
-	int EPSquare{};
-	int playerTurn{};
+	EnPassantPos EPSquare{};
+	Color playerTurn{};
 
 
 	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
@@ -140,7 +142,14 @@ public:
 	int enemyColorIndex;
 
 
-	// -- Work In Progress --
+	/*
+	*
+	*  ---- This is stupid, i think i can do better than copying the board every time ----
+	* Im not sure, but my intuition tells me that i can just use moves to find out if we have repated moves
+	* instead of this copy board and way to many if statements for comparing, comparing 10 moves and copying one move per move
+	* is Wayyyy faster than copying a whole board again and again and doing 32 if statements in a row to check for repetetion
+	*
+	// -- Work In Progress -- Very very much a work in progress, need to read up on some rules....
 	// 50 move rule and 3 repetetion rule
 	// Ideer, for when we are unmaking moves, we can just make a long array somewhere else to store the BoardSave, and one by one load them back in
 	// An array of like 1000 or somewhere to store them, maby in a stack
@@ -150,7 +159,8 @@ public:
 (AllBoardSavesEquel(board[0], board[2], board[4]) && AllBoardSavesEquel(board[1], board[3], board[5]))
 
 	// 50 move rule, increament by one every move, and set to 0 at pawn move or capture, pretty simple
-	int MoveWithoutCaptureOrPawnMove = 0;
+	// BUT, it has to go to 100 beacous its 50 moves for EACH side
+	int MoveWithoutCaptureOrPawnMove = 0;*/
 
 #pragma endregion
 
@@ -165,6 +175,12 @@ private:
 	/// Generate the bitboards for the pinned pieces to the king. AND the bitboard for all the enemy attacks, wich the evaluator could also use
 	/// </summary>
 	void GeneratePinsAndAttacks();
+	void GenerateBitboards();
 	void AddKingMoves();
 	void AddPawnMoves();
+
+	constexpr bool IsPiecePinned(int pos)
+	{
+		return BitboardContains(pinnedPieces, pos);
+	}
 };
