@@ -124,11 +124,20 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 ///*PrintArray("constexpr Bitboard", "BlackPawnSquareToDir", diretions);*/
 
 // DotBiboards
+//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 0 }, new int[] { 0 }, 1);
+//Bitboard[] combined = boards.AllCombinned;
+//Bitboard[] diretions = boards.Diretions;
+//PrintArray("constexpr Bitboard", "DotBiboards", combined);
+///*PrintArray("constexpr Bitboard", "DotBiboards", diretions);*/
+
+// InverseDotBiboards
 var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 0 }, new int[] { 0 }, 1);
 Bitboard[] combined = boards.AllCombinned;
 Bitboard[] diretions = boards.Diretions;
-PrintArray("constexpr Bitboard", "DotBiboards", combined);
-/*PrintArray("constexpr Bitboard", "DotBiboards", diretions);*/
+for (int i = 0; i < combined.Length; i++)
+    combined[i] ^= 0xffffffffffffffff;
+PrintArray("constexpr Bitboard", "InverseDotBiboards", combined);
+/*PrintArray("constexpr Bitboard", "InverseDotBiboards", diretions);*/
 
 
 // -- For debuging --

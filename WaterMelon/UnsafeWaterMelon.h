@@ -114,7 +114,9 @@ public:
 
 	Bitboard kingPins{};
 
-	Bitboard WhitePawnsBitboard;
+	// Bitboard of all the posses, use piece value as index
+	Bitboard PieceBitboardPos[24]; 
+	/*Bitboard WhitePawnsBitboard;
 	Bitboard WhiteKnightsBitboard;
 	Bitboard WhiteBishopsBitboard;
 	Bitboard WhiteRooksBitboard;
@@ -125,7 +127,7 @@ public:
 	Bitboard BlackRooksBitboard;
 	Bitboard BlackQueensBitboard;
 	Bitboard AllWhiteBitboard;
-	Bitboard AllBlackBitboard;
+	Bitboard AllBlackBitboard;*/
 #pragma endregion
 
 	bool KingInCheck;
