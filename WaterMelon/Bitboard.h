@@ -44,3 +44,9 @@ constexpr bool OnButtom(Square pos)
 {
 	return ((ButtomSide >> pos) & SignificantBit) == SignificantBit;
 }
+
+// Just have a one at the given pos
+//constexpr Bitboard DotBiboards[64]
+//{
+//
+//};

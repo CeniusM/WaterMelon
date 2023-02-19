@@ -111,6 +111,19 @@ public:
 	Bitboard allEnemyAttacks;
 
 	Bitboard kingPins{};
+
+	Bitboard WhitePawnsBitboard;
+	Bitboard WhiteKnightsBitboard;
+	Bitboard WhiteBishopsBitboard;
+	Bitboard WhiteRooksBitboard;
+	Bitboard WhiteQueensBitboard;
+	Bitboard BlackPawnsBitboard;
+	Bitboard BlackKnightsBitboard;
+	Bitboard BlackBishopsBitboard;
+	Bitboard BlackRooksBitboard;
+	Bitboard BlackQueensBitboard;
+	Bitboard AllWhiteBitboard;
+	Bitboard AllBlackBitboard;
 #pragma endregion
 
 	bool KingInCheck;
