@@ -1,24 +1,41 @@
-//#pragma once
-//
-//#include <iostream>
-//#include <string>
-//
-//#define LoggerEnabled DEBUG
-//
-//#if LoggerEnabled
-//
-//constexpr void Log(std::string str)
+#pragma once
+
+#include <iostream>
+#include <string>
+
+#define LoggerEnabled
+
+#ifdef LoggerEnabled
+
+class Logger
+{
+public:
+	Logger();
+	~Logger();
+
+	static void Log(unsigned long long board);
+	static void Log(char* message);
+private:
+
+};
+
+
+//void Log(unsigned long long num)
 //{
-//	std::cout << str;
+//	std::cout << num;
 //}
-//constexpr void LogLine(std::string str)
+//constexpr void Log(char* message)
 //{
-//	std::cout << str << '\n';
+//	std::cout << message;
 //}
-//
-//#else
-//
-//#define Log(a)
-//#define LogLine(a)
-//
-//#endif
+//constexpr void LogLine(char* message)
+//{
+//	std::cout << message << '\n';
+//}
+
+#else
+
+#define Log(a)
+#define LogLine(a)
+
+#endif

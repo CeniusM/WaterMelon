@@ -110,11 +110,11 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 ///*PrintArray("constexpr Bitboard", "KnightSquareToDir", diretions);*/
 
 // WhitePawn
-//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 7, 9 }, new int[] { 1, 1 }, 1);
-//Bitboard[] combined = boards.AllCombinned;
-//Bitboard[] diretions = boards.Diretions;
-//PrintArray("constexpr Bitboard", "WhitePawnSquareToAllDir", combined);
-///*PrintArray("constexpr Bitboard", "WhitePawnSquareToDir", diretions);*/
+var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 7, 9 }, new int[] { 1, 1 }, 1);
+Bitboard[] combined = boards.AllCombinned;
+Bitboard[] diretions = boards.Diretions;
+PrintArray("constexpr Bitboard", "WhitePawnSquareToAllDir", combined);
+/*PrintArray("constexpr Bitboard", "WhitePawnSquareToDir", diretions);*/
 
 // BlackPawn
 //var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { -7, -9 }, new int[] { -1, -1 }, 1);
@@ -131,13 +131,13 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 ///*PrintArray("constexpr Bitboard", "DotBiboards", diretions);*/
 
 // InverseDotBiboards
-var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 0 }, new int[] { 0 }, 1);
-Bitboard[] combined = boards.AllCombinned;
-Bitboard[] diretions = boards.Diretions;
-for (int i = 0; i < combined.Length; i++)
-    combined[i] ^= 0xffffffffffffffff;
-PrintArray("constexpr Bitboard", "InverseDotBiboards", combined);
-/*PrintArray("constexpr Bitboard", "InverseDotBiboards", diretions);*/
+//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 0 }, new int[] { 0 }, 1);
+//Bitboard[] combined = boards.AllCombinned;
+//Bitboard[] diretions = boards.Diretions;
+//for (int i = 0; i < combined.Length; i++)
+//    combined[i] ^= 0xffffffffffffffff;
+//PrintArray("constexpr Bitboard", "InverseDotBiboards", combined);
+///*PrintArray("constexpr Bitboard", "InverseDotBiboards", diretions);*/
 
 
 // -- For debuging --

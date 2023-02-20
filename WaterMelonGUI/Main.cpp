@@ -11,7 +11,7 @@
 
 int main()
 {
-	std::cout << sizeof(UnsafeWaterMelon);
+	//std::cout << sizeof(UnsafeWaterMelon) << "\n";
 	//const int RestingFPS = 20;
 	//const int DragingFPS = 144;
 	//const int FPS = 30; // for debuging

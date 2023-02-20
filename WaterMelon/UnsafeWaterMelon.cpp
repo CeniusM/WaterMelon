@@ -226,7 +226,11 @@ void UnsafeWaterMelon::GenerateBitboards()
 	whitePawnAttacksBitboard = 0;
 	blackPawnAttacksBitboard = 0;
 	for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
+	{
 		whitePawnAttacksBitboard |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+		Logger::Log(GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]));
+	}
+	Logger::Log(whitePawnAttacksBitboard);
 	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
 		blackPawnAttacksBitboard |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
 
@@ -268,7 +272,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 					if (IsColor(GetColor(board[rightPos]), Black))
 						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
 
-				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move is in pin, two move is also in pin
+				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
 				{
 					if (board[oneMove] == 0)
 					{
@@ -300,7 +304,6 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 		}
 	}
-
 }
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
@@ -338,7 +341,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		// If the attacking peice is a knight or a pawn, we create a bitmap with only the postision of the piece
 		// So only moves where the non pinned piece move to the bitmap
 		// And the same can be done with sliding pieces, where you have to move into any of the bitmap squares
-		
+
 		// Here we could combine the pinned piece and the attack on the king so we dont do more bitboard checks than needed
 	}
 	else
