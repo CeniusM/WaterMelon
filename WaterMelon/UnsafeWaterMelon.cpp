@@ -51,32 +51,17 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 	// Validate the FEN String...
 
 	// will use the piece as index
-	for (int i = 0; i < 24; i++) // BQuenn 23
-		allPieceLists[i] = nullptr;
-	//9 WKing used with own array
-	allPieceLists[10] = &WhitePawnsList;//10 WPawn
-	allPieceLists[11] = &WhiteKnightsList;//11 WKnight
-	allPieceLists[13] = &WhiteBishopsList;//13 WBishop
-	allPieceLists[14] = &WhiteRooksList;//14 WRook
-	allPieceLists[15] = &WhiteQueensList;//15 WQueen
-	//17 BKing used with own array
-	allPieceLists[18] = &BlackPawnsList;//18 BPawn
-	allPieceLists[19] = &BlackKnightsList;//19 BKnight
-	allPieceLists[21] = &BlackBishopsList;//21 BBishop
-	allPieceLists[22] = &BlackRooksList;//22 BRook
-	allPieceLists[23] = &BlackQueensList;//23 BQueen
+	whitePawnsPtr = PieceLists[WPawn].OccupiedSquares;
+	whiteKnightsPtr = PieceLists[WKnight].OccupiedSquares;
+	whiteBishopsPtr = PieceLists[WBishop].OccupiedSquares;
+	whiteRooksPtr = PieceLists[WRook].OccupiedSquares;
+	whiteQueensPtr = PieceLists[WQueen].OccupiedSquares;
 
-	whitePawnsPtr = WhitePawnsList.OccupiedSquares;
-	whiteKnightsPtr = WhiteKnightsList.OccupiedSquares;
-	whiteBishopsPtr = WhiteBishopsList.OccupiedSquares;
-	whiteRooksPtr = WhiteRooksList.OccupiedSquares;
-	whiteQueensPtr = WhiteQueensList.OccupiedSquares;
-
-	blackPawnsPtr = BlackPawnsList.OccupiedSquares;
-	blackKnightsPtr = BlackKnightsList.OccupiedSquares;
-	blackBishopsPtr = BlackBishopsList.OccupiedSquares;
-	blackRooksPtr = BlackRooksList.OccupiedSquares;
-	blackQueensPtr = BlackQueensList.OccupiedSquares;
+	blackPawnsPtr = PieceLists[BPawn].OccupiedSquares;
+	blackKnightsPtr = PieceLists[BKnight].OccupiedSquares;
+	blackBishopsPtr = PieceLists[BBishop].OccupiedSquares;
+	blackRooksPtr = PieceLists[BRook].OccupiedSquares;
+	blackQueensPtr = PieceLists[BQueen].OccupiedSquares;
 
 	playerTurn = 8;
 	try
@@ -102,7 +87,7 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 					else if (pieceVal == BKing)
 						kingPos[1] = FlipSquareY(fenBoardPtr);
 					else
-						allPieceLists[pieceVal]->AddPieceAtSquare(FlipSquareY(fenBoardPtr));
+						PieceLists[pieceVal].AddPieceAtSquare(FlipSquareY(fenBoardPtr));
 				}
 				fenBoardPtr++;
 			}
@@ -240,10 +225,10 @@ void UnsafeWaterMelon::GenerateBitboards()
 {
 	whitePawnAttacksBitboard = 0;
 	blackPawnAttacksBitboard = 0;
-	for (size_t i = 0; i < WhitePawnsList.PieceNum; i++)
-		whitePawnAttacksBitboard |= GetWhitePawnAttacks(WhitePawnsList.OccupiedSquares[i]);
-	for (size_t i = 0; i < BlackPawnsList.PieceNum; i++)
-		blackPawnAttacksBitboard |= GetBlackPawnAttacks(BlackPawnsList.OccupiedSquares[i]);
+	for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
+		whitePawnAttacksBitboard |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
+		blackPawnAttacksBitboard |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
 
 
 }
@@ -266,9 +251,9 @@ void UnsafeWaterMelon::AddPawnMoves()
 	// Generate bitmaps for the pawn attacks
 	if (whiteToMove)
 	{
-		for (size_t i = 0; i < WhitePawnsList.PieceNum; i++)
+		for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
 		{
-			int pos = WhitePawnsList.OccupiedSquares[i];
+			int pos = PieceLists[WPawn].OccupiedSquares[i];
 			int leftPos = pos + 7;
 			int rightPos = pos + 9;
 			int oneMove = pos + 8;

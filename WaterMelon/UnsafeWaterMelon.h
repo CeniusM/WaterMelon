@@ -63,19 +63,20 @@ public:
 	int kingPos[2]{};
 
 #pragma region Everything PieceList
-	PieceList WhitePawnsList{};
-	PieceList WhiteKnightsList{};
-	PieceList WhiteBishopsList{};
-	PieceList WhiteRooksList{};
-	PieceList WhiteQueensList{};
+	//PieceList WhitePawnsList{};
+	//PieceList WhiteKnightsList{};
+	//PieceList WhiteBishopsList{};
+	//PieceList WhiteRooksList{};
+	//PieceList WhiteQueensList{};
 
-	PieceList BlackPawnsList{};
-	PieceList BlackKnightsList{};
-	PieceList BlackBishopsList{};
-	PieceList BlackRooksList{};
-	PieceList BlackQueensList{};
+	//PieceList BlackPawnsList{};
+	//PieceList BlackKnightsList{};
+	//PieceList BlackBishopsList{};
+	//PieceList BlackRooksList{};
+	//PieceList BlackQueensList{};
 
-	PieceList* allPieceLists[24]; // BQueen 23
+	//PieceList* allPieceLists[24]; // BQueen 23
+	PieceList PieceLists[24]{};
 
 	Piece* whitePawnsPtr;
 	Piece* whiteKnightsPtr;
@@ -104,7 +105,7 @@ public:
 	// 0100
 	// 0010
 	// 000k
-	Bitboard pinningPiecesAttack[64]; // use the pos of the piece as index
+	Bitboard pinningPiecesAttack[64]{ 0 }; // use the pos of the piece as index
 	Bitboard pinnedPieces;
 
 	Bitboard whitePawnAttacksBitboard = 0;
@@ -115,7 +116,7 @@ public:
 	Bitboard kingPins{};
 
 	// Bitboard of all the posses, use piece value as index
-	Bitboard PieceBitboardPos[24]; 
+	Bitboard PieceBitboardPos[24]{ 0 };
 	/*Bitboard WhitePawnsBitboard;
 	Bitboard WhiteKnightsBitboard;
 	Bitboard WhiteBishopsBitboard;
