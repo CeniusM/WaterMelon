@@ -226,13 +226,11 @@ void UnsafeWaterMelon::GenerateBitboards()
 	whitePawnAttacksBitboard = 0;
 	blackPawnAttacksBitboard = 0;
 	for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
-	{
 		whitePawnAttacksBitboard |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
-		Logger::Log(GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]));
-	}
-	Logger::Log(whitePawnAttacksBitboard);
 	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
 		blackPawnAttacksBitboard |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
+	//Logger::Log(whitePawnAttacksBitboard);
+	//Logger::Log(blackPawnAttacksBitboard);
 
 
 }

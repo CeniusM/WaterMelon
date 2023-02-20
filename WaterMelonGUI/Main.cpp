@@ -11,13 +11,27 @@
 
 int main()
 {
+	/*int start = 0;
+	Bitboard some = 124123;
+	Square pos = 32;
+
+	bool b = (DotBiboards[pos] & some) == 0;
+
+	bool a = ((some >> pos) & SignificantBit) == SignificantBit;
+
+	int end = 0;*/
+
 	//std::cout << sizeof(UnsafeWaterMelon) << "\n";
+
+
+	// --Testing above --
+
 	//const int RestingFPS = 20;
 	//const int DragingFPS = 144;
 	//const int FPS = 30; // for debuging
 	const int FPS = 142; // makes it go from 144=6,9... 142=7
 	int frameDelay = 1000 / FPS;
-	
+
 	Uint32 frameStart;
 	int frameTime;
 
@@ -33,7 +47,7 @@ int main()
 		{
 			game.HandleEvents();
 			game.Update();
-		
+
 			// used to indicate if fx, an ai have moved, the player have clicked setting, or moved and so on
 			if (game.SomethingHappend)
 			{
@@ -47,7 +61,7 @@ int main()
 		//	FPS = RestingFPS;
 		//frameDelay = 1000 / FPS;
 
- 		frameTime = SDL_GetTicks() - frameStart;
+		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime)
 			SDL_Delay(frameDelay - frameTime);
 	}

@@ -182,8 +182,13 @@ private:
 	void AddKingMoves();
 	void AddPawnMoves();
 
-	constexpr bool IsPiecePinned(int pos)
+	constexpr bool IsPiecePinned(Square pos)
 	{
 		return BitboardContains(pinnedPieces, pos);
+	}
+
+	constexpr bool IsPieceClearOfPin(Square pos)
+	{
+		return (DotBiboards[pos] & pinnedPieces) == 0;
 	}
 };
