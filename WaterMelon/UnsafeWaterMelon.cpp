@@ -161,7 +161,18 @@ int UnsafeWaterMelon::GetEvaluation()
 	}
 
 
+	if (true) // early game
+	{
 
+	}
+	else if (false) // mid game
+	{
+
+	}
+	else // late game
+	{
+
+	}
 
 
 	return 0;
