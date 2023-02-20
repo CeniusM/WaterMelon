@@ -250,7 +250,6 @@ void UnsafeWaterMelon::AddKingMoves()
 
 void UnsafeWaterMelon::AddPawnMoves()
 {
-	// Generate bitmaps for the pawn attacks
 	if (whiteToMove)
 	{
 		for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
