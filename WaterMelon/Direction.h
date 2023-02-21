@@ -15,6 +15,7 @@ enum DirectionIndexs : DirectionIndex
 	SouthEastI = 5,
 	SouthWestI = 6,
 	NorthWestI = 7,
+	InvalidIndexI = 8,
 };
 
 enum DirectionOffsets : DirectionOffset

@@ -17,6 +17,7 @@ internal class Diretions
         SouthEastI = 5,
         SouthWestI = 6,
         NorthWestI = 7,
+        InvalidIndexI = 8,
     }
 
     public enum DirectionOffsets

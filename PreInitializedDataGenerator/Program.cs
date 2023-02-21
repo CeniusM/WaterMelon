@@ -16,6 +16,20 @@ void PrintArray(string type, string name, ulong[] offsets)
     Console.WriteLine(output.ToString());
 }
 
+void PrintArrayBytes(string type, string name, byte[] values)
+{
+    StringBuilder output = new StringBuilder(values.Length * 10);
+    output.Append(type + " " + name + "[]" + "\n");
+    output.Append("{\n");
+    for (int i = 0; i < values.Length; i++)
+    {
+        output.Append(values[i].ToString() + ',');
+    }
+    output.Remove(output.Length - 1, 1);
+    output.Append("\n};");
+    Console.WriteLine(output.ToString());
+}
+
 // Would only work for 1d
 //void PrintArrayAndMethod(string type, string name, ulong[] offsets)
 //{
@@ -110,11 +124,11 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 ///*PrintArray("constexpr Bitboard", "KnightSquareToDir", diretions);*/
 
 // WhitePawn
-var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 7, 9 }, new int[] { 1, 1 }, 1);
-Bitboard[] combined = boards.AllCombinned;
-Bitboard[] diretions = boards.Diretions;
-PrintArray("constexpr Bitboard", "WhitePawnSquareToAllDir", combined);
-/*PrintArray("constexpr Bitboard", "WhitePawnSquareToDir", diretions);*/
+//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { 7, 9 }, new int[] { 1, 1 }, 1);
+//Bitboard[] combined = boards.AllCombinned;
+//Bitboard[] diretions = boards.Diretions;
+//PrintArray("constexpr Bitboard", "WhitePawnSquareToAllDir", combined);
+///*PrintArray("constexpr Bitboard", "WhitePawnSquareToDir", diretions);*/
 
 // BlackPawn
 //var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(new int[] { -7, -9 }, new int[] { -1, -1 }, 1);
@@ -153,9 +167,117 @@ PrintArray("constexpr Bitboard", "WhitePawnSquareToAllDir", combined);
 //PrintBitboardColored(combined[36], 36);
 
 
+//for (int i = 0; i < 64; i++)
+//{
+//    PrintBitboardColored(combined[i], i);
+//    Console.WriteLine();
+//}
+//PrintArray("Bitboard", "QueenSlidingMovesFromSquareAllDir", combined);
+
+
+
+
+//// -- Lengths to side of board
+//int[,] LenghtToSide = new int[64, 8];
+//for (int i = 0; i < 8; i++)
+//{
+//    for (int j = 0; j < 8; j++)
+//    {
+//        int North = j;
+//        int East = 7 - i;
+//        int South = 7 - j;
+//        int West = i;
+//        int NorthEast = North < East ? North : East;
+//        int SouthEast = South < East ? South : East;
+//        int SouthWest = South < West ? South : West;
+//        int NorthWest = North < West ? North : West;
+
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.NorthI] = North;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.EastI] = East;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.SouthI] = South;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.WestI] = West;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.NorthEastI] = NorthEast;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.SouthEastI] = SouthEast;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.SouthWestI] = SouthWest;
+//        LenghtToSide[i + (j << 3), (int)Diretions.DirectionIndexs.NorthWestI] = NorthWest;
+//    }
+//}
+//byte[] bytes = new byte[64 * 8];
+//for (int i = 0; i < 64; i++)
+//{
+//    for (int j = 0; j < 8; j++)
+//    {
+//        bytes[i + (j << 6)] = (byte)LenghtToSide[i, j];
+//    }
+//}
+
+//Console.WriteLine(LenghtToSide[1,5]);
+
+//PrintArrayBytes("constexpr char", "DistanceToBoardInDirection", bytes);
+
+
+// -- Direction index from square to square --
+byte[] bytes = new byte[0b111111111111 + 1];
 for (int i = 0; i < 64; i++)
 {
-    PrintBitboardColored(combined[i], i);
-    Console.WriteLine();
+    for (int j = 0; j < 64; j++)
+    {
+        // Debuging
+        //if (i == 9 && j == 17)
+        //    Console.Write("");
+
+        // First find the direction from start square to end square
+        // If there is no direction, just make it invalid
+        int startRank = i >> 3;
+        int startCollum = i % 8;
+        int endRank = j >> 3;
+        int endCollum = j % 8;
+
+        Diretions.DirectionIndexs index = Diretions.DirectionIndexs.InvalidIndexI;
+
+        if (startRank == endRank)
+        {
+            if (startCollum > endCollum)
+                index = Diretions.DirectionIndexs.WestI;
+            else if (startCollum < endCollum)
+                index = Diretions.DirectionIndexs.EastI;
+            else
+                index = Diretions.DirectionIndexs.InvalidIndexI;
+        }
+        else if (startCollum == endCollum)
+        {
+            if (startRank > endRank)
+                index = Diretions.DirectionIndexs.NorthI;
+            else if (startRank < endRank)
+                index = Diretions.DirectionIndexs.SouthI;
+            else
+                index = Diretions.DirectionIndexs.InvalidIndexI;
+        }
+        else if (endRank - startRank == -1 && endCollum - startCollum == -1)
+        {
+            index = Diretions.DirectionIndexs.NorthWestI;
+        }
+        else if (endRank - startRank == -1 && endCollum - startCollum == 1)
+        {
+            index = Diretions.DirectionIndexs.NorthEastI;
+        }
+        else if (endRank - startRank == 1 && endCollum - startCollum == 1)
+        {
+            index = Diretions.DirectionIndexs.SouthEastI;
+        }
+        else if (endRank - startRank == 1 && endCollum - startCollum == -1)
+        {
+            index = Diretions.DirectionIndexs.SouthWestI;
+        }
+        else
+            index = Diretions.DirectionIndexs.InvalidIndexI;
+
+        bytes[i + (j << 6)] = (byte)index;
+    }
 }
-//PrintArray("Bitboard", "QueenSlidingMovesFromSquareAllDir", combined);
+int GetSquare(int rank, int collum) => (rank << 3) + collum;
+byte GetIndex(int startSquare, int endSquare) => bytes[startSquare + (endSquare << 6)];
+string GetIndexName(byte index) => ((Diretions.DirectionIndexs)index).ToString();
+//Console.WriteLine(GetIndexName(GetIndex(GetSquare(1, 1), GetSquare(1, 7))));
+
+PrintArrayBytes("constexpr char", "DirectionIndexFromSquareToSquare", bytes);

@@ -346,6 +346,29 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 
 		// Note, you can use the allFriendlyPosBitboard to see if there is no or some pieces blokcing
 		// And you can also use the allEnemyPosBitboard, beacous if there is any of the enemys pices blocking its all done
+
+		int queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
+	DoQueenAgain:// Oof
+		{
+			DirectionIndex dirToQueen = GetDirectionIndexFromSquareToSquare(ourKingPos, queenPos);
+			DirectionIndex dirToKing = GetDirectionIndexFromSquareToSquare(queenPos, ourKingPos);
+
+			Bitboard queenLineOfSight = GetQueenBitboardFromInDir(queenPos, dirToKing);
+			Bitboard kingLineOfSight = GetQueenBitboardFromInDir(ourKingPos, dirToQueen);
+
+			if ((AllEnemyPosBitboard & queenLineOfSight) == 0) // no team peice blocking
+			{
+				// look through line of seight
+				Offset queenToKingOffset = offsetsIndexed[dirToKing];
+				
+			}
+		}
+		if (queenIndexNumber2 != -1)
+		{
+			queenIndexNumber2 = -1;
+			queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
+			goto DoQueenAgain;
+		}
 	}
 
 	// Check if any rooks is hitting the king
@@ -426,7 +449,7 @@ void UnsafeWaterMelon::AddKingMoves()
 
 }
 
-void UnsafeWaterMelon::AddPawnMoves()
+void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
 {
 	if (whiteToMove)
 	{
@@ -480,7 +503,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 			// becous Enpassant moves two pieces, we do the King check check here.
 			// Just check if the king is on the same rank, and if there by chance 
 			// also is an enemy queen or rook on the same diagonal
-			// 
+
 
 		}
 	}
@@ -513,20 +536,40 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	if (KingInDoubleCheck)
 		return movesCount;
 
-	if (KingInCheck)
-	{
-		// If king in check, only king moves and moves that block the attack works
-		// So would only have to check if moves can block the line or capture the piece
-		// So we know only one piece is attacking
-		// If the attacking peice is a knight or a pawn, we create a bitmap with only the postision of the piece
-		// So only moves where the non pinned piece move to the bitmap
-		// And the same can be done with sliding pieces, where you have to move into any of the bitmap squares
+	// 4 difrent versions
+	// pinned with king in check (slowsts...)
+	// pinned with king NOT in check
+	// no pin with king in check
+	// no pin with king NOT in check (fastest...)
 
-		// Here we could combine the pinned piece and the attack on the king so we dont do more bitboard checks than needed
+	// -- King in check --
+	// If king in check, only king moves and moves that block the attack works
+	// So would only have to check if moves can block the line or capture the piece
+	// So we know only one piece is attacking
+	// If the attacking peice is a knight or a pawn, we create a bitmap with only the postision of the piece
+	// So only moves where the non pinned piece move to the bitmap
+	// And the same can be done with sliding pieces, where you have to move into any of the bitmap squares
+
+	// Here we could combine the pinned piece and the attack on the king so we dont do more bitboard checks than needed
+
+	if (pinnedPieces == 0)
+	{
+		if (KingInCheck)
+		{
+		}
+		else
+		{
+		}
 	}
 	else
 	{
-		AddPawnMoves();
+		AddPawnMovesPinnedAndKingNotInCheckVersion();
+		if (KingInCheck)
+		{
+		}
+		else
+		{
+		}
 	}
 
 	if (onlyCaptures)
