@@ -108,27 +108,26 @@ public:
 	Bitboard pinningPiecesAttack[64]{ 0 }; // use the pos of the piece as index
 	Bitboard pinnedPieces;
 
-	Bitboard whitePawnAttacksBitboard = 0;
-	Bitboard blackPawnAttacksBitboard = 0;
+	// All the bitboard of the piece attacks
+	Bitboard pieceAttackBitboards[24]{};
+	Bitboard allFriendlyAttakcs{};
+	Bitboard allEnemyAttacks{};
 
 	Bitboard allEnemyAttacks;
 
-	Bitboard kingPins{};
+	// This will have a line from the enemy piece of it is a sliding peice,
+	// If it is a knight or a pawn, it will just show its pos, so when you move to that pos
+	// you have captured the attacking enemy piece
+	Bitboard attacksOnKing;
 
+
+	// -- For all the bitboard poses, it is just 3 XOR operations for the start to target square bitboard
 	// Bitboard of all the posses, use piece value as index
 	Bitboard PieceBitboardPos[24]{ 0 };
-	/*Bitboard WhitePawnsBitboard;
-	Bitboard WhiteKnightsBitboard;
-	Bitboard WhiteBishopsBitboard;
-	Bitboard WhiteRooksBitboard;
-	Bitboard WhiteQueensBitboard;
-	Bitboard BlackPawnsBitboard;
-	Bitboard BlackKnightsBitboard;
-	Bitboard BlackBishopsBitboard;
-	Bitboard BlackRooksBitboard;
-	Bitboard BlackQueensBitboard;
-	Bitboard AllWhiteBitboard;
-	Bitboard AllBlackBitboard;*/
+	Bitboard AllFriendlyPiecePosBitboard;
+	Bitboard AllEnemyPosBitboard;
+	Bitboard AllPiecePosBitboard;
+
 #pragma endregion
 
 	bool KingInCheck;
@@ -174,11 +173,11 @@ private:
 	void RemoveNoneCaptures();
 	void OrderMoves();
 
+	void GenerateBitboards();
 	/// <summary>
-	/// Generate the bitboards for the pinned pieces to the king. AND the bitboard for all the enemy attacks, wich the evaluator could also use
+	/// Generate the bitboards for the pinned pieces to the king.
 	/// </summary>
 	void GeneratePinsAndAttacks();
-	void GenerateBitboards();
 	void AddKingMoves();
 	void AddPawnMoves();
 

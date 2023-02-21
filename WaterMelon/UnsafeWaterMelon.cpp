@@ -145,7 +145,8 @@ int UnsafeWaterMelon::GetEvaluation()
 	// Early/Mid game, very low and heigh king moves count is bad, just need something in the middle -
 	// -to many moves means its probely not protected enough, and less than 2 is probely also pretty bad
 	// Ideer, give negBonus for pieces that have not moved, but a little tricky to implement
-	// Bonus pawns for closing in on promotion, tricky to implement
+	// Bonus pawns for closing in on promotion, tricky to implement, 
+	// early game and good structure, get space, mid have good structure, end game good structure and try promotion
 	// Bonus for lategame getting agresiv torwards the enemy king to checkmate
 	// Bonus for the bishop on the opesit color of the major pawn structor -
 	// -so the fewer pawns the bishop shares space with the better, but this mostly counts for the mid of the board, -
@@ -160,17 +161,47 @@ int UnsafeWaterMelon::GetEvaluation()
 		return 0;
 	}
 
+	int Evaluation = 0;
 
 	if (true) // early game
 	{
+		constexpr int PawnEarlyGameValue = 100;
+		constexpr int KnightEarlyGameValue = 325;
+		constexpr int BishopEarlyGameValue = 343;
+		constexpr int RookEarlyGameValue = 530;
+		constexpr int QueenEarlyGameValue = 950;
 
+		Evaluation += PieceLists[WPawn].PieceNum * PawnEarlyGameValue;
+		Evaluation += PieceLists[WKnight].PieceNum * KnightEarlyGameValue;
+		Evaluation += PieceLists[WBishop].PieceNum * BishopEarlyGameValue;
+		Evaluation += PieceLists[WRook].PieceNum * RookEarlyGameValue;
+		Evaluation += PieceLists[WQueen].PieceNum * QueenEarlyGameValue;
+
+		Evaluation -= PieceLists[BPawn].PieceNum * PawnEarlyGameValue;
+		Evaluation -= PieceLists[BKnight].PieceNum * KnightEarlyGameValue;
+		Evaluation -= PieceLists[BBishop].PieceNum * BishopEarlyGameValue;
+		Evaluation -= PieceLists[BRook].PieceNum * RookEarlyGameValue;
+		Evaluation -= PieceLists[BQueen].PieceNum * QueenEarlyGameValue;
+
+		//for (size_t i = 0; i < 64; i++) // For later
+		//	Evaluation += GetBonusForPieceOnSquareEarlyGame(board[i], i);
 	}
 	else if (false) // mid game
 	{
-
+		constexpr int PawnMidGameValue = 100;
+		constexpr int KnightMidGameValue = 305;
+		constexpr int BishopMidGameValue = 333;
+		constexpr int RookMidGameValue = 563;
+		constexpr int QueenMidGameValue = 950;
 	}
 	else // late game
 	{
+		constexpr int PawnlateGameValue = 100;
+		constexpr int KnightlateGameValue = 305;
+		constexpr int BishoplateGameValue = 333;
+		constexpr int RooklateGameValue = 563;
+		constexpr int QueenlateGameValue = 950;
+
 
 	}
 
@@ -234,24 +265,159 @@ MovesGoneOver++;
 
 void UnsafeWaterMelon::GenerateBitboards()
 {
-	whitePawnAttacksBitboard = 0;
-	blackPawnAttacksBitboard = 0;
+	// The sliding pieces will be initilized when they get there moves generated
+
+	pieceAttackBitboards[WPawn] = 0;
+	pieceAttackBitboards[WBishop] = 0;
+	pieceAttackBitboards[WKnight] = 0;
+	pieceAttackBitboards[WQueen] = 0;
+	pieceAttackBitboards[WKing] = 0;
+	pieceAttackBitboards[BPawn] = 0;
+	pieceAttackBitboards[BBishop] = 0;
+	pieceAttackBitboards[BKnight] = 0;
+	pieceAttackBitboards[BQueen] = 0;
+	pieceAttackBitboards[BKing] = 0;
+
 	for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
-		whitePawnAttacksBitboard |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+		pieceAttackBitboards[WPawn] |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+
+	for (size_t i = 0; i < PieceLists[WKnight].PieceNum; i++)
+		pieceAttackBitboards[WKnight] |= GetKnightAllDirBitboard(PieceLists[WKnight].OccupiedSquares[i]);
+
+	for (size_t i = 0; i < PieceLists[WKing].PieceNum; i++)
+		pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(PieceLists[WKing].OccupiedSquares[i]);
+
 	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
-		blackPawnAttacksBitboard |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
+		pieceAttackBitboards[BPawn] |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
+
+	for (size_t i = 0; i < PieceLists[BKnight].PieceNum; i++)
+		pieceAttackBitboards[BKnight] |= GetKnightAllDirBitboard(PieceLists[BKnight].OccupiedSquares[i]);
+
+	for (size_t i = 0; i < PieceLists[BKing].PieceNum; i++)
+		pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(PieceLists[BKing].OccupiedSquares[i]);
+
+
+
+
 	//Logger::Log(whitePawnAttacksBitboard);
 	//Logger::Log(blackPawnAttacksBitboard);
 
-
+	if (whiteToMove)
+	{
+		allFriendlyAttakcs |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
+		allEnemyAttacks |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
+	}
+	else
+	{
+		allFriendlyAttakcs |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
+		allEnemyAttacks |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
+	}
 }
 
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
+	int amountOfPiecesAttackingKing = 0;
+
 	pinnedPieces = 0;
 	allEnemyAttacks = 0;
 
+	// Check if any queens is hitting the king
+	if ((GetQueenAllDirBitboard(ourKingPos) & PieceBitboardPos[Queen & enemyColour]) != 0)
+	{
+		int queenIndex = -1;
+		int queenIndexNumber2 = -1; // never going to need more that 2, becouas of double checks is plenty 
+		if (PieceLists[Queen & enemyColour].PieceNum != 1)
+		{
+			for (size_t i = 0; i < PieceLists[Queen & enemyColour].PieceNum; i++)
+				if (BitboardContains(GetQueenAllDirBitboard(ourKingPos), PieceLists[Queen & enemyColour].OccupiedSquares[i]) != 0)
+				{
+					if (queenIndex == -1)
+						queenIndex = i;
+					else
+					{
+						queenIndexNumber2 = i;
+						break;
+					}
+				}
+		}
+		else
+			queenIndex = 0;
 
+		// Note, you can use the allFriendlyPosBitboard to see if there is no or some pieces blokcing
+		// And you can also use the allEnemyPosBitboard, beacous if there is any of the enemys pices blocking its all done
+	}
+
+	// Check if any rooks is hitting the king
+	if ((GetRookAllDirBitboard(ourKingPos) & PieceBitboardPos[Rook & enemyColour]) != 0)
+	{
+		int rookIndex = 0; // rooks cant double check
+		if (PieceLists[Rook & enemyColour].PieceNum != 1)
+		{
+			for (size_t i = 0; i < PieceLists[Rook & enemyColour].PieceNum; i++)
+				if (BitboardContains(GetRookAllDirBitboard(ourKingPos), PieceLists[Rook & enemyColour].OccupiedSquares[i]) != 0)
+				{
+					rookIndex = i;
+					break;
+				}
+		}
+
+
+	}
+
+	// Check if any bishops is hitting the king
+	if ((GetBishopAllDirBitboard(ourKingPos) & PieceBitboardPos[Bishop & enemyColour]) != 0)
+	{
+		int bishopIndex = 0; // bishops cant double check
+		if (PieceLists[Bishop & enemyColour].PieceNum != 1)
+		{
+			for (size_t i = 0; i < PieceLists[Bishop & enemyColour].PieceNum; i++)
+				if (BitboardContains(GetBishopAllDirBitboard(ourKingPos), PieceLists[Bishop & enemyColour].OccupiedSquares[i]) != 0)
+				{
+					bishopIndex = i;
+					break;
+				}
+		}
+
+
+	}
+
+	// Now we just check for direct attakcs on the king
+
+	// Enemy king, knight and pawns
+	if (BitboardContains(allEnemyAttacks, ourKingPos))
+	{
+		// Something is hitting king
+
+		// check pawns
+		if (BitboardContains(pieceAttackBitboards[Pawn & enemyColour], ourKingPos))
+		{
+
+		}
+
+		// check knight
+		if (BitboardContains(pieceAttackBitboards[Knight & enemyColour], ourKingPos))
+		{
+
+		}
+
+		// king is not relevant
+	}
+
+	if (amountOfPiecesAttackingKing == 0)
+	{
+		KingInCheck = false;
+		KingInDoubleCheck = false;
+	}
+	else if (amountOfPiecesAttackingKing == 1)
+	{
+		KingInCheck = true;
+		KingInDoubleCheck = false;
+	}
+	else
+	{
+		KingInCheck = true;
+		KingInDoubleCheck = true;
+	}
 }
 
 void UnsafeWaterMelon::AddKingMoves()
@@ -263,6 +429,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 {
 	if (whiteToMove)
 	{
+		Bitboard whitePawnAttacksBitboard = pieceAttackBitboards[WPawn];
 		for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
 		{
 			int pos = PieceLists[WPawn].OccupiedSquares[i];
@@ -309,6 +476,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 		}
 		if (EPSquare != EmptyEnPassantPos)
 		{
+			// becous Enpassant moves two pieces, we do the King check check here.
+			// Just check if the king is on the same rank, and if there by chance 
+			// also is an enemy queen or rook on the same diagonal
+			// 
 
 		}
 	}
@@ -356,7 +527,6 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	{
 		AddPawnMoves();
 	}
-
 
 	if (onlyCaptures)
 		RemoveNoneCaptures();
