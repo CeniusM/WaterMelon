@@ -103,3 +103,15 @@ constexpr Bitboard GetBlackPawnAttacks(Square square)
 	return BlackPawnAttacks[square];
 }
 #pragma endregion
+
+#pragma region DistanceToBoard
+constexpr char GetDistanceToBoardInDirection(Square square, DirectionIndex direction)
+{
+	ThrowNotImplementedException("");
+	return DistanceToBoardInDirection[square | (direction << 6)];
+}
+constexpr char DistanceToBoardInDirection[]
+{
+	2,
+};
+#pragma endregion
