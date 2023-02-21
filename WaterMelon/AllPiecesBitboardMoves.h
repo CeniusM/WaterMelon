@@ -115,3 +115,15 @@ constexpr char DistanceToBoardInDirection[]
 	2,
 };
 #pragma endregion
+
+#pragma region GetDirectionIndex
+constexpr char GetDirectionIndexFromSquareToSquare(Square start, Square target)
+{
+	ThrowNotImplementedException("");
+	return DirectionIndexFromSquareToSquare[start | (target << 6)];
+}
+constexpr char DirectionIndexFromSquareToSquare[]
+{
+	2,
+};
+#pragma endregion

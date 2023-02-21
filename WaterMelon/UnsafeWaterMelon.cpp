@@ -153,6 +153,7 @@ int UnsafeWaterMelon::GetEvaluation()
 	// -not so much far behind
 	// Bonus for moving pawns up the board (unless they defend the king, and bonus for pawns closer to the enemy king -
 	// but still the best bonuses for good pawn structure, the mentioned bonuses is just for something to work torwards
+	// Negbonus for checks and double checks
 
 	if (movesCount == 0)
 	{
@@ -166,9 +167,9 @@ int UnsafeWaterMelon::GetEvaluation()
 	if (true) // early game
 	{
 		constexpr int PawnEarlyGameValue = 100;
-		constexpr int KnightEarlyGameValue = 325;
-		constexpr int BishopEarlyGameValue = 343;
-		constexpr int RookEarlyGameValue = 530;
+		constexpr int KnightEarlyGameValue = 400;
+		constexpr int BishopEarlyGameValue = 440;
+		constexpr int RookEarlyGameValue = 450;
 		constexpr int QueenEarlyGameValue = 950;
 
 		Evaluation += PieceLists[WPawn].PieceNum * PawnEarlyGameValue;
@@ -184,7 +185,7 @@ int UnsafeWaterMelon::GetEvaluation()
 		Evaluation -= PieceLists[BQueen].PieceNum * QueenEarlyGameValue;
 
 		//for (size_t i = 0; i < 64; i++) // For later
-		//	Evaluation += GetBonusForPieceOnSquareEarlyGame(board[i], i);
+		//	Evaluation += GetBonusForPieceOnSquareEarlyGame(board[i], i); // Also use this for pawn collum bonus, and bonuses close to promotion
 	}
 	else if (false) // mid game
 	{
