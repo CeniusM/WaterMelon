@@ -1,6 +1,6 @@
 #pragma once
 
-// integer offset from pos to a new pos
+// integer offset from square to a new square
 typedef int Offset;
 
 constexpr Offset Invalid_Offset = -999;

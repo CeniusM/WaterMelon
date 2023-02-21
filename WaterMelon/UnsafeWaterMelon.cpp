@@ -358,9 +358,43 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 
 			if ((AllEnemyPosBitboard & queenLineOfSight) == 0) // no team peice blocking
 			{
-				// look through line of seight
-				Offset queenToKingOffset = offsetsIndexed[dirToKing];
-				
+				if ((AllFriendlyPiecePosBitboard & queenLineOfSight) == 0)
+				{
+					amountOfPiecesAttackingKing++;
+				}
+				else
+				{
+					// look through line of seight
+					Offset queenToKingOffset = offsetsIndexed[dirToKing];
+					Square pinnedPiecePos = InvalidSquare;
+					bool peiceAllreadyPinned = false;
+					bool doublePeice = false;
+					for (size_t i = 0; i < 8; i++)
+					{
+						queenPos += queenToKingOffset;
+						if (board[queenPos] != 0)
+							if (board[queenPos] == ourKingPieceVal)
+							{
+								break;
+							}
+							else if (IsPieceColor(board[queenPos], ourColor))
+							{
+								pinnedPiecePos = queenPos;
+								if (peiceAllreadyPinned)
+								{
+									doublePeice = true;
+									break;
+								}
+								else
+									peiceAllreadyPinned = true;
+							}
+					}
+					if (!doublePeice)
+					{
+						pinnedPieces |= DotBiboards[pinnedPiecePos];
+						pinningPiecesAttack[pinnedPiecePos] |= ;
+					}
+				}
 			}
 		}
 		if (queenIndexNumber2 != -1)
@@ -465,10 +499,10 @@ void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
 			if (IsPiecePinned(pos))
 			{
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
-					if (IsColor(GetColor(board[leftPos]), Black))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
 						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
-					if (IsColor(GetColor(board[rightPos]), Black))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
 						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
@@ -484,10 +518,10 @@ void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
 			else
 			{
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-					if (IsColor(GetColor(board[leftPos]), Black))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
 						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-					if (IsColor(GetColor(board[rightPos]), Black))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
 						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (board[oneMove] == 0)
@@ -521,10 +555,10 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	ourColorIndex = (int)whiteToMove;
 	enemyColorIndex = (int)!whiteToMove;
 
-	ourColour = playerTurn;
+	ourColor = playerTurn;
 	enemyColour = playerTurn ^ PlayerTurnSwitch;
 
-	ourKingPos = kingPos[ourColour >> 4];
+	ourKingPos = kingPos[ourColor >> 4];
 	enemyKingPos = kingPos[enemyColour >> 4];
 
 	GenerateBitboards();

@@ -30,6 +30,13 @@ void PrintArrayBytes(string type, string name, byte[] values)
     Console.WriteLine(output.ToString());
 }
 
+ulong ImprentBitOnBoard(ulong bitboard, int pos)
+{
+    uint newPos = (uint)pos;
+    ulong posBitboard = (ulong)(0b1 << (int)newPos);
+    return (bitboard | posBitboard);
+}
+
 // Would only work for 1d
 //void PrintArrayAndMethod(string type, string name, ulong[] offsets)
 //{
@@ -216,22 +223,88 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 //PrintArrayBytes("constexpr char", "DistanceToBoardInDirection", bytes);
 
 
-// -- Direction index from square to square --
-byte[] bytes = new byte[0b111111111111 + 1];
+// -- Direction index from square to square -- DIDENT WORK; ONLY MOVED ONE OUT 
+//byte[] bytes = new byte[0b111111111111 + 1];
+//for (int i = 0; i < 64; i++)
+//{
+//    for (int j = 0; j < 64; j++)
+//    {
+//        // Debuging
+//        //if (i == 9 && j == 17)
+//        //    Console.Write("");
+
+//        // First find the direction from start square to end square
+//        // If there is no direction, just make it invalid
+//        int startRank = i >> 3;
+//        int startCollum = i % 8;
+//        int endRank = j >> 3;
+//        int endCollum = j % 8;
+
+//        Diretions.DirectionIndexs index = Diretions.DirectionIndexs.InvalidIndexI;
+
+//        if (startRank == endRank)
+//        {
+//            if (startCollum > endCollum)
+//                index = Diretions.DirectionIndexs.WestI;
+//            else if (startCollum < endCollum)
+//                index = Diretions.DirectionIndexs.EastI;
+//            else
+//                index = Diretions.DirectionIndexs.InvalidIndexI;
+//        }
+//        else if (startCollum == endCollum)
+//        {
+//            if (startRank > endRank)
+//                index = Diretions.DirectionIndexs.NorthI;
+//            else if (startRank < endRank)
+//                index = Diretions.DirectionIndexs.SouthI;
+//            else
+//                index = Diretions.DirectionIndexs.InvalidIndexI;
+//        }
+//        else if (endRank - startRank == -1 && endCollum - startCollum == -1)
+//        {
+//            index = Diretions.DirectionIndexs.NorthWestI;
+//        }
+//        else if (endRank - startRank == -1 && endCollum - startCollum == 1)
+//        {
+//            index = Diretions.DirectionIndexs.NorthEastI;
+//        }
+//        else if (endRank - startRank == 1 && endCollum - startCollum == 1)
+//        {
+//            index = Diretions.DirectionIndexs.SouthEastI;
+//        }
+//        else if (endRank - startRank == 1 && endCollum - startCollum == -1)
+//        {
+//            index = Diretions.DirectionIndexs.SouthWestI;
+//        }
+//        else
+//            index = Diretions.DirectionIndexs.InvalidIndexI;
+
+//        bytes[i + (j << 6)] = (byte)index;
+//    }
+//}
+//int GetSquare(int rank, int collum) => (rank << 3) + collum;
+//byte GetIndex(int startSquare, int endSquare) => bytes[startSquare + (endSquare << 6)];
+//string GetIndexName(byte index) => ((Diretions.DirectionIndexs)index).ToString();
+////Console.WriteLine(GetIndexName(GetIndex(GetSquare(1, 1), GetSquare(1, 7))));
+
+//PrintArrayBytes("constexpr char", "DirectionIndexFromSquareToSquare", bytes);
+
+
+
+// -- Bitboard from square to square -- DIDENT WORK; ONLY MOVED ONE OUT 
+
+ulong[] bitboards = new ulong[0b111111111111 + 1];
 for (int i = 0; i < 64; i++)
 {
     for (int j = 0; j < 64; j++)
     {
-        // Debuging
-        //if (i == 9 && j == 17)
-        //    Console.Write("");
-
-        // First find the direction from start square to end square
-        // If there is no direction, just make it invalid
         int startRank = i >> 3;
         int startCollum = i % 8;
         int endRank = j >> 3;
         int endCollum = j % 8;
+
+        if (startRank == 1 && startCollum == 1 && endRank == 4 && endCollum == 4)
+            Console.Write("");
 
         Diretions.DirectionIndexs index = Diretions.DirectionIndexs.InvalidIndexI;
 
@@ -272,12 +345,32 @@ for (int i = 0; i < 64; i++)
         else
             index = Diretions.DirectionIndexs.InvalidIndexI;
 
-        bytes[i + (j << 6)] = (byte)index;
+        if (index == Diretions.DirectionIndexs.InvalidIndexI)
+        {
+            bitboards[i + (j << 6)] = (ulong)index;
+            continue;
+        }
+
+
+        int start = i;
+        int end = j;
+        int offset = Diretions.OffsetsIndexed[(int)index];
+        ulong bitboard = ImprentBitOnBoard(0, start);
+        while (true)
+        {
+            start += offset;
+            bitboard = ImprentBitOnBoard(bitboard, start);
+            if (start == end)
+                break;
+        }
+
+        bitboards[i + (j << 6)] = bitboard;
     }
 }
 int GetSquare(int rank, int collum) => (rank << 3) + collum;
-byte GetIndex(int startSquare, int endSquare) => bytes[startSquare + (endSquare << 6)];
-string GetIndexName(byte index) => ((Diretions.DirectionIndexs)index).ToString();
-//Console.WriteLine(GetIndexName(GetIndex(GetSquare(1, 1), GetSquare(1, 7))));
+ulong GetIndex(int startSquare, int endSquare) => bitboards[startSquare + (endSquare << 6)];
 
-PrintArrayBytes("constexpr char", "DirectionIndexFromSquareToSquare", bytes);
+PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 1)));
+PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 5)));
+
+//PrintArray("constexpr char", "DirectionIndexFromSquareToSquare", bitboards);
