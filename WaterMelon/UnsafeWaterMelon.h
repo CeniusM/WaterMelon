@@ -179,7 +179,7 @@ private:
 	/// </summary>
 	void GeneratePinsAndAttacks();
 	void AddKingMoves();
-	void AddPawnMoves();
+	void AddPawnMovesPinnedAndKingNotInCheckVersion();
 
 	constexpr bool IsPiecePinned(Square pos)
 	{
