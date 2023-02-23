@@ -217,6 +217,22 @@ int UnsafeWaterMelon::GetEvaluation()
 
 #define PushMove(move) moves[movesCount] = (move); movesCount++;
 
+#define PushMoveCheckKingBlock(move) \
+if ((attacksOnKing & DotBiboards[move]) != 0)\
+moves[movesCount] = (move); movesCount++;
+
+#define PushMovePinCheck(move) \
+if ((pinnedPieces & DotBiboards[move]) != 0)\
+if ((attacksOnKing & DotBiboards[move]) != 0)\
+moves[movesCount] = (move); movesCount++;
+
+#define PushMovePinCheckAndCheckKingBlock(move) \
+if ((pinnedPieces & DotBiboards[move]) != 0)\
+moves[movesCount] = (move); movesCount++;
+
+
+
+
 void UnsafeWaterMelon::RemoveNoneCaptures()
 {
 	int newMovesCount = 0;
@@ -356,11 +372,23 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 			Bitboard queenLineOfSight = GetQueenBitboardFromInDir(queenPos, dirToKing);
 			Bitboard kingLineOfSight = GetQueenBitboardFromInDir(ourKingPos, dirToQueen);
 
-			if ((AllEnemyPosBitboard & queenLineOfSight) == 0) // no team peice blocking
+			bool NoEnemyPieceBlocking = (AllEnemyPosBitboard & queenLineOfSight) == 0;
+			bool NoTeamPieceBlocking = (allFriendlyAttakcs & queenLineOfSight) == 0;
+
+			if (NoEnemyPieceBlocking && NoTeamPieceBlocking)
 			{
-				// look through line of seight
+				amountOfPiecesAttackingKing++;
+				attacksOnKing |= kingLineOfSight;
+			}
+			else if (NoEnemyPieceBlocking)
+			{
 				Offset queenToKingOffset = offsetsIndexed[dirToKing];
-				
+				// look through line of seight
+
+			}
+			else
+			{
+
 			}
 		}
 		if (queenIndexNumber2 != -1)
@@ -427,6 +455,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 		// king is not relevant
 	}
 
+
 	if (amountOfPiecesAttackingKing == 0)
 	{
 		KingInCheck = false;
@@ -439,6 +468,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 	}
 	else
 	{
+	TwoAtcOnKing:
 		KingInCheck = true;
 		KingInDoubleCheck = true;
 	}
@@ -449,7 +479,7 @@ void UnsafeWaterMelon::AddKingMoves()
 
 }
 
-void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
+void UnsafeWaterMelon::AddPawnMoves()
 {
 	if (whiteToMove)
 	{
@@ -466,18 +496,18 @@ void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
 			{
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
 					if (IsColor(GetColor(board[leftPos]), Black))
-						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
+						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
 					if (IsColor(GetColor(board[rightPos]), Black))
-						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
+						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
 				{
 					if (board[oneMove] == 0)
 					{
-						PushMove(CreateMove(pos, oneMove, NoFlag));
+						PushMoveCheckKingBlock(CreateMove(pos, oneMove, NoFlag));
 						if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-							PushMove(CreateMove(pos, twoMove, PawnDoubleForward));
+							PushMoveCheckKingBlock(CreateMove(pos, twoMove, PawnDoubleForward));
 					}
 				}
 			}
@@ -485,16 +515,16 @@ void UnsafeWaterMelon::AddPawnMovesPinnedAndKingNotInCheckVersion()
 			{
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
 					if (IsColor(GetColor(board[leftPos]), Black))
-						PushMove(CreateMove(pos, leftPos, NoFlagCapture));
+						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
 					if (IsColor(GetColor(board[rightPos]), Black))
-						PushMove(CreateMove(pos, rightPos, NoFlagCapture));
+						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (board[oneMove] == 0)
 				{
-					PushMove(CreateMove(pos, oneMove, NoFlag));
+					PushMoveCheckKingBlock(CreateMove(pos, oneMove, NoFlag));
 					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-						PushMove(CreateMove(pos, twoMove, PawnDoubleForward));
+						PushMoveCheckKingBlock(CreateMove(pos, twoMove, PawnDoubleForward));
 				}
 			}
 		}
@@ -536,7 +566,27 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	if (KingInDoubleCheck)
 		return movesCount;
 
-	// 4 difrent versions
+	AddPawnMoves();
+
+	if (onlyCaptures)
+		RemoveNoneCaptures();
+	if (moveOrder)
+		OrderMoves();
+
+	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
+	return movesCount;
+}
+
+#pragma endregion
+
+
+
+
+/*
+
+Code for later
+
+// 4 difrent versions
 	// pinned with king in check (slowsts...)
 	// pinned with king NOT in check
 	// no pin with king in check
@@ -572,13 +622,4 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		}
 	}
 
-	if (onlyCaptures)
-		RemoveNoneCaptures();
-	if (moveOrder)
-		OrderMoves();
-
-	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
-	return movesCount;
-}
-
-#pragma endregion
+*/
