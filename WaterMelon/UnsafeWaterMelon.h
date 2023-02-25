@@ -113,9 +113,9 @@ public:
 	Bitboard allFriendlyAttakcs{};
 	Bitboard allEnemyAttacks{};
 
-	// This will have a line from the enemy piece of it is a sliding peice,
+	// This will have a line from the enemy piece to right infron of the king if is a sliding peice,
 	// If it is a knight or a pawn, it will just show its pos, so when you move to that pos
-	// you have captured the attacking enemy piece
+	// you have captured the attacking enemy piece, or block the attack
 	Bitboard attacksOnKing;
 
 

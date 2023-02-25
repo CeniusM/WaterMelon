@@ -334,7 +334,7 @@ void UnsafeWaterMelon::GenerateBitboards()
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
 #define AttackOnKingDetected(BitboardAttack) \
-	attacksOnKing |= BitboardAttack;\
+	attacksOnKing = BitboardAttack;\
 	if (KingInCheck)\
 	{\
 		KingInDoubleCheck = true; \
