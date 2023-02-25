@@ -333,7 +333,14 @@ void UnsafeWaterMelon::GenerateBitboards()
 
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
-	int amountOfPiecesAttackingKing = 0;
+#define AttackOnKingDetected() \
+	if (KingInCheck)\
+	{\
+		KingInDoubleCheck = true; \
+		return;\
+	}\
+	else\
+		KingInCheck = true; \
 
 	pinnedPieces = 0;
 	allEnemyAttacks = 0;
@@ -377,7 +384,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 
 			if (NoEnemyPieceBlocking && NoTeamPieceBlocking)
 			{
-				amountOfPiecesAttackingKing++;
+				AttackOnKingDetected();
 				attacksOnKing |= kingLineOfSight;
 			}
 			else if (NoEnemyPieceBlocking)
@@ -453,24 +460,6 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 		}
 
 		// king is not relevant
-	}
-
-
-	if (amountOfPiecesAttackingKing == 0)
-	{
-		KingInCheck = false;
-		KingInDoubleCheck = false;
-	}
-	else if (amountOfPiecesAttackingKing == 1)
-	{
-		KingInCheck = true;
-		KingInDoubleCheck = false;
-	}
-	else
-	{
-	TwoAtcOnKing:
-		KingInCheck = true;
-		KingInDoubleCheck = true;
 	}
 }
 
