@@ -53,7 +53,7 @@ constexpr Piece CreatePiece(PieceType type, Color color)
 	return type | color;
 }
 
-constexpr bool IsColor(Color piece, Color color)
+constexpr bool IsPieceColor(Piece piece, Color color)
 {
 	return (piece & colorMask) == color;
 }

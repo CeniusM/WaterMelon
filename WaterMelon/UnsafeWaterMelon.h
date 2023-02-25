@@ -113,8 +113,6 @@ public:
 	Bitboard allFriendlyAttakcs{};
 	Bitboard allEnemyAttacks{};
 
-	Bitboard allEnemyAttacks;
-
 	// This will have a line from the enemy piece of it is a sliding peice,
 	// If it is a knight or a pawn, it will just show its pos, so when you move to that pos
 	// you have captured the attacking enemy piece
@@ -135,13 +133,16 @@ public:
 
 	bool whiteToMove;
 
-	int ourColour;
+	int ourColor;
 	int ourKingPos;
 	int ourColorIndex;
 
 	int enemyColour;
 	int enemyKingPos;
 	int enemyColorIndex;
+
+	int ourKingPieceVal;
+	int enemyKingPieceVal;
 
 
 	/*

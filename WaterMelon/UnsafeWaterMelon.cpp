@@ -333,7 +333,8 @@ void UnsafeWaterMelon::GenerateBitboards()
 
 void UnsafeWaterMelon::GeneratePinsAndAttacks()
 {
-#define AttackOnKingDetected() \
+#define AttackOnKingDetected(BitboardAttack) \
+	attacksOnKing |= BitboardAttack;\
 	if (KingInCheck)\
 	{\
 		KingInDoubleCheck = true; \
@@ -371,7 +372,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 		// And you can also use the allEnemyPosBitboard, beacous if there is any of the enemys pices blocking its all done
 
 		int queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
-	DoQueenAgain:// Oof
+	DoQueenAgain:// Oof, goto label
 		{
 			DirectionIndex dirToQueen = GetDirectionIndexFromSquareToSquare(ourKingPos, queenPos);
 			DirectionIndex dirToKing = GetDirectionIndexFromSquareToSquare(queenPos, ourKingPos);
@@ -384,25 +385,48 @@ void UnsafeWaterMelon::GeneratePinsAndAttacks()
 
 			if (NoEnemyPieceBlocking && NoTeamPieceBlocking)
 			{
-				AttackOnKingDetected();
-				attacksOnKing |= kingLineOfSight;
+				AttackOnKingDetected(kingLineOfSight);
 			}
 			else if (NoEnemyPieceBlocking)
 			{
-				Offset queenToKingOffset = offsetsIndexed[dirToKing];
 				// look through line of seight
+				Offset queenToKingOffset = offsetsIndexed[dirToKing];
+				Square pinnedPiecePos = InvalidSquare;
+				bool peiceAllreadyPinned = false;
+				bool doublePeiceBlock = false;
+				for (size_t i = 0; i < 123123; i++)
+				{
+					queenPos += queenToKingOffset;
+					if (board[queenPos] != 0)
+						if (board[queenPos] == ourKingPieceVal)
+						{
+							break;
+						}
+						else if (IsPieceColor(board[queenPos], ourColor))
+						{
+							pinnedPiecePos = queenPos;
+							if (peiceAllreadyPinned)
+							{
+								doublePeiceBlock = true;
+								break;
+							}
+							else
+								peiceAllreadyPinned = true;
+						}
+				}
+				if (!doublePeiceBlock) // no double block
+				{
+					pinnedPieces |= (0b1U << pinnedPiecePos);
+					pinningPiecesAttack[pinnedPiecePos] |= kingLineOfSight;
 
-			}
-			else
-			{
-
+				}
 			}
 		}
 		if (queenIndexNumber2 != -1)
 		{
 			queenIndexNumber2 = -1;
 			queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
-			goto DoQueenAgain;
+			goto DoQueenAgain; // no good
 		}
 	}
 
@@ -484,10 +508,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 			if (IsPiecePinned(pos))
 			{
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
-					if (IsColor(GetColor(board[leftPos]), Black))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
 						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
-					if (IsColor(GetColor(board[rightPos]), Black))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
 						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
@@ -503,10 +527,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 			else
 			{
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-					if (IsColor(GetColor(board[leftPos]), Black))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
 						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-					if (IsColor(GetColor(board[rightPos]), Black))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
 						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (board[oneMove] == 0)
@@ -540,10 +564,10 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	ourColorIndex = (int)whiteToMove;
 	enemyColorIndex = (int)!whiteToMove;
 
-	ourColour = playerTurn;
+	ourColor = playerTurn;
 	enemyColour = playerTurn ^ PlayerTurnSwitch;
 
-	ourKingPos = kingPos[ourColour >> 4];
+	ourKingPos = kingPos[ourColor >> 4];
 	enemyKingPos = kingPos[enemyColour >> 4];
 
 	GenerateBitboards();
