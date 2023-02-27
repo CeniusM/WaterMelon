@@ -54,6 +54,9 @@ public:
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
 	int GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false);
 
+	// Checks for the current enemy, and only works after GenerateBitboards() or GetPossibleMoves()
+	bool IsSquareSafe(Square square);
+
 	/// WARNING: ONLY CALL THIS AFTER GetPossibleMoves() IS CALLED. Positiv is good for white and negativ is good for black.
 	int GetEvaluation();
 
@@ -141,6 +144,20 @@ public:
 
 	int ourKingPieceVal;
 	int enemyKingPieceVal;
+
+
+	Piece OurPawnKey;
+	Piece OurKnightKey;
+	Piece OurBishopKey;
+	Piece OurRookKey;
+	Piece OurQueenKey;
+	Piece OurKingKey;
+	Piece EnemyPawnKey;
+	Piece EnemyKnightKey;
+	Piece EnemyBishopKey;
+	Piece EnemyRookKey;
+	Piece EnemyQueenKey;
+	Piece EnemyKingKey;
 
 
 	/*

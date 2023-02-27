@@ -17,17 +17,21 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	if (capturedPiece)
 		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-	PieceLists[capturedPiece].MovePiece(startSquare, targetSquare);
+	PieceLists[movingPiece].MovePiece(startSquare, targetSquare);
 
+	if (capturedPiece)
+	{
+		AllPiecePosBitboard ^= (Bitboard)0b1 << targetSquare;
+		PieceBitboardPos[capturedPiece] ^= (Bitboard)0b1 << targetSquare;
+	}
 	AllPiecePosBitboard ^= moveBitboard;
-	PieceBitboardPos[capturedPiece] ^= moveBitboard;
-
-	whiteToMove = (playerTurn == 8);
+	PieceBitboardPos[movingPiece] ^= moveBitboard;
 
 	board[startSquare] = 0;
 	board[targetSquare] = movingPiece;
 
-
+	if (movingPiece == OurKingKey)
+		kingPos[ourColorIndex] = targetSquare;
 
 	playerTurn ^= PlayerTurnSwitch;
 }
@@ -127,6 +131,8 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 	{
 		m_HasInit = false;
 	}
+
+	GetPossibleMoves(moves); // init boards
 }
 #pragma endregion
 
@@ -289,6 +295,9 @@ void UnsafeWaterMelon::GenerateBitboards()
 {
 	// The sliding pieces will be initilized when they get there moves generated
 
+	allFriendlyAttakcs = 0;
+	allEnemyAttacks = 0;
+
 	pieceAttackBitboards[WPawn] = 0;
 	pieceAttackBitboards[WBishop] = 0;
 	pieceAttackBitboards[WKnight] = 0;
@@ -306,8 +315,7 @@ void UnsafeWaterMelon::GenerateBitboards()
 	for (size_t i = 0; i < PieceLists[WKnight].PieceNum; i++)
 		pieceAttackBitboards[WKnight] |= GetKnightAllDirBitboard(PieceLists[WKnight].OccupiedSquares[i]);
 
-	for (size_t i = 0; i < PieceLists[WKing].PieceNum; i++)
-		pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(PieceLists[WKing].OccupiedSquares[i]);
+	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]);
 
 	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
 		pieceAttackBitboards[BPawn] |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
@@ -315,8 +323,7 @@ void UnsafeWaterMelon::GenerateBitboards()
 	for (size_t i = 0; i < PieceLists[BKnight].PieceNum; i++)
 		pieceAttackBitboards[BKnight] |= GetKnightAllDirBitboard(PieceLists[BKnight].OccupiedSquares[i]);
 
-	for (size_t i = 0; i < PieceLists[BKing].PieceNum; i++)
-		pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(PieceLists[BKing].OccupiedSquares[i]);
+	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]);
 
 
 
@@ -504,7 +511,37 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 
 void UnsafeWaterMelon::AddKingMoves()
 {
-
+	constexpr Offset Kingmoves[]
+	{ -9,-8,-7,-1,1,7,8,9 };
+	constexpr Offset KingmovesLineoffsets[]
+	{ -1,-1,-1,0,0,1,1,1 };
+	// plz unwrap mister compiler
+	for (size_t i = 0; i < 8; i++)
+	{
+		int newPos = ourKingPos + Kingmoves[i];
+		if ((newPos >> 3) - KingmovesLineoffsets[i] != ourKingPos >> 3)
+			continue;
+		if (IsSquareInBounds(newPos))
+		{
+			if (board[newPos])
+			{
+				if (board[newPos] & enemyColour)
+				{
+					board[ourKingPos] = 0;
+					if (IsSquareSafe(newPos))
+						PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlagCapture));
+					board[ourKingPos] = OurKingKey;
+				}
+			}
+			else
+			{
+				board[ourKingPos] = 0;
+				if (IsSquareSafe(newPos))
+					PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlag));
+				board[ourKingPos] = OurKingKey;
+			}
+		}
+	}
 }
 
 void UnsafeWaterMelon::AddPawnMoves()
@@ -567,6 +604,119 @@ void UnsafeWaterMelon::AddPawnMoves()
 	}
 }
 
+bool UnsafeWaterMelon::IsSquareSafe(Square square)
+{
+	//Logger::LogBitboard(allEnemyAttacks);
+
+	if (BitboardContains(allEnemyAttacks, square))
+		return false;
+
+	//Logger::LogBitboard(PieceBitboardPos[EnemyQueenKey]);
+	Bitboard kingQueenRays = GetQueenAllDirBitboard(square);
+	if (BitboardsCollide(kingQueenRays, PieceBitboardPos[EnemyQueenKey]))
+	{
+		// Queen hitting
+
+		// Method 1, use a loop to find all the queens around in the difrent directions
+		for (DirectionIndex i = QueenStartDirectionIndex; i < QueenEndDirectionIndex; i++)
+		{
+			if (BitboardsCollide(GetQueenBitboardFromInDir(square, i), PieceBitboardPos[EnemyQueenKey]))
+			{
+				// Is a hit
+				Offset offset = offsetsIndexed[i];
+				Square ray = square;
+				int distance = GetDistanceToBoardInDirection(square, i);
+				for (size_t i = 0; i < distance; i++)
+				{
+					ray += offset;
+					Square piece = board[ray];
+					if (piece)
+					{
+						if (piece == EnemyQueenKey)
+							return false;
+						break; // Hit someting else
+					}
+				}
+			}
+		}
+
+		// Method 2, find the queen and index into pre data to find the direction
+		//int count = PieceLists[EnemyQueenKey].PieceNum;
+		//for (size_t i = 0; i < count; i++)
+		//{
+		//	if (BitboardContains(kingQueenRays, PieceLists[EnemyQueenKey].OccupiedSquares[i])) // hit by king rays
+		//	{
+		//		// Then get the bitboard with squares BETWEEN the two pieces and check that AllPiecesBitboard does not colide with it
+		//	}
+		//}
+	}
+	//Logger::LogBitboard(GetBishopAllDirBitboard(square));
+	//Logger::LogBitboard(PieceBitboardPos[EnemyBishopKey]);
+	if (BitboardsCollide(GetBishopAllDirBitboard(square), PieceBitboardPos[EnemyBishopKey]))
+	{
+		// Bishop hitting
+		for (DirectionIndex i = BishopStartDirectionIndex; i < BishopEndDirectionIndex; i++)
+		{
+			//Logger::Log("--------");
+			//Logger::LogBitboard(GetBishopBitboardFromInDir(square, i));
+			//Logger::Log("--------");
+			if (BitboardsCollide(GetBishopBitboardFromInDir(square, i), PieceBitboardPos[EnemyBishopKey]))
+			{
+				// Is a hit
+				Offset offset = offsetsIndexed[i];
+				Square ray = square;
+				int distance = GetDistanceToBoardInDirection(square, i);
+				for (size_t i = 0; i < distance; i++)
+				{
+					ray += offset;
+					Square piece = board[ray];
+					if (piece)
+					{
+						if (piece == EnemyBishopKey)
+							return false;
+						break; // Hit someting else
+					}
+				}
+			}
+		}
+	}
+	//Logger::Log("--------");
+	//Logger::LogBitboard(PieceBitboardPos[EnemyRookKey]);
+	//Logger::Log("--------");
+	//Logger::LogBitboard(GetRookAllDirBitboard(square));
+	//Logger::Log("--------");
+	if (BitboardsCollide(GetRookAllDirBitboard(square), PieceBitboardPos[EnemyRookKey]))
+	{
+		// Rook hitting
+		for (DirectionIndex i = RookStartDirectionIndex; i < RookEndDirectionIndex; i++)
+		{
+			//Logger::Log("--------");
+			//Logger::LogBitboard(GetRookBitboardFromInDir(square, i));
+			//Logger::Log("--------");
+			if (BitboardsCollide(GetRookBitboardFromInDir(square, i), PieceBitboardPos[EnemyRookKey]))
+			{
+				// Is a hit
+				Offset offset = offsetsIndexed[i];
+				Square ray = square;
+				int distance = GetDistanceToBoardInDirection(square, i);
+				for (size_t i = 0; i < distance; i++)
+				{
+					ray += offset;
+					Square piece = board[ray];
+					if (piece)
+					{
+						if (piece == EnemyRookKey)
+							return false;
+						break; // Hit someting else
+					}
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
 void UnsafeWaterMelon::AddQueenMoves()
 {
 	Piece pieceKey = Queen | ourColor;
@@ -627,6 +777,7 @@ void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
+	//SquaresToRenderByGUIForDebuing.clear();
 	// -- Init --
 	movesCount = 0;
 
@@ -634,14 +785,47 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	KingInDoubleCheck = false;
 	whiteToMove = playerTurn == 8;
 
-	ourColorIndex = (int)whiteToMove;
-	enemyColorIndex = (int)!whiteToMove;
+	ourColorIndex = (int)!whiteToMove;
+	enemyColorIndex = (int)whiteToMove;
 
 	ourColor = playerTurn;
 	enemyColour = playerTurn ^ PlayerTurnSwitch;
 
 	ourKingPos = kingPos[ourColor >> 4];
 	enemyKingPos = kingPos[enemyColour >> 4];
+
+	if (whiteToMove)
+	{
+		OurPawnKey = WPawn;
+		OurKnightKey = WKnight;
+		OurBishopKey = WBishop;
+		OurRookKey = WRook;
+		OurQueenKey = WQueen;
+		OurKingKey = WKing;
+		EnemyPawnKey = BPawn;
+		EnemyKnightKey = BKnight;
+		EnemyBishopKey = BBishop;
+		EnemyRookKey = BRook;
+		EnemyQueenKey = BQueen;
+		EnemyKingKey = BKing;
+	}
+	else
+	{
+		EnemyPawnKey = WPawn;
+		EnemyKnightKey = WKnight;
+		EnemyBishopKey = WBishop;
+		EnemyRookKey = WRook;
+		EnemyQueenKey = WQueen;
+		EnemyKingKey = WKing;
+		OurPawnKey = BPawn;
+		OurKnightKey = BKnight;
+		OurBishopKey = BBishop;
+		OurRookKey = BRook;
+		OurQueenKey = BQueen;
+		OurKingKey = BKing;
+	}
+
+
 
 	GenerateBitboards();
 
@@ -650,7 +834,10 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	AddKingMoves();
 
 	if (KingInDoubleCheck)
+	{
+		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
+	}
 
 	AddPawnMoves();
 

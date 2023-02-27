@@ -20,7 +20,12 @@ constexpr Bitboard LeftSideIs0 = 0b111111101111111011111110111111101111111011111
 
 constexpr bool BitboardContains(Bitboard bitboard, Square pos)
 {
-	return ((bitboard >> pos) & SignificantBit) == SignificantBit;
+	return (bitboard >> pos) & SignificantBit;
+}
+
+constexpr bool BitboardsCollide(Bitboard bitboard, Bitboard bitboard2)
+{
+	return bitboard & bitboard2;
 }
 
 constexpr bool PosOnLeftSide(Square pos)

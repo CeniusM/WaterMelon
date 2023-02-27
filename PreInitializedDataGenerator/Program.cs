@@ -109,12 +109,13 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 //PrintArray("constexpr Bitboard", "RookSquareToAllDir", combined);
 //PrintArray("constexpr Bitboard", "RookSquareToDir", diretions);
 
-// Bishop
-//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(Diretions.OffsetsIndexed.Take(new Range(4, 8)).ToArray(), Diretions.LineDiffs.Take(new Range(4, 8)).ToArray());
+//Bishop
+//var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(Diretions.OffsetsIndexed, Diretions.LineDiffs);
 //Bitboard[] combined = boards.AllCombinned;
 //Bitboard[] diretions = boards.Diretions;
 //PrintArray("constexpr Bitboard", "BishopSquareToAllDir", combined);
 //PrintArray("constexpr Bitboard", "BishopSquareToDir", diretions);
+//return;
 
 // King
 //var boards = SlidingBitmapGenerator.GetBoardsFromSquareInDirection(Diretions.OffsetsIndexed, Diretions.LineDiffs, 1);
