@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "Square.h"
 #include "MoveFlag.h"
 
@@ -64,7 +65,7 @@ constexpr Move CreateMove(Pos start, Pos target, MoveFlag flag)
 	// error
 	//if (flag & 0b11100000000000000 != 0)
 	// error
-		
+
 	return ((start) | ((target) << 6) | ((flag) << 12));
 }
 #else
@@ -73,3 +74,14 @@ constexpr Move CreateMove(Square start, Square target, MoveFlag flag)
 	return start | (target << 6) | (flag << 12);
 }
 #endif
+
+//constexpr std::string GetMoveName(Move move)
+//{
+//	int start = GetMoveStart(move);
+//	int target = GetMoveTarget(move);
+//	std::string str;
+//	str += start;
+//	str += " to ";
+//	str += target;
+//	return str;
+//}

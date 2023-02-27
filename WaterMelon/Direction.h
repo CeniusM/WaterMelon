@@ -30,6 +30,30 @@ enum DirectionOffsets : DirectionOffset
 	NorthWestO = -9,
 };
 
+enum KnightOffsets : Offset
+{
+	NorthWestKnightO,
+	NorthEastKnightO,
+	WestNorthKnightO,
+	EastNorthKnightO,
+	WestSouthKnightO,
+	EastSouthKnightO,
+	SouthWestKnightO,
+	SouthEastKnightO,
+};
+
+constexpr Offset KnightOffsetsIndexed[]
+{
+	-17,
+	-15,
+	-10,
+	-6,
+	6,
+	10,
+	15,
+	17,
+};
+
 constexpr Offset offsetsIndexed[]
 {
 	DirectionOffsets::NorthO,

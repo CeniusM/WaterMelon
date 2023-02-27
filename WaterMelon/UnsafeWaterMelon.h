@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <iterator> // for debuging
+#include <list> // for debuging
 
 #include "PieceList.h"
 #include "FENUtility.h"
@@ -27,6 +29,13 @@ constexpr int PlayerTurnSwitch = 0b11000;
 class UnsafeWaterMelon
 {
 public:
+
+	// --- DEBUGING ---
+
+	std::list<Square> SquaresToRenderByGUIForDebuing{}; // Don't mind the name
+
+	// ^^^ DEBGUING ^^^
+
 	GameState gameState = GameStates::Running;
 
 	BoardStateSave boardStateHistory[MaxGameMovesCount];
@@ -178,7 +187,7 @@ private:
 	/// <summary>
 	/// Generate the bitboards for the pinned pieces to the king.
 	/// </summary>
-	void GeneratePinsAndAttacks();
+	void GeneratePinsAndAttacksOnKing();
 	void AddKingMoves();
 	void AddPawnMoves();
 

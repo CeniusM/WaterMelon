@@ -116,6 +116,15 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 		}fenPtr++;
 
 
+		for (size_t i = 0; i < 64; i++)
+		{
+			if (board[i])
+			{
+				AllPiecePosBitboard |= (Bitboard)0b1 << i;
+				PieceBitboardPos[board[i]] |= (Bitboard)0b1 << i;
+			}
+		}
+
 		m_HasInit = true;
 	}
 	catch (const std::exception&)
@@ -218,16 +227,16 @@ int UnsafeWaterMelon::GetEvaluation()
 #define PushMove(move) moves[movesCount] = (move); movesCount++;
 
 #define PushMoveCheckKingBlock(move) \
-if ((attacksOnKing & DotBiboards[move]) != 0)\
+if ((attacksOnKing & DotBiboards[move]) == 0)\
 moves[movesCount] = (move); movesCount++;
 
 #define PushMovePinCheck(move) \
-if ((pinnedPieces & DotBiboards[move]) != 0)\
-if ((attacksOnKing & DotBiboards[move]) != 0)\
+if ((pinnedPieces & DotBiboards[move]) == 0)\
+if ((attacksOnKing & DotBiboards[move]) == 0)\
 moves[movesCount] = (move); movesCount++;
 
 #define PushMovePinCheckAndCheckKingBlock(move) \
-if ((pinnedPieces & DotBiboards[move]) != 0)\
+if ((pinnedPieces & DotBiboards[move]) == 0)\
 moves[movesCount] = (move); movesCount++;
 
 
@@ -331,159 +340,141 @@ void UnsafeWaterMelon::GenerateBitboards()
 	}
 }
 
-void UnsafeWaterMelon::GeneratePinsAndAttacks()
+void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray out in each direction
 {
-#define AttackOnKingDetected(BitboardAttack) \
-	attacksOnKing = BitboardAttack;\
-	if (KingInCheck)\
-	{\
-		KingInDoubleCheck = true; \
-		return;\
-	}\
-	else\
-		KingInCheck = true; \
+	Bitboard slidingPieces =
+		PieceBitboardPos[Queen | enemyColour] |
+		PieceBitboardPos[Rook | enemyColour] |
+		PieceBitboardPos[Bishop | enemyColour];
 
-	pinnedPieces = 0;
-	allEnemyAttacks = 0;
-
-	// Check if any queens is hitting the king
-	if ((GetQueenAllDirBitboard(ourKingPos) & PieceBitboardPos[Queen & enemyColour]) != 0)
+	for (DirectionIndex i = 0; i < 8; i++) // The directions
 	{
-		int queenIndex = -1;
-		int queenIndexNumber2 = -1; // never going to need more that 2, becouas of double checks is plenty 
-		if (PieceLists[Queen & enemyColour].PieceNum != 1)
+		if (GetQueenBitboardFromInDir(ourKingPos, i) & slidingPieces) // There is something there
 		{
-			for (size_t i = 0; i < PieceLists[Queen & enemyColour].PieceNum; i++)
-				if (BitboardContains(GetQueenAllDirBitboard(ourKingPos), PieceLists[Queen & enemyColour].OccupiedSquares[i]) != 0)
+			Square rayPos = ourKingPos;
+			Offset offset = offsetsIndexed[i];
+			int DistanceToSide = GetDistanceToBoardInDirection(rayPos, i);
+
+			bool DoublePiece = false;
+			bool AttackBehindPiece = false;
+			Square OurPiecePos = InvalidSquare;
+
+			for (size_t i = 0; i < DistanceToSide; i++)
+			{
+				rayPos += offset;
+				Piece piece = board[rayPos];
+				if (piece) // piece is not empty
 				{
-					if (queenIndex == -1)
-						queenIndex = i;
-					else
+					if (GetColor(piece) == ourColor)
 					{
-						queenIndexNumber2 = i;
+						if (OurPiecePos == InvalidSquare)
+							OurPiecePos = rayPos;
+						else
+						{
+							DoublePiece = true;
+							break;
+						}
+					}
+					else // Enemy
+					{
+						if (i & 0b100) // Diagonal
+						{
+							if (!IsBishopOrQueen(piece))
+								continue;
+						}
+						else // Not Diagonal...
+							if (!IsRookOrQueen(piece))
+								continue;
+
+						if (OurPiecePos == 0) // Attack On King
+						{
+							attacksOnKing = GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+							if (KingInCheck)
+							{
+								KingInDoubleCheck = true;
+								return;
+							}
+							else
+								KingInCheck = true;
+						}
+						else // Piece Pinned
+						{
+							pinnedPieces |= DotBiboards[OurPiecePos];
+							pinningPiecesAttack[OurPiecePos] |=
+								GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+						}
 						break;
 					}
 				}
-		}
-		else
-			queenIndex = 0;
-
-		// Note, you can use the allFriendlyPosBitboard to see if there is no or some pieces blokcing
-		// And you can also use the allEnemyPosBitboard, beacous if there is any of the enemys pices blocking its all done
-
-		int queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
-	DoQueenAgain:// Oof, goto label
-		{
-			DirectionIndex dirToQueen = GetDirectionIndexFromSquareToSquare(ourKingPos, queenPos);
-			DirectionIndex dirToKing = GetDirectionIndexFromSquareToSquare(queenPos, ourKingPos);
-
-			Bitboard queenLineOfSight = GetQueenBitboardFromInDir(queenPos, dirToKing);
-			Bitboard kingLineOfSight = GetQueenBitboardFromInDir(ourKingPos, dirToQueen);
-
-			bool NoEnemyPieceBlocking = (AllEnemyPosBitboard & queenLineOfSight) == 0;
-			bool NoTeamPieceBlocking = (allFriendlyAttakcs & queenLineOfSight) == 0;
-
-			if (NoEnemyPieceBlocking && NoTeamPieceBlocking)
-			{
-				AttackOnKingDetected(kingLineOfSight);
 			}
-			else if (NoEnemyPieceBlocking)
-			{
-				// look through line of seight
-				Offset queenToKingOffset = offsetsIndexed[dirToKing];
-				Square pinnedPiecePos = InvalidSquare;
-				bool peiceAllreadyPinned = false;
-				bool doublePeiceBlock = false;
-				for (size_t i = 0; i < 123123; i++)
-				{
-					queenPos += queenToKingOffset;
-					if (board[queenPos] != 0)
-						if (board[queenPos] == ourKingPieceVal)
-						{
-							break;
-						}
-						else if (IsPieceColor(board[queenPos], ourColor))
-						{
-							pinnedPiecePos = queenPos;
-							if (peiceAllreadyPinned)
-							{
-								doublePeiceBlock = true;
-								break;
-							}
-							else
-								peiceAllreadyPinned = true;
-						}
-				}
-				if (!doublePeiceBlock) // no double block
-				{
-					pinnedPieces |= (0b1U << pinnedPiecePos);
-					pinningPiecesAttack[pinnedPiecePos] |= kingLineOfSight;
+		}
 
+		if (pieceAttackBitboards[Knight | enemyColour] & ((Bitboard)0b1 << ourKingPos))
+		{
+			if (KingInCheck) // no need to know where the attack comes from
+			{
+				KingInDoubleCheck = true;
+				return;
+			}
+
+			// There cant be more than 1 knight attacking the king
+			for (size_t i = 0; i < 8; i++)
+			{
+				Square squareChecked = ourKingPos + KnightOffsetsIndexed[i];
+				if (board[squareChecked] == (Knight & enemyColour))
+				{
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << squareChecked;
+					break;
 				}
 			}
 		}
-		if (queenIndexNumber2 != -1)
-		{
-			queenIndexNumber2 = -1;
-			queenPos = PieceLists[Queen & enemyColour].OccupiedSquares[queenIndex];
-			goto DoQueenAgain; // no good
-		}
-	}
 
-	// Check if any rooks is hitting the king
-	if ((GetRookAllDirBitboard(ourKingPos) & PieceBitboardPos[Rook & enemyColour]) != 0)
-	{
-		int rookIndex = 0; // rooks cant double check
-		if (PieceLists[Rook & enemyColour].PieceNum != 1)
+		if (pieceAttackBitboards[Pawn | enemyColour] & ((Bitboard)0b1 << ourKingPos))
 		{
-			for (size_t i = 0; i < PieceLists[Rook & enemyColour].PieceNum; i++)
-				if (BitboardContains(GetRookAllDirBitboard(ourKingPos), PieceLists[Rook & enemyColour].OccupiedSquares[i]) != 0)
+			if (KingInCheck) // no need to know where the attack comes from
+			{
+				KingInDoubleCheck = true;
+				return;
+			}
+
+			// There cant be more than 1 pawn attacking the king
+			if (whiteToMove)
+			{
+				if (board[ourKingPos + 7] == BPawn)
 				{
-					rookIndex = i;
-					break;
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << ourKingPos + 7;
 				}
-		}
-
-
-	}
-
-	// Check if any bishops is hitting the king
-	if ((GetBishopAllDirBitboard(ourKingPos) & PieceBitboardPos[Bishop & enemyColour]) != 0)
-	{
-		int bishopIndex = 0; // bishops cant double check
-		if (PieceLists[Bishop & enemyColour].PieceNum != 1)
-		{
-			for (size_t i = 0; i < PieceLists[Bishop & enemyColour].PieceNum; i++)
-				if (BitboardContains(GetBishopAllDirBitboard(ourKingPos), PieceLists[Bishop & enemyColour].OccupiedSquares[i]) != 0)
+				else
 				{
-					bishopIndex = i;
-					break;
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << ourKingPos + 9;
 				}
+			}
+			else
+			{
+				if (board[ourKingPos - 7] == BPawn)
+				{
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << ourKingPos - 7;
+				}
+				else
+				{
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << ourKingPos - 9;
+				}
+			}
+
 		}
-
-
 	}
 
-	// Now we just check for direct attakcs on the king
 
-	// Enemy king, knight and pawns
-	if (BitboardContains(allEnemyAttacks, ourKingPos))
+	SquaresToRenderByGUIForDebuing.clear();
+	for (size_t i = 0; i < 64; i++)
 	{
-		// Something is hitting king
-
-		// check pawns
-		if (BitboardContains(pieceAttackBitboards[Pawn & enemyColour], ourKingPos))
-		{
-
-		}
-
-		// check knight
-		if (BitboardContains(pieceAttackBitboards[Knight & enemyColour], ourKingPos))
-		{
-
-		}
-
-		// king is not relevant
+		if (pinnedPieces & ((Bitboard)0b1 << i))
+			SquaresToRenderByGUIForDebuing.push_front(i);
 	}
 }
 
@@ -572,7 +563,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	GenerateBitboards();
 
-	GeneratePinsAndAttacks();
+	GeneratePinsAndAttacksOnKing();
 
 	AddKingMoves();
 

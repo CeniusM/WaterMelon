@@ -1,46 +1,97 @@
 #pragma once
 
 #include "UnsafeWaterMelon.h"
+#include <chrono>
+using namespace std::chrono;
+
 
 class PerftRunner
 {
 public:
-	PerftRunner(UnsafeWaterMelon* board);
+	PerftRunner(std::string FEN);
 	~PerftRunner();
 
-	UnsafeWaterMelon* boardPtr;
+	//void InitFEN(std::string FEN);
 
-	long GoPerft(int depth);
-
+	long BulkSearch(int depth);
+	void BulkSearchLog(int depth);
 
 private:
+	bool m_running{ 0 };
+	UnsafeWaterMelon board{ };
+	std::string FEN;
 
+	long Perft(int depth);
 };
 
-PerftRunner::PerftRunner(UnsafeWaterMelon* board)
+PerftRunner::PerftRunner(std::string FEN)
 {
-	boardPtr = board;
+	this->FEN = FEN;
+	board.InitFEN(FEN);
 }
 
 PerftRunner::~PerftRunner()
 {
 }
 
-long PerftRunner::GoPerft(int depth)
+void PerftRunner::BulkSearchLog(int depth)
 {
-	long Count;
+	long Counts[MaxMovesCount]{};
+	Move moves[MaxMovesCount]{};
+	int movesCount = board.GetPossibleMoves(moves);
 
-	Move moves[MaxMovesCount];
-	int movesCount = boardPtr->GetPossibleMoves(moves);
+	steady_clock::time_point Times[MaxMovesCount][2]{}; // Start and stop time
+	auto TotalStart = high_resolution_clock::now();
 
-	for (int i = 0; i < movesCount; i++)
+	for (size_t i = 0; i < movesCount; i++)
 	{
-		//boardPtr->
+		Times[i][0] = high_resolution_clock::now();
+
+		board.MakeMove(moves[i]);
+		Counts[i] += Perft(--depth);
+		board.UnMakeMove();
+
+		Times[i][1] = high_resolution_clock::now();
 	}
 
+	auto TotalStop = high_resolution_clock::now();
+	auto TotalTime = duration_cast<milliseconds>(TotalStart - TotalStop);
 
+	std::cout << "BulkSearchLog at depth " << depth << "\n";
+	std::cout << "FEN: " << FEN << "\n";
+	std::cout << "Total run time: " << TotalTime.count() << "ms\n";
+	std::cout << "\n";
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		std::cout <<
+			//"Move: " << GetMoveName(moves[i]) <<
+			"Move: " << GetMoveStart(moves[i]) << " to " << GetMoveTarget(moves[i]) <<
+			". Run Time: " << duration_cast<milliseconds>(Times[i][0] - Times[i][1]).count() <<
+			"ms. Nodes: " << Counts[i] <<
+			"\n";
+	}
 
+}
 
+long PerftRunner::BulkSearch(int depth)
+{
+	return Perft(depth);
+}
+
+long PerftRunner::Perft(int depth)
+{
+	long Count = 1;
+	if (depth == 0)
+		return Count;
+	Move moves[MaxMovesCount];
+	int movesCount = board.GetPossibleMoves(moves);
+
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		board.MakeMove(moves[i]);
+		Count += Perft(--depth);
+		board.UnMakeMove();
+	}
 
 	return Count;
 }

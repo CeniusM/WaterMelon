@@ -155,7 +155,7 @@ void GameOfChess::HandleEvents()
 				std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
-				
+
 			}
 		}
 	}
@@ -213,11 +213,11 @@ bool GameOfChess::Running() { return m_isRunning; }
 
 void GameOfChess::RenderBackGround()
 {
+	SDL_Rect rect;
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			SDL_Rect rect;
 			rect.w = 100;
 			rect.h = 100;
 			rect.x = j * 100;
@@ -230,6 +230,19 @@ void GameOfChess::RenderBackGround()
 
 			SDL_RenderFillRect(renderer, &rect);
 		}
+	}
+
+	SDL_SetRenderDrawColor(renderer, 234, 50, 50, 255);
+	auto squaresList = board.GetUnsafeBoardPtr()->SquaresToRenderByGUIForDebuing;
+	std::list<Square>::iterator it;
+	for (it = squaresList.begin(); it != squaresList.end(); ++it)
+	{
+		Move fixedMove = board.TransformSquare(*it);
+		int rank = GetRank(fixedMove);
+		int collum = GetCollum(fixedMove);
+		rect.x = collum * 100;
+		rect.y = rank * 100;
+		SDL_RenderFillRect(renderer, &rect);
 	}
 }
 

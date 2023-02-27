@@ -29,15 +29,15 @@ public:
 
 	UnsafeWaterMelon* GetUnsafeBoardPtr();
 
-private:
-	UnsafeWaterMelon* _board;
-	Move _moves[MaxMovesCount];
-	int _movesCount = 0;
-
 	/// Transforms the move Start and Target square
 	Move TransfomMove(Move move);
 
 	/// Flips the square between Unsafe and UI square
 	Square TransformSquare(Square square);
+
+private:
+	UnsafeWaterMelon* _board;
+	Move _moves[MaxMovesCount];
+	int _movesCount = 0;
 	bool isBoardRotated180 = false;
 };
