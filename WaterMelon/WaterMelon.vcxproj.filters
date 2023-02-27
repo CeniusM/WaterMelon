@@ -108,6 +108,12 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="Evaluation.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ZobristKey.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -124,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Depth.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
