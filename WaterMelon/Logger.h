@@ -13,8 +13,9 @@ public:
 	Logger();
 	~Logger();
 
-	static void Log(unsigned long long board);
+	static void LogBitboard(unsigned long long board);
 	static void Log(char* message);
+	static void Log(std::string str);
 private:
 
 };

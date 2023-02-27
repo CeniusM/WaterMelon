@@ -13,6 +13,15 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	Piece capturedPiece = board[targetSquare];
 	PieceType capturedPieceType = GetPieceType(capturedPiece);
 
+	Bitboard moveBitboard = ((Bitboard)0b1 << startSquare) | ((Bitboard)0b1 << targetSquare);
+
+	if (capturedPiece)
+		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
+	PieceLists[capturedPiece].MovePiece(startSquare, targetSquare);
+
+	AllPiecePosBitboard ^= moveBitboard;
+	PieceBitboardPos[capturedPiece] ^= moveBitboard;
+
 	whiteToMove = (playerTurn == 8);
 
 	board[startSquare] = 0;
@@ -49,19 +58,6 @@ UnsafeWaterMelon::~UnsafeWaterMelon()
 void UnsafeWaterMelon::InitFEN(std::string FEN)
 {
 	// Validate the FEN String...
-
-	// will use the piece as index
-	whitePawnsPtr = PieceLists[WPawn].OccupiedSquares;
-	whiteKnightsPtr = PieceLists[WKnight].OccupiedSquares;
-	whiteBishopsPtr = PieceLists[WBishop].OccupiedSquares;
-	whiteRooksPtr = PieceLists[WRook].OccupiedSquares;
-	whiteQueensPtr = PieceLists[WQueen].OccupiedSquares;
-
-	blackPawnsPtr = PieceLists[BPawn].OccupiedSquares;
-	blackKnightsPtr = PieceLists[BKnight].OccupiedSquares;
-	blackBishopsPtr = PieceLists[BBishop].OccupiedSquares;
-	blackRooksPtr = PieceLists[BRook].OccupiedSquares;
-	blackQueensPtr = PieceLists[BQueen].OccupiedSquares;
 
 	playerTurn = 8;
 	try
@@ -224,20 +220,20 @@ int UnsafeWaterMelon::GetEvaluation()
 
 #pragma region Move generation code
 
-#define PushMove(move) moves[movesCount] = (move); movesCount++;
-
-#define PushMoveCheckKingBlock(move) \
-if ((attacksOnKing & DotBiboards[move]) == 0)\
-moves[movesCount] = (move); movesCount++;
-
-#define PushMovePinCheck(move) \
-if ((pinnedPieces & DotBiboards[move]) == 0)\
-if ((attacksOnKing & DotBiboards[move]) == 0)\
-moves[movesCount] = (move); movesCount++;
-
-#define PushMovePinCheckAndCheckKingBlock(move) \
-if ((pinnedPieces & DotBiboards[move]) == 0)\
-moves[movesCount] = (move); movesCount++;
+//#define PushMove(move) moves[movesCount] = (move); movesCount++;
+//
+//#define PushMoveCheckKingBlock(move) \
+//if ((attacksOnKing & DotBiboards[move]) == 0)\
+//moves[movesCount] = (move); movesCount++;
+//
+//#define PushMovePinCheck(move) \
+//if ((pinnedPieces & DotBiboards[move]) == 0)\
+//if ((attacksOnKing & DotBiboards[move]) == 0)\
+//moves[movesCount] = (move); movesCount++;
+//
+//#define PushMovePinCheckAndCheckKingBlock(move) \
+//if ((pinnedPieces & DotBiboards[move]) == 0)\
+//moves[movesCount] = (move); movesCount++;
 
 
 
@@ -342,24 +338,32 @@ void UnsafeWaterMelon::GenerateBitboards()
 
 void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray out in each direction
 {
+	pinnedPieces = 0;
+
 	Bitboard slidingPieces =
 		PieceBitboardPos[Queen | enemyColour] |
 		PieceBitboardPos[Rook | enemyColour] |
 		PieceBitboardPos[Bishop | enemyColour];
 
-	for (DirectionIndex i = 0; i < 8; i++) // The directions
+	for (DirectionIndex dir = 0; dir < 8; dir++) // The directions
 	{
-		if (GetQueenBitboardFromInDir(ourKingPos, i) & slidingPieces) // There is something there
+		if (GetQueenBitboardFromInDir(ourKingPos, dir) & slidingPieces) // There is something there
 		{
+			if (dir == DirectionIndexs::SouthWestI)
+				std::cout << "";
+			std::cout << dir;
+
+			Bitboard rayBoard = 0;
+
 			Square rayPos = ourKingPos;
-			Offset offset = offsetsIndexed[i];
-			int DistanceToSide = GetDistanceToBoardInDirection(rayPos, i);
+			Offset offset = offsetsIndexed[dir];
+			int DistanceToSide = GetDistanceToBoardInDirection(rayPos, dir);
 
 			bool DoublePiece = false;
 			bool AttackBehindPiece = false;
 			Square OurPiecePos = InvalidSquare;
 
-			for (size_t i = 0; i < DistanceToSide; i++)
+			while (DistanceToSide--)
 			{
 				rayPos += offset;
 				Piece piece = board[rayPos];
@@ -377,18 +381,19 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 					}
 					else // Enemy
 					{
-						if (i & 0b100) // Diagonal
+						if (dir & 0b100) // Diagonal
 						{
 							if (!IsBishopOrQueen(piece))
-								continue;
+								break;
 						}
 						else // Not Diagonal...
 							if (!IsRookOrQueen(piece))
-								continue;
+								break;
 
-						if (OurPiecePos == 0) // Attack On King
+						if (OurPiecePos == InvalidSquare) // Attack On King
 						{
-							attacksOnKing = GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+							//attacksOnKing = GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+							attacksOnKing = rayBoard;
 							if (KingInCheck)
 							{
 								KingInDoubleCheck = true;
@@ -399,82 +404,101 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 						}
 						else // Piece Pinned
 						{
+							rayBoard |= ((Bitboard)0b1 << rayPos);
 							pinnedPieces |= DotBiboards[OurPiecePos];
-							pinningPiecesAttack[OurPiecePos] |=
-								GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+							pinningPiecesAttack[OurPiecePos] = rayBoard;
 						}
 						break;
 					}
 				}
-			}
-		}
-
-		if (pieceAttackBitboards[Knight | enemyColour] & ((Bitboard)0b1 << ourKingPos))
-		{
-			if (KingInCheck) // no need to know where the attack comes from
-			{
-				KingInDoubleCheck = true;
-				return;
+				rayBoard |= ((Bitboard)0b1 << rayPos);
 			}
 
-			// There cant be more than 1 knight attacking the king
-			for (size_t i = 0; i < 8; i++)
-			{
-				Square squareChecked = ourKingPos + KnightOffsetsIndexed[i];
-				if (board[squareChecked] == (Knight & enemyColour))
-				{
-					KingInCheck = true;
-					attacksOnKing |= (Bitboard)0b1 << squareChecked;
-					break;
-				}
-			}
-		}
-
-		if (pieceAttackBitboards[Pawn | enemyColour] & ((Bitboard)0b1 << ourKingPos))
-		{
-			if (KingInCheck) // no need to know where the attack comes from
-			{
-				KingInDoubleCheck = true;
-				return;
-			}
-
-			// There cant be more than 1 pawn attacking the king
-			if (whiteToMove)
-			{
-				if (board[ourKingPos + 7] == BPawn)
-				{
-					KingInCheck = true;
-					attacksOnKing |= (Bitboard)0b1 << ourKingPos + 7;
-				}
-				else
-				{
-					KingInCheck = true;
-					attacksOnKing |= (Bitboard)0b1 << ourKingPos + 9;
-				}
-			}
-			else
-			{
-				if (board[ourKingPos - 7] == BPawn)
-				{
-					KingInCheck = true;
-					attacksOnKing |= (Bitboard)0b1 << ourKingPos - 7;
-				}
-				else
-				{
-					KingInCheck = true;
-					attacksOnKing |= (Bitboard)0b1 << ourKingPos - 9;
-				}
-			}
-
+			Logger::LogBitboard(pinnedPieces);
 		}
 	}
 
+	if (pieceAttackBitboards[Knight | enemyColour] & ((Bitboard)0b1 << ourKingPos))
+	{
+		if (KingInCheck) // no need to know where the attack comes from
+		{
+			KingInDoubleCheck = true;
+			return;
+		}
+
+		// There cant be more than 1 knight attacking the king
+		for (size_t i = 0; i < 8; i++)
+		{
+			Square squareChecked = ourKingPos + KnightOffsetsIndexed[i];
+			if (board[squareChecked] == (Knight & enemyColour))
+			{
+				KingInCheck = true;
+				attacksOnKing |= (Bitboard)0b1 << squareChecked;
+				break;
+			}
+		}
+	}
+
+	if (pieceAttackBitboards[Pawn | enemyColour] & ((Bitboard)0b1 << ourKingPos))
+	{
+		if (KingInCheck) // no need to know where the attack comes from
+		{
+			KingInDoubleCheck = true;
+			return;
+		}
+
+		// There cant be more than 1 pawn attacking the king
+		if (whiteToMove)
+		{
+			if (board[ourKingPos + 7] == BPawn)
+			{
+				KingInCheck = true;
+				attacksOnKing |= (Bitboard)0b1 << ourKingPos + 7;
+			}
+			else
+			{
+				KingInCheck = true;
+				attacksOnKing |= (Bitboard)0b1 << ourKingPos + 9;
+			}
+		}
+		else
+		{
+			if (board[ourKingPos - 7] == BPawn)
+			{
+				KingInCheck = true;
+				attacksOnKing |= (Bitboard)0b1 << ourKingPos - 7;
+			}
+			else
+			{
+				KingInCheck = true;
+				attacksOnKing |= (Bitboard)0b1 << ourKingPos - 9;
+			}
+		}
+
+	}
 
 	SquaresToRenderByGUIForDebuing.clear();
+	if (KingInDoubleCheck)
+		Logger::Log("King under double attack");
+	else if (KingInCheck)
+		Logger::Log("King under attack");
+	else
+		Logger::Log("King NOT under attack");
+	Logger::Log("AttacksOnKing:\n");
+	Logger::LogBitboard(attacksOnKing);
+	Logger::Log("PinnedPieces:\n");
+	Logger::LogBitboard(pinnedPieces);
 	for (size_t i = 0; i < 64; i++)
 	{
 		if (pinnedPieces & ((Bitboard)0b1 << i))
+		{
+			Logger::Log(std::to_string(i) + "\n");
+			Logger::LogBitboard(pinningPiecesAttack[i]);
+			Logger::Log("\n");
+
 			SquaresToRenderByGUIForDebuing.push_front(i);
+		}
+
 	}
 }
 
@@ -500,18 +524,18 @@ void UnsafeWaterMelon::AddPawnMoves()
 			{
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
 					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
 				{
 					if (board[oneMove] == 0)
 					{
-						PushMoveCheckKingBlock(CreateMove(pos, oneMove, NoFlag));
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
 						if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-							PushMoveCheckKingBlock(CreateMove(pos, twoMove, PawnDoubleForward));
+							PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
 					}
 				}
 			}
@@ -519,16 +543,16 @@ void UnsafeWaterMelon::AddPawnMoves()
 			{
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
 					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMoveCheckKingBlock(CreateMove(pos, leftPos, NoFlagCapture));
+						PushMoveIfKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMoveCheckKingBlock(CreateMove(pos, rightPos, NoFlagCapture));
+						PushMoveIfKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
 
 				if (board[oneMove] == 0)
 				{
-					PushMoveCheckKingBlock(CreateMove(pos, oneMove, NoFlag));
+					PushMoveIfKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
 					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-						PushMoveCheckKingBlock(CreateMove(pos, twoMove, PawnDoubleForward));
+						PushMoveIfKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
 				}
 			}
 		}
@@ -541,6 +565,64 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 		}
 	}
+}
+
+void UnsafeWaterMelon::AddQueenMoves()
+{
+	Piece pieceKey = Queen | ourColor;
+	int count = PieceLists[pieceKey].PieceNum;
+	for (size_t i = 0; i < count; i++)
+	{
+		Square pos = PieceLists[pieceKey].OccupiedSquares[i];
+
+	}
+}
+
+void UnsafeWaterMelon::PushMove(Move move)
+{
+	moves[movesCount++] = move;
+}
+
+void UnsafeWaterMelon::PushMoveIfPinnsAllow(Move move)
+{
+	Square start = GetMoveStart(move);
+	Bitboard AND = pinnedPieces & ((Bitboard)0b1 << start);
+	if (AND) // Is pinned
+	{
+		if (pinningPiecesAttack[start] & AND) // Blocks pin
+			PushMove(move);
+	}
+	else
+	{
+		PushMove(move);
+	}
+}
+
+void UnsafeWaterMelon::PushMoveIfPinnsAllowAndKingNotInCheck(Move move)
+{
+	Square start = GetMoveStart(move);
+	Square target = GetMoveTarget(move);
+	Bitboard AND = pinnedPieces & ((Bitboard)0b1 << start);
+	if (AND) // Is pinned
+	{
+		if (pinningPiecesAttack[start] & AND) // Blocks pin
+			if (BitboardContains(attacksOnKing, target) || !KingInCheck) // blocks check
+				PushMove(move);
+	}
+	else
+	{
+		if (BitboardContains(attacksOnKing, target))
+			PushMove(move);
+	}
+}
+
+void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
+{
+	if (!KingInCheck)
+		PushMove(move);
+	Square target = GetMoveTarget(move);
+	if (BitboardContains(attacksOnKing, target) || !KingInCheck) // blocks check
+		PushMove(move);
 }
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
@@ -571,6 +653,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		return movesCount;
 
 	AddPawnMoves();
+
+	for (size_t i = 0; i < movesCount; i++)
+		SquaresToRenderByGUIForDebuing.push_front(GetMoveTarget(moves[i]));
 
 	if (onlyCaptures)
 		RemoveNoneCaptures();

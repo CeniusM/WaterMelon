@@ -86,17 +86,6 @@ public:
 
 	//PieceList* allPieceLists[24]; // BQueen 23
 	PieceList PieceLists[24]{};
-
-	Piece* whitePawnsPtr;
-	Piece* whiteKnightsPtr;
-	Piece* whiteBishopsPtr;
-	Piece* whiteRooksPtr;
-	Piece* whiteQueensPtr;
-	Piece* blackPawnsPtr;
-	Piece* blackKnightsPtr;
-	Piece* blackBishopsPtr;
-	Piece* blackRooksPtr;
-	Piece* blackQueensPtr;
 #pragma endregion
 
 	Move moves[MaxMovesCount];
@@ -190,6 +179,12 @@ private:
 	void GeneratePinsAndAttacksOnKing();
 	void AddKingMoves();
 	void AddPawnMoves();
+	void AddQueenMoves();
+
+	void PushMove(Move move);
+	void PushMoveIfPinnsAllow(Move move);
+	void PushMoveIfPinnsAllowAndKingNotInCheck(Move move);
+	void PushMoveIfKingNotInCheck(Move move);
 
 	constexpr bool IsPiecePinned(Square pos)
 	{

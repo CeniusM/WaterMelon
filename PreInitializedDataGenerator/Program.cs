@@ -373,4 +373,4 @@ ulong GetIndex(int startSquare, int endSquare) => bitboards[startSquare + (endSq
 PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 1)));
 PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 5)));
 
-//PrintArray("constexpr char", "DirectionIndexFromSquareToSquare", bitboards);
+PrintArray("constexpr char", "BitboardFromSquareToSquare", bitboards);

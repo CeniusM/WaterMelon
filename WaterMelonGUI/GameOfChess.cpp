@@ -232,7 +232,7 @@ void GameOfChess::RenderBackGround()
 		}
 	}
 
-	SDL_SetRenderDrawColor(renderer, 234, 50, 50, 255);
+	SDL_SetRenderDrawColor(renderer, 249, 215, 28, 255);
 	auto squaresList = board.GetUnsafeBoardPtr()->SquaresToRenderByGUIForDebuing;
 	std::list<Square>::iterator it;
 	for (it = squaresList.begin(); it != squaresList.end(); ++it)

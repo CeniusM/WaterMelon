@@ -8,7 +8,7 @@ Logger::~Logger()
 {
 }
 
-void Logger::Log(unsigned long long board)
+void Logger::LogBitboard(unsigned long long board)
 {
 	for (size_t i = 0; i < 8; i++)
 	{
@@ -25,4 +25,9 @@ void Logger::Log(unsigned long long board)
 void Logger::Log(char* message)
 {
 	std::cout << message;
+}
+
+void Logger::Log(std::string str)
+{
+	std::cout << str;
 }

@@ -37,8 +37,8 @@ private:
 	//SafeWaterMelon board = SafeWaterMelon();
 	//SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/ppp2p2/8/8/p4p1p/3pP3/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
-	SafeWaterMelon board = SafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
-	//SafeWaterMelon board = SafeWaterMelon("");
+	//SafeWaterMelon board = SafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
+	SafeWaterMelon board = SafeWaterMelon("8/kp1R4/1p5r/2B1b3/8/7P/6PK/8 w - - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
