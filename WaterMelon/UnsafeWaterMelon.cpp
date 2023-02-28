@@ -346,11 +346,12 @@ void UnsafeWaterMelon::GenerateBitboards()
 void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray out in each direction
 {
 	pinnedPieces = 0;
+	attacksOnKing = 0;
 
 	Bitboard slidingPieces =
-		PieceBitboardPos[Queen | enemyColour] |
-		PieceBitboardPos[Rook | enemyColour] |
-		PieceBitboardPos[Bishop | enemyColour];
+		PieceBitboardPos[EnemyQueenKey] |
+		PieceBitboardPos[EnemyRookKey] |
+		PieceBitboardPos[EnemyBishopKey];
 
 	for (DirectionIndex dir = 0; dir < 8; dir++) // The directions
 	{
@@ -701,7 +702,7 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 
 void UnsafeWaterMelon::AddQueenMoves()
 {
-	Piece pieceKey = Queen | ourColor;
+	Piece pieceKey = OurQueenKey;
 	int count = PieceLists[pieceKey].PieceNum;
 	for (size_t num = 0; num < count; num++)
 	{
