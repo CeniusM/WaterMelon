@@ -515,30 +515,34 @@ void UnsafeWaterMelon::AddKingMoves()
 	{ -9,-8,-7,-1,1,7,8,9 };
 	constexpr Offset KingmovesLineoffsets[]
 	{ -1,-1,-1,0,0,1,1,1 };
+	Bitboard KingAttacksBitboard = GetKingAllDirBitboard(ourKingPos);
 	// plz unwrap mister compiler
 	for (size_t i = 0; i < 8; i++)
 	{
 		int newPos = ourKingPos + Kingmoves[i];
-		if ((newPos >> 3) - KingmovesLineoffsets[i] != ourKingPos >> 3)
-			continue;
-		if (IsSquareInBounds(newPos))
+		//if ((newPos >> 3) - KingmovesLineoffsets[i] != ourKingPos >> 3)
+			//continue;
+		if (KingAttacksBitboard & (Bitboard)0b1 << newPos)
 		{
-			if (board[newPos])
+			if (IsSquareInBounds(newPos))
 			{
-				if (board[newPos] & enemyColour)
+				if (board[newPos])
+				{
+					if (board[newPos] & enemyColour)
+					{
+						board[ourKingPos] = 0;
+						if (IsSquareSafe(newPos))
+							PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlagCapture));
+						board[ourKingPos] = OurKingKey;
+					}
+				}
+				else
 				{
 					board[ourKingPos] = 0;
 					if (IsSquareSafe(newPos))
-						PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlagCapture));
+						PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlag));
 					board[ourKingPos] = OurKingKey;
 				}
-			}
-			else
-			{
-				board[ourKingPos] = 0;
-				if (IsSquareSafe(newPos))
-					PushMove(CreateMove(ourKingPos, newPos, MoveFlags::NoFlag));
-				board[ourKingPos] = OurKingKey;
 			}
 		}
 	}
@@ -557,40 +561,18 @@ void UnsafeWaterMelon::AddPawnMoves()
 			int oneMove = pos + 8;
 			int twoMove = pos + 16;
 
-			if (IsPiecePinned(pos))
-			{
-				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, leftPos)) // check valid attack and still block pin
-					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
-				if (BitboardContains(pinningPiecesAttack[pos] & whitePawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
+			if (BitboardContains(whitePawnAttacksBitboard, leftPos))
+				if (IsPieceColor(GetColor(board[leftPos]), Black))
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
+			if (BitboardContains(whitePawnAttacksBitboard, rightPos))
+				if (IsPieceColor(GetColor(board[rightPos]), Black))
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
 
-				if (BitboardContains(pinningPiecesAttack[pos], oneMove)) // if one move block pin, two move is also in pin
-				{
-					if (board[oneMove] == 0)
-					{
-						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
-						if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-							PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
-					}
-				}
-			}
-			else
+			if (board[oneMove] == 0)
 			{
-				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMoveIfKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
-				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMoveIfKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
-
-				if (board[oneMove] == 0)
-				{
-					PushMoveIfKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
-					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-						PushMoveIfKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
-				}
+				PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
+				if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
 			}
 		}
 		if (EPSquare != EmptyEnPassantPos)
@@ -721,10 +703,30 @@ void UnsafeWaterMelon::AddQueenMoves()
 {
 	Piece pieceKey = Queen | ourColor;
 	int count = PieceLists[pieceKey].PieceNum;
-	for (size_t i = 0; i < count; i++)
+	for (size_t num = 0; num < count; num++)
 	{
-		Square pos = PieceLists[pieceKey].OccupiedSquares[i];
-
+		Square pos = PieceLists[pieceKey].OccupiedSquares[num];
+		for (size_t dir = 0; dir < 8; dir++)
+		{
+			Offset offset = offsetsIndexed[dir];
+			int distance = GetDistanceToBoardInDirection(pos, dir);
+			int ray = pos;
+			for (size_t i = 0; i < distance; i++)
+			{
+				ray += offset;
+				Piece hitPiece = board[i];
+				if (hitPiece)
+				{
+					if (IsPieceColor(hitPiece, enemyColour))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlagCapture));
+					break;
+				}
+				else
+				{
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlag));
+				}
+			}
+		}
 	}
 }
 
@@ -840,6 +842,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	}
 
 	AddPawnMoves();
+	AddQueenMoves();
 
 	for (size_t i = 0; i < movesCount; i++)
 		SquaresToRenderByGUIForDebuing.push_front(GetMoveTarget(moves[i]));
