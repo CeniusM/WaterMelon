@@ -841,6 +841,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
 	}
+	else if (!KingInCheck)
+		attacksOnKing = 0xffffffffffffffff;
 
 	AddPawnMoves();
 	AddQueenMoves();
