@@ -354,7 +354,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 
 	for (DirectionIndex dir = 0; dir < 8; dir++) // The directions
 	{
-		if (GetQueenBitboardFromInDir(ourKingPos, dir) & slidingPieces) // There is something there
+		if (GetSlidingPieceBitboardFromInDir(ourKingPos, dir) & slidingPieces) // There is something there
 		{
 			if (dir == DirectionIndexs::SouthWestI)
 				std::cout << "";
@@ -612,7 +612,7 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 		return false;
 
 	//Logger::LogBitboard(PieceBitboardPos[EnemyQueenKey]);
-	Bitboard kingQueenRays = GetQueenAllDirBitboard(square);
+	Bitboard kingQueenRays = GetSlidingPieceAllDirBitboard(square);
 	if (BitboardsCollide(kingQueenRays, PieceBitboardPos[EnemyQueenKey]))
 	{
 		// Queen hitting
@@ -620,7 +620,7 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 		// Method 1, use a loop to find all the queens around in the difrent directions
 		for (DirectionIndex i = QueenStartDirectionIndex; i < QueenEndDirectionIndex; i++)
 		{
-			if (BitboardsCollide(GetQueenBitboardFromInDir(square, i), PieceBitboardPos[EnemyQueenKey]))
+			if (BitboardsCollide(GetSlidingPieceBitboardFromInDir(square, i), PieceBitboardPos[EnemyQueenKey]))
 			{
 				// Is a hit
 				Offset offset = offsetsIndexed[i];
@@ -658,9 +658,9 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 		for (DirectionIndex i = BishopStartDirectionIndex; i < BishopEndDirectionIndex; i++)
 		{
 			//Logger::Log("--------");
-			//Logger::LogBitboard(GetBishopBitboardFromInDir(square, i));
+			//Logger::LogBitboard(GetSlidingPieceBitboardFromInDir(square, i));
 			//Logger::Log("--------");
-			if (BitboardsCollide(GetBishopBitboardFromInDir(square, i), PieceBitboardPos[EnemyBishopKey]))
+			if (BitboardsCollide(GetSlidingPieceBitboardFromInDir(square, i), PieceBitboardPos[EnemyBishopKey]))
 			{
 				// Is a hit
 				Offset offset = offsetsIndexed[i];
@@ -691,9 +691,9 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 		for (DirectionIndex i = RookStartDirectionIndex; i < RookEndDirectionIndex; i++)
 		{
 			//Logger::Log("--------");
-			//Logger::LogBitboard(GetRookBitboardFromInDir(square, i));
+			//Logger::LogBitboard(GetSlidingPieceBitboardFromInDir(square, i));
 			//Logger::Log("--------");
-			if (BitboardsCollide(GetRookBitboardFromInDir(square, i), PieceBitboardPos[EnemyRookKey]))
+			if (BitboardsCollide(GetSlidingPieceBitboardFromInDir(square, i), PieceBitboardPos[EnemyRookKey]))
 			{
 				// Is a hit
 				Offset offset = offsetsIndexed[i];
