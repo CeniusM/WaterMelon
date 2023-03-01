@@ -14,3 +14,6 @@
 #include "Offset.h"
 #include "Piece.h"
 #include "Square.h"
+
+// For debguging
+#include "ColoredSquare.h"

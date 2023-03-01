@@ -32,7 +32,7 @@ public:
 
 	// --- DEBUGING ---
 
-	std::list<Square> SquaresToRenderByGUIForDebuing{}; // Don't mind the name
+	std::list<ColoredSquare> SquaresToRenderByGUIForDebuing{}; // Don't mind the name
 
 	// ^^^ DEBGUING ^^^
 
@@ -123,7 +123,9 @@ public:
 	// -- For all the bitboard poses, it is just 3 XOR operations for the start to target square bitboard
 	// Bitboard of all the posses, use piece value as index
 	Bitboard PieceBitboardPos[24]{ 0 };
-	Bitboard AllFriendlyPiecePosBitboard;
+	Bitboard AllWhitePosBitboard;
+	Bitboard AllBlackPosBitboard;
+	Bitboard AllFriendlyPosBitboard;
 	Bitboard AllEnemyPosBitboard;
 	Bitboard AllPiecePosBitboard;
 
@@ -196,6 +198,7 @@ private:
 	void GeneratePinsAndAttacksOnKing();
 	void AddKingMoves();
 	void AddPawnMoves();
+	void AddKnightMoves();
 	void AddQueenMoves();
 
 	void PushMove(Move move);

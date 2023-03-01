@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Misc">
       <UniqueIdentifier>{048822d5-c005-4b64-ba63-7bbe4576830a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{f8a26f30-ab44-4620-bd08-7d08bf8c85fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bitboard.h">
@@ -114,6 +117,9 @@
     <ClInclude Include="ZobristKey.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
+    <ClInclude Include="ColoredSquare.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -133,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="Depth.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="ColoredSquare.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

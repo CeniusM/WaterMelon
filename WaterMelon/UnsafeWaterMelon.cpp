@@ -26,6 +26,11 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	}
 	AllPiecePosBitboard ^= moveBitboard;
 	PieceBitboardPos[movingPiece] ^= moveBitboard;
+	if (whiteToMove)
+		AllWhitePosBitboard ^= moveBitboard;
+	else
+		AllBlackPosBitboard ^= moveBitboard;
+
 
 	board[startSquare] = 0;
 	board[targetSquare] = movingPiece;
@@ -80,14 +85,20 @@ void UnsafeWaterMelon::InitFEN(std::string FEN)
 				else
 				{
 					Piece pieceVal = FENUtility::CharToInt[piece];
-					board[FlipSquareY(fenBoardPtr)] = pieceVal;
+					int boardPos = FlipSquareY(fenBoardPtr);
+					board[boardPos] = pieceVal;
 
 					if (pieceVal == WKing)
-						kingPos[0] = FlipSquareY(fenBoardPtr);
+						kingPos[0] = boardPos;
 					else if (pieceVal == BKing)
-						kingPos[1] = FlipSquareY(fenBoardPtr);
+						kingPos[1] = boardPos;
 					else
-						PieceLists[pieceVal].AddPieceAtSquare(FlipSquareY(fenBoardPtr));
+						PieceLists[pieceVal].AddPieceAtSquare(boardPos);
+
+					if (IsPieceColor(pieceVal, White))
+						AllWhitePosBitboard |= (Bitboard)0b1 << boardPos;
+					else
+						AllBlackPosBitboard |= (Bitboard)0b1 << boardPos;
 				}
 				fenBoardPtr++;
 			}
@@ -504,7 +515,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			Logger::LogBitboard(pinningPiecesAttack[i]);
 			Logger::Log("\n");
 
-			SquaresToRenderByGUIForDebuing.push_front(i);
+			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(i, 255, 0, 0));
 		}
 
 	}
@@ -583,6 +594,29 @@ void UnsafeWaterMelon::AddPawnMoves()
 			// also is an enemy queen or rook on the same diagonal
 
 
+		}
+	}
+}
+
+void UnsafeWaterMelon::AddKnightMoves()
+{
+	Logger::Log("All friends");
+	Logger::LogBitboard(AllFriendlyPosBitboard);
+	Logger::Log("");
+	for (size_t i = 0; i < PieceLists[OurKnightKey].PieceNum; i++)
+	{
+		Square pos = PieceLists[OurKnightKey].OccupiedSquares[i];
+		Bitboard attacksBitboard = GetKnightAllDirBitboard(pos);
+		for (size_t i = 0; i < 8; i++)
+		{
+			Square newPos = pos + KnightOffsetsIndexed[i];
+			if (BitboardContains(attacksBitboard ^ AllFriendlyPosBitboard, newPos))
+			{
+				if (board[newPos])
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, newPos, NoFlag));
+				else
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, newPos, NoFlagCapture));
+			}
 		}
 	}
 }
@@ -715,7 +749,7 @@ void UnsafeWaterMelon::AddQueenMoves()
 			for (size_t i = 0; i < distance; i++)
 			{
 				ray += offset;
-				Piece hitPiece = board[i];
+				Piece hitPiece = board[ray];
 				if (hitPiece)
 				{
 					if (IsPieceColor(hitPiece, enemyColour))
@@ -739,10 +773,11 @@ void UnsafeWaterMelon::PushMove(Move move)
 void UnsafeWaterMelon::PushMoveIfPinnsAllow(Move move)
 {
 	Square start = GetMoveStart(move);
+	Square target = GetMoveTarget(move);
 	Bitboard AND = pinnedPieces & ((Bitboard)0b1 << start);
 	if (AND) // Is pinned
 	{
-		if (pinningPiecesAttack[start] & AND) // Blocks pin
+		if (pinningPiecesAttack[start] & ((Bitboard)0b1 << target)) // Blocks pin
 			PushMove(move);
 	}
 	else
@@ -758,7 +793,7 @@ void UnsafeWaterMelon::PushMoveIfPinnsAllowAndKingNotInCheck(Move move)
 	Bitboard AND = pinnedPieces & ((Bitboard)0b1 << start);
 	if (AND) // Is pinned
 	{
-		if (pinningPiecesAttack[start] & AND) // Blocks pin
+		if (pinningPiecesAttack[start] & ((Bitboard)0b1 << target)) // Blocks pin
 			if (BitboardContains(attacksOnKing, target) || !KingInCheck) // blocks check
 				PushMove(move);
 	}
@@ -780,7 +815,12 @@ void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
-	//SquaresToRenderByGUIForDebuing.clear();
+	/*SquaresToRenderByGUIForDebuing.clear();
+	for (size_t i = 0; i < 24; i++)
+		for (size_t j = 0; j < PieceLists[i].PieceNum; j++)
+			SquaresToRenderByGUIForDebuing.push_back(PieceLists[i].OccupiedSquares[j]);
+	return 0;*/
+
 	// -- Init --
 	movesCount = 0;
 
@@ -811,6 +851,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		EnemyRookKey = BRook;
 		EnemyQueenKey = BQueen;
 		EnemyKingKey = BKing;
+
+		AllFriendlyPosBitboard = AllWhitePosBitboard;
+		AllEnemyPosBitboard = AllBlackPosBitboard;
 	}
 	else
 	{
@@ -826,6 +869,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		OurRookKey = BRook;
 		OurQueenKey = BQueen;
 		OurKingKey = BKing;
+
+		AllFriendlyPosBitboard = AllBlackPosBitboard;
+		AllEnemyPosBitboard = AllWhitePosBitboard;
 	}
 
 
@@ -845,10 +891,11 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		attacksOnKing = 0xffffffffffffffff;
 
 	AddPawnMoves();
+	AddKnightMoves();
 	AddQueenMoves();
 
 	for (size_t i = 0; i < movesCount; i++)
-		SquaresToRenderByGUIForDebuing.push_front(GetMoveTarget(moves[i]));
+		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
 
 	if (onlyCaptures)
 		RemoveNoneCaptures();

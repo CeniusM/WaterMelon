@@ -232,16 +232,17 @@ void GameOfChess::RenderBackGround()
 		}
 	}
 
-	SDL_SetRenderDrawColor(renderer, 249, 215, 28, 255);
 	auto squaresList = board.GetUnsafeBoardPtr()->SquaresToRenderByGUIForDebuing;
-	std::list<Square>::iterator it;
+	std::list<ColoredSquare>::iterator it;
 	for (it = squaresList.begin(); it != squaresList.end(); ++it)
 	{
-		Move fixedMove = board.TransformSquare(*it);
+		ColoredSquare square = *it;
+		Move fixedMove = board.TransformSquare(square.square);
 		int rank = GetRank(fixedMove);
 		int collum = GetCollum(fixedMove);
 		rect.x = collum * 100;
 		rect.y = rank * 100;
+		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
 	}
 }

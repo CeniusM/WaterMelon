@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColoredSquare.cpp" />
     <ClCompile Include="Depth.h" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="BoardSave.h" />
     <ClInclude Include="BoardStateSave.h" />
     <ClInclude Include="CastleRight.h" />
+    <ClInclude Include="ColoredSquare.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="EnPassantPos.h" />
