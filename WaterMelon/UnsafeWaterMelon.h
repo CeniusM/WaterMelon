@@ -199,6 +199,8 @@ private:
 	void AddKingMoves();
 	void AddPawnMoves();
 	void AddKnightMoves();
+	void AddRookMoves();
+	void AddBishopMoves();
 	void AddQueenMoves();
 
 	void PushMove(Move move);

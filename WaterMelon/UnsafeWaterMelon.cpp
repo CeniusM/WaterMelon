@@ -437,28 +437,29 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 		}
 	}
 
-	if (pieceAttackBitboards[Knight | enemyColour] & ((Bitboard)0b1 << ourKingPos))
+	if (pieceAttackBitboards[EnemyKnightKey] & ((Bitboard)0b1 << ourKingPos))
 	{
 		if (KingInCheck) // no need to know where the attack comes from
 		{
 			KingInDoubleCheck = true;
 			return;
 		}
-
+		Bitboard attacksBitboard = GetKnightAllDirBitboard(ourKingPos);
 		// There cant be more than 1 knight attacking the king
 		for (size_t i = 0; i < 8; i++)
 		{
 			Square squareChecked = ourKingPos + KnightOffsetsIndexed[i];
-			if (board[squareChecked] == (Knight & enemyColour))
-			{
-				KingInCheck = true;
-				attacksOnKing |= (Bitboard)0b1 << squareChecked;
-				break;
-			}
+			if (BitboardContains(attacksBitboard, squareChecked))
+				if (board[squareChecked] == EnemyKnightKey)
+				{
+					KingInCheck = true;
+					attacksOnKing |= (Bitboard)0b1 << squareChecked;
+					break;
+				}
 		}
 	}
 
-	if (pieceAttackBitboards[Pawn | enemyColour] & ((Bitboard)0b1 << ourKingPos))
+	if (pieceAttackBitboards[EnemyPawnKey] & ((Bitboard)0b1 << ourKingPos))
 	{
 		if (KingInCheck) // no need to know where the attack comes from
 		{
@@ -600,7 +601,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 void UnsafeWaterMelon::AddKnightMoves()
 {
-	Logger::Log("All friends");
+	Logger::Log("All friends\n");
 	Logger::LogBitboard(AllFriendlyPosBitboard);
 	Logger::Log("");
 	for (size_t i = 0; i < PieceLists[OurKnightKey].PieceNum; i++)
@@ -732,6 +733,68 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 	}
 
 	return true;
+}
+
+void UnsafeWaterMelon::AddRookMoves()
+{
+	Piece pieceKey = OurRookKey;
+	int count = PieceLists[pieceKey].PieceNum;
+	for (size_t num = 0; num < count; num++)
+	{
+		Square pos = PieceLists[pieceKey].OccupiedSquares[num];
+		for (size_t dir = RookStartDirectionIndex; dir < RookEndDirectionIndex; dir++)
+		{
+			Offset offset = offsetsIndexed[dir];
+			int distance = GetDistanceToBoardInDirection(pos, dir);
+			int ray = pos;
+			for (size_t i = 0; i < distance; i++)
+			{
+				ray += offset;
+				Piece hitPiece = board[ray];
+				if (hitPiece)
+				{
+					if (IsPieceColor(hitPiece, enemyColour))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlagCapture));
+					break;
+				}
+				else
+				{
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlag));
+				}
+			}
+		}
+	}
+}
+
+void UnsafeWaterMelon::AddBishopMoves()
+{
+	Piece pieceKey = OurBishopKey;
+	int count = PieceLists[pieceKey].PieceNum;
+	for (size_t num = 0; num < count; num++)
+	{
+		Square pos = PieceLists[pieceKey].OccupiedSquares[num];
+		for (size_t dir = BishopStartDirectionIndex; dir < BishopEndDirectionIndex; dir++)
+		{
+			Offset offset = offsetsIndexed[dir];
+			int distance = GetDistanceToBoardInDirection(pos, dir);
+			int ray = pos;
+			for (size_t i = 0; i < distance; i++)
+			{
+				ray += offset;
+				Piece hitPiece = board[ray];
+				if (hitPiece)
+				{
+					if (IsPieceColor(hitPiece, enemyColour))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlagCapture));
+					break;
+				}
+				else
+				{
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlag));
+				}
+			}
+		}
+	}
 }
 
 void UnsafeWaterMelon::AddQueenMoves()
@@ -892,6 +955,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	AddPawnMoves();
 	AddKnightMoves();
+	AddRookMoves();
+	AddBishopMoves();
 	AddQueenMoves();
 
 	for (size_t i = 0; i < movesCount; i++)
