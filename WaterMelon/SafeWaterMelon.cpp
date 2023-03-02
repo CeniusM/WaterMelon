@@ -29,7 +29,7 @@ bool SafeWaterMelon::MakeMove(Move move)
 	move = TransfomMove(move);
 	for (int i = 0; i < _movesCount; i++)
 	{
-		if ((move & 0b1111111111111) == (_moves[i] & 0b1111111111111)) // not flags
+		if ((move & 0b111111111111) == (_moves[i] & 0b111111111111)) // not flags
 		{
 			move = _moves[i]; // Get flag
 			_board->MakeMove(move);

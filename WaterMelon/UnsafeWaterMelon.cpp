@@ -2,6 +2,7 @@
 
 #include "UnsafeWaterMelon.h"
 
+// Can NOT use any of the data that get initilized at the GetPossibleMoves, beacous this could be called after a UnMakeMove
 void UnsafeWaterMelon::MakeMove(Move move)
 {
 	Square startSquare = GetMoveStart(move);
@@ -15,28 +16,71 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	Bitboard moveBitboard = ((Bitboard)0b1 << startSquare) | ((Bitboard)0b1 << targetSquare);
 
-	if (capturedPiece)
-		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-	PieceLists[movingPiece].MovePiece(startSquare, targetSquare);
+	Color OurColor = playerTurn;
+	int OurColorIndex = playerTurn >> 4;
+	bool IsWhiteToMove = OurColorIndex;
 
 	if (capturedPiece)
 	{
+		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
 		AllPiecePosBitboard ^= (Bitboard)0b1 << targetSquare;
 		PieceBitboardPos[capturedPiece] ^= (Bitboard)0b1 << targetSquare;
 	}
+	PieceLists[movingPiece].MovePiece(startSquare, targetSquare);
 	AllPiecePosBitboard ^= moveBitboard;
 	PieceBitboardPos[movingPiece] ^= moveBitboard;
-	if (whiteToMove)
+	if (IsWhiteToMove)
 		AllWhitePosBitboard ^= moveBitboard;
 	else
 		AllBlackPosBitboard ^= moveBitboard;
-
 
 	board[startSquare] = 0;
 	board[targetSquare] = movingPiece;
 
 	if (movingPiece == OurKingKey)
-		kingPos[ourColorIndex] = targetSquare;
+		kingPos[OurColorIndex] = targetSquare;
+
+	EPSquare = EmptyEnPassantPos;
+
+	if (flag == MoveFlags::PawnDoubleForward)
+	{
+		if (IsWhiteToMove)
+			EPSquare = startSquare - 8;
+		else
+			EPSquare = startSquare + 8;
+	}
+	else if (flag == MoveFlags::EnPassantCapture)
+	{
+		if (IsWhiteToMove)
+		{
+			capturedPiece = BPawn;
+			targetSquare -= 8;
+			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
+			AllPiecePosBitboard ^= (Bitboard)0b1 << targetSquare;
+			PieceBitboardPos[capturedPiece] ^= (Bitboard)0b1 << targetSquare;
+		}
+		else
+		{
+			capturedPiece = WPawn;
+			targetSquare += 8;
+			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
+			AllPiecePosBitboard ^= (Bitboard)0b1 << targetSquare;
+			PieceBitboardPos[capturedPiece] ^= (Bitboard)0b1 << targetSquare;
+		}
+	}
+	else if (flag == MoveFlags::Castling)
+	{
+
+	}
+	else if (flag != MoveFlags::NoFlag) // Is promotion
+	{
+		PieceLists[movingPiece].RemovePieceAtSquare(targetSquare);
+		Piece promotionPiece = GetPromotionPieceType(flag) | OurColor;
+		PieceLists[promotionPiece].AddPieceAtSquare(targetSquare);
+		Bitboard XOR = (Bitboard)0b1 << targetSquare;
+		PieceBitboardPos[movingPiece] ^= XOR;
+		PieceBitboardPos[promotionPiece] ^= XOR;
+	}
 
 	playerTurn ^= PlayerTurnSwitch;
 }
@@ -306,8 +350,8 @@ void UnsafeWaterMelon::GenerateBitboards()
 {
 	// The sliding pieces will be initilized when they get there moves generated
 
-	allFriendlyAttakcs = 0;
-	allEnemyAttacks = 0;
+	allFriendlyAttakcsNonSliding = 0;
+	allEnemyAttacksNonSliding = 0;
 
 	pieceAttackBitboards[WPawn] = 0;
 	pieceAttackBitboards[WBishop] = 0;
@@ -344,13 +388,13 @@ void UnsafeWaterMelon::GenerateBitboards()
 
 	if (whiteToMove)
 	{
-		allFriendlyAttakcs |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
-		allEnemyAttacks |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
+		allFriendlyAttakcsNonSliding |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
+		allEnemyAttacksNonSliding |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
 	}
 	else
 	{
-		allFriendlyAttakcs |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
-		allEnemyAttacks |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
+		allFriendlyAttakcsNonSliding |= pieceAttackBitboards[BPawn] | pieceAttackBitboards[BKnight] | pieceAttackBitboards[BKing];
+		allEnemyAttacksNonSliding |= pieceAttackBitboards[WPawn] | pieceAttackBitboards[WKnight] | pieceAttackBitboards[WKing];
 	}
 }
 
@@ -573,19 +617,102 @@ void UnsafeWaterMelon::AddPawnMoves()
 			int rightPos = pos + 9;
 			int oneMove = pos + 8;
 			int twoMove = pos + 16;
+			bool isPromotion = BitboardContains(WhitePromotionLine, oneMove);
+			Bitboard AND = pinnedPieces & ((Bitboard)0b1 << pos);
 
-			if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-				if (IsPieceColor(GetColor(board[leftPos]), Black))
-					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
-			if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-				if (IsPieceColor(GetColor(board[rightPos]), Black))
-					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
-
-			if (board[oneMove] == 0)
+			if (isPromotion)
 			{
-				PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
-				if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
+				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
+					{
+						if (AND) // Is pinned
+						{
+							if (pinningPiecesAttack[pos] & ((Bitboard)0b1 << leftPos)) // Blocks pin
+								if (BitboardContains(attacksOnKing, leftPos) || !KingInCheck) // blocks check
+								{
+									PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToQueenCapture));
+									PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToKnightCapture));
+									PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToRookCapture));
+									PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToBishopCapture));
+								}
+						}
+						else
+						{
+							if (BitboardContains(attacksOnKing, leftPos))
+							{
+								PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToQueenCapture));
+								PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToKnightCapture));
+								PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToRookCapture));
+								PushMove(CreateMove(pos, leftPos, MoveFlags::PromoteToBishopCapture));
+							}
+						}
+					}
+				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
+					{
+						if (AND) // Is pinned
+						{
+							if (pinningPiecesAttack[pos] & ((Bitboard)0b1 << rightPos)) // Blocks pin
+								if (BitboardContains(attacksOnKing, rightPos) || !KingInCheck) // blocks check
+								{
+									PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToQueenCapture));
+									PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToKnightCapture));
+									PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToRookCapture));
+									PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToBishopCapture));
+								}
+						}
+						else
+						{
+							if (BitboardContains(attacksOnKing, rightPos))
+							{
+								PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToQueenCapture));
+								PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToKnightCapture));
+								PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToRookCapture));
+								PushMove(CreateMove(pos, rightPos, MoveFlags::PromoteToBishopCapture));
+							}
+						}
+					}
+
+				if (board[oneMove] == 0)
+				{
+					if (AND) // Is pinned
+					{
+						if (pinningPiecesAttack[pos] & ((Bitboard)0b1 << oneMove)) // Blocks pin
+							if (BitboardContains(attacksOnKing, oneMove) || !KingInCheck) // blocks check
+							{
+								PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToQueen));
+								PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToKnight));
+								PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToRook));
+								PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToBishop));
+							}
+					}
+					else
+					{
+						if (BitboardContains(attacksOnKing, oneMove))
+						{
+							PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToQueen));
+							PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToKnight));
+							PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToRook));
+							PushMove(CreateMove(pos, oneMove, MoveFlags::PromoteToBishop));
+						}
+					}
+				}
+			}
+			else
+			{
+				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
+					if (IsPieceColor(GetColor(board[leftPos]), Black))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, leftPos, NoFlagCapture));
+				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
+					if (IsPieceColor(GetColor(board[rightPos]), Black))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, rightPos, NoFlagCapture));
+
+				if (board[oneMove] == 0)
+				{
+					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, oneMove, NoFlag));
+					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
+						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, twoMove, PawnDoubleForward));
+				}
 			}
 		}
 		if (EPSquare != EmptyEnPassantPos)
@@ -626,7 +753,7 @@ bool UnsafeWaterMelon::IsSquareSafe(Square square)
 {
 	//Logger::LogBitboard(allEnemyAttacks);
 
-	if (BitboardContains(allEnemyAttacks, square))
+	if (BitboardContains(allEnemyAttacksNonSliding, square))
 		return false;
 
 	//Logger::LogBitboard(PieceBitboardPos[EnemyQueenKey]);

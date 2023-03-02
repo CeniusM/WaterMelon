@@ -111,8 +111,8 @@ public:
 
 	// All the bitboard of the piece attacks
 	Bitboard pieceAttackBitboards[24]{};
-	Bitboard allFriendlyAttakcs{};
-	Bitboard allEnemyAttacks{};
+	Bitboard allFriendlyAttakcsNonSliding{};
+	Bitboard allEnemyAttacksNonSliding{};
 
 	// This will have a line from the enemy piece to right infron of the king if is a sliding peice,
 	// If it is a knight or a pawn, it will just show its pos, so when you move to that pos
