@@ -3,8 +3,7 @@
 #include "AllPiecesBitboardMoves.h"
 #include "Bitboard.h"
 #include "Board.h"
-#include "BoardSave.h"
-#include "BoardStateSave.h"
+#include "BoardState.h"
 #include "CastleRight.h"
 #include "Evaluation.h"
 #include "Direction.h"
@@ -15,6 +14,7 @@
 #include "MoveFlag.h"
 #include "Offset.h"
 #include "Piece.h"
+#include "PiecePlacementBonus.h"
 #include "Square.h"
 
 // For debguging

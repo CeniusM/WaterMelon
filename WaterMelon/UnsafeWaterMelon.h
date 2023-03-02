@@ -9,10 +9,9 @@
 #include "Logger.h"
 #include "TypesIncludes.h"
 #include "ThrowHelper.h"
+#include "BoardStateStack.h"
 
 #define MaxMovesCount 256
-//512, if each side had half an hour, they have 7 seconds for each move, this hould be enough
-#define MaxGameMovesCount 512
 
 #pragma region Consts
 constexpr int WhiteIndex = 0;
@@ -38,8 +37,7 @@ public:
 
 	GameState gameState = GameStates::Running;
 
-	BoardStateSave boardStateHistory[MaxGameMovesCount];
-	int currentBoardStateCount = 0;
+	BoardStateStack boardStateStack{ 128 };
 
 	Piece board[64]{};
 	CastleRight castle{};
@@ -61,11 +59,11 @@ public:
 	int GetEvaluation();
 
 
-	void InitFEN(std::string FEN);
+	void InitFEN(const std::string FEN);
 	std::string GetFEN();
 
 	UnsafeWaterMelon();
-	UnsafeWaterMelon(std::string FEN);
+	UnsafeWaterMelon(const std::string FEN);
 	~UnsafeWaterMelon();
 
 

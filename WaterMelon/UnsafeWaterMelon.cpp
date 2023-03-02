@@ -5,7 +5,6 @@
 // Can NOT use any of the data that get initilized at the GetPossibleMoves, beacous this could be called after a UnMakeMove
 void UnsafeWaterMelon::MakeMove(Move move)
 {
-	currentBoardStateCount++;
 	Square startSquare = GetMoveStart(move);
 	Square targetSquare = GetMoveTarget(move);
 	MoveFlag flag = GetMoveFlag(move);
@@ -87,16 +86,32 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		PieceBitboardPos[promotionPiece] ^= XOR;
 	}
 
+	// Save State
+	BoardState state = 0;
+	boardStateStack.Push(state);
 	playerTurn ^= PlayerTurnSwitch;
 }
 
-void UnsafeWaterMelon::UnMakeMove()
+// Just have to undo what MakeMove did
+void UnsafeWaterMelon::UnMakeMove() 
 {
+	// Testing ideer
+	// Copy all the raw data over into another file, 
+	// than make a move,
+	// than unmake the move,
+	// copy the board again
+	// compare, repeat
+	// if you dont run GetPossibleMoves(), all the bytes should be complety equal 
+	// (execpt for the stack item wich dont get deleted, just ignored by the stack)
 
-
+	if (boardStateStack.GetCount() == 0)
+		ThrowInvalidArgumentException("Can't UnMakeMove when there is not any moves to unmake");
 
 	playerTurn ^= PlayerTurnSwitch;
-	currentBoardStateCount--;
+	// Load State
+	BoardState state = boardStateStack.Pop();
+
+
 }
 
 
@@ -106,7 +121,7 @@ UnsafeWaterMelon::UnsafeWaterMelon()
 	InitFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
-UnsafeWaterMelon::UnsafeWaterMelon(std::string FEN)
+UnsafeWaterMelon::UnsafeWaterMelon(const std::string FEN)
 {
 	InitFEN(FEN);
 }
@@ -116,7 +131,7 @@ UnsafeWaterMelon::~UnsafeWaterMelon()
 
 }
 
-void UnsafeWaterMelon::InitFEN(std::string FEN)
+void UnsafeWaterMelon::InitFEN(const std::string FEN)
 {
 	// Validate the FEN String...
 
@@ -211,73 +226,12 @@ std::string UnsafeWaterMelon::GetFEN()
 
 int UnsafeWaterMelon::GetEvaluation()
 {
-	// Bonus for material
-	// Bonus for placement
-	// Bonus for king safty, like maby bonus for pieces infront of the king early/mid game atlist
-	// Bonus for being in team pawn attacks, and negBonus for being in oponent pawn -
-	// - and use allready created bitboards
-	// Early/Mid game, very low and heigh king moves count is bad, just need something in the middle -
-	// -to many moves means its probely not protected enough, and less than 2 is probely also pretty bad
-	// Ideer, give negBonus for pieces that have not moved, but a little tricky to implement
-	// Bonus pawns for closing in on promotion, tricky to implement, 
-	// early game and good structure, get space, mid have good structure, end game good structure and try promotion
-	// Bonus for lategame getting agresiv torwards the enemy king to checkmate
-	// Bonus for the bishop on the opesit color of the major pawn structor -
-	// -so the fewer pawns the bishop shares space with the better, but this mostly counts for the mid of the board, -
-	// -not so much far behind
-	// Bonus for moving pawns up the board (unless they defend the king, and bonus for pawns closer to the enemy king -
-	// but still the best bonuses for good pawn structure, the mentioned bonuses is just for something to work torwards
-	// Negbonus for checks and double checks
 
 	if (movesCount == 0)
 	{
 		if (KingInCheck) // King in check
 			return playerTurn == White ? -999999 : 999999;
 		return 0;
-	}
-
-	int Evaluation = 0;
-
-	if (true) // early game
-	{
-		constexpr int PawnEarlyGameValue = 100;
-		constexpr int KnightEarlyGameValue = 400;
-		constexpr int BishopEarlyGameValue = 440;
-		constexpr int RookEarlyGameValue = 450;
-		constexpr int QueenEarlyGameValue = 950;
-
-		Evaluation += PieceLists[WPawn].PieceNum * PawnEarlyGameValue;
-		Evaluation += PieceLists[WKnight].PieceNum * KnightEarlyGameValue;
-		Evaluation += PieceLists[WBishop].PieceNum * BishopEarlyGameValue;
-		Evaluation += PieceLists[WRook].PieceNum * RookEarlyGameValue;
-		Evaluation += PieceLists[WQueen].PieceNum * QueenEarlyGameValue;
-
-		Evaluation -= PieceLists[BPawn].PieceNum * PawnEarlyGameValue;
-		Evaluation -= PieceLists[BKnight].PieceNum * KnightEarlyGameValue;
-		Evaluation -= PieceLists[BBishop].PieceNum * BishopEarlyGameValue;
-		Evaluation -= PieceLists[BRook].PieceNum * RookEarlyGameValue;
-		Evaluation -= PieceLists[BQueen].PieceNum * QueenEarlyGameValue;
-
-		//for (size_t i = 0; i < 64; i++) // For later
-		//	Evaluation += GetBonusForPieceOnSquareEarlyGame(board[i], i); // Also use this for pawn collum bonus, and bonuses close to promotion
-	}
-	else if (false) // mid game
-	{
-		constexpr int PawnMidGameValue = 100;
-		constexpr int KnightMidGameValue = 305;
-		constexpr int BishopMidGameValue = 333;
-		constexpr int RookMidGameValue = 563;
-		constexpr int QueenMidGameValue = 950;
-	}
-	else // late game
-	{
-		constexpr int PawnlateGameValue = 100;
-		constexpr int KnightlateGameValue = 305;
-		constexpr int BishoplateGameValue = 333;
-		constexpr int RooklateGameValue = 563;
-		constexpr int QueenlateGameValue = 950;
-
-
 	}
 
 

@@ -39,7 +39,7 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
-    <ClInclude Include="BoardStateSave.h">
+    <ClInclude Include="BoardState.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
     <ClInclude Include="CastleRight.h">
@@ -90,9 +90,6 @@
     <ClInclude Include="AllPiecesBitboardMoves.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
-    <ClInclude Include="BoardSave.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
-    </ClInclude>
     <ClInclude Include="Perft.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,8 +126,11 @@
     <ClInclude Include="BranchCutter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateList.h">
+    <ClInclude Include="BoardStateStack.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="PiecePlacementBonus.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +161,7 @@
     <ClCompile Include="BranchCutter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateList.cpp">
+    <ClCompile Include="BoardStateStack.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>

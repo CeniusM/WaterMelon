@@ -10,4 +10,4 @@
 // [25,31] castle
 // 50 move rule
 // 
-typedef unsigned long long BoardStateSave;
+typedef unsigned long long BoardState;

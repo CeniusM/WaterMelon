@@ -138,7 +138,7 @@
     <ClCompile Include="ColoredSquare.cpp" />
     <ClCompile Include="Depth.h" />
     <ClCompile Include="Evaluator.cpp" />
-    <ClCompile Include="GameStateList.cpp" />
+    <ClCompile Include="BoardStateStack.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -146,8 +146,7 @@
     <ClCompile Include="UnsafeWaterMelon.cpp" />
     <ClInclude Include="Bitboard.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="BoardSave.h" />
-    <ClInclude Include="BoardStateSave.h" />
+    <ClInclude Include="BoardState.h" />
     <ClInclude Include="BranchCutter.h" />
     <ClInclude Include="CastleRight.h" />
     <ClInclude Include="ColoredSquare.h" />
@@ -160,7 +159,7 @@
     <ClInclude Include="FENUtility.h" />
     <ClInclude Include="GameStage.h" />
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStateList.h" />
+    <ClInclude Include="BoardStateStack.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="MoveFlag.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceList.h" />
     <ClInclude Include="AllPiecesBitboardMoves.h" />
+    <ClInclude Include="PiecePlacementBonus.h" />
     <ClInclude Include="SafeWaterMelon.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Square.h" />
