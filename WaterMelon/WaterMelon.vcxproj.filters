@@ -129,6 +129,9 @@
     <ClInclude Include="BranchCutter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameStateList.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="BranchCutter.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateList.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
