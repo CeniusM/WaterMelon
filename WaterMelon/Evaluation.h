@@ -1,7 +1,7 @@
 #pragma once
 
-typedef int Evaluation;
+typedef float EvaluationF;
 
-constexpr Evaluation Eval_Equal = 0;
-constexpr Evaluation Eval_Infinit = 999999;
-constexpr Evaluation Eval_NegInfinit = -999999;
+constexpr EvaluationF Eval_Equal = 0;
+constexpr EvaluationF Eval_Infinit = 999999;
+constexpr EvaluationF Eval_NegInfinit = -999999;
