@@ -1010,8 +1010,8 @@ void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
-	/*SquaresToRenderByGUIForDebuing.clear();
-	for (size_t i = 0; i < 24; i++)
+	SquaresToRenderByGUIForDebuing.clear();
+	/*for (size_t i = 0; i < 24; i++)
 		for (size_t j = 0; j < PieceLists[i].PieceNum; j++)
 			SquaresToRenderByGUIForDebuing.push_back(PieceLists[i].OccupiedSquares[j]);
 	return 0;*/
@@ -1079,6 +1079,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	if (KingInDoubleCheck)
 	{
+		for (size_t i = 0; i < movesCount; i++)
+			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
 	}
@@ -1091,13 +1093,14 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	AddBishopMoves();
 	AddQueenMoves();
 
-	for (size_t i = 0; i < movesCount; i++)
-		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
 
 	if (onlyCaptures)
-		RemoveNoneCaptures();
+		RemoveNoneCaptures(); 
 	if (moveOrder)
 		OrderMoves();
+
+	for (size_t i = 0; i < movesCount; i++)
+		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
 
 	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 	return movesCount;

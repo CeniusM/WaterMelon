@@ -73,6 +73,19 @@ void GameOfChess::HandleEvents()
 		}
 
 
+		if (event.type == SDL_KEYDOWN)
+		{
+			if (event.key.keysym.sym == SDLK_l)
+			{
+				board.LoadMoves();
+				Render();
+			}
+			else if (event.key.keysym.sym == SDLK_o)
+			{
+				board.LoadMoves(true);
+				Render();
+			}
+		}
 
 		/*
 

@@ -23,6 +23,8 @@ public:
 	bool IsDraging() { return MouseDraging; }
 	bool Running();
 
+	void LoadMoves(bool onlyAttacks = false);
+
 	bool SomethingHappend = false;
 
 private:

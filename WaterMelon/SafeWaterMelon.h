@@ -35,6 +35,8 @@ public:
 	/// Flips the square between Unsafe and UI square
 	Square TransformSquare(Square square);
 
+	void LoadMoves(bool onlyCaptures = false);
+
 private:
 	UnsafeWaterMelon* _board;
 	Move _moves[MaxMovesCount];

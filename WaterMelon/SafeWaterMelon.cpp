@@ -111,3 +111,8 @@ Square SafeWaterMelon::TransformSquare(Square square)
 	else
 		return square;
 }
+
+void SafeWaterMelon::LoadMoves(bool onlyCaptures)
+{
+	_movesCount = _board->GetPossibleMoves(_moves, onlyCaptures, false);
+}
