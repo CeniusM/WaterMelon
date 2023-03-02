@@ -85,6 +85,11 @@ void GameOfChess::HandleEvents()
 				board.LoadMoves(true);
 				Render();
 			}
+			else if (event.key.keysym.sym == SDLK_SPACE)
+			{
+				board.UnMakeMove();
+				Render();
+			}
 		}
 
 		/*

@@ -43,6 +43,8 @@ bool SafeWaterMelon::MakeMove(Move move)
 
 bool SafeWaterMelon::UnMakeMove()
 {
+	_board->UnMakeMove();
+	LoadMoves();
 	return false;
 }
 

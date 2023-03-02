@@ -3,14 +3,26 @@
 
 #include "SDL.h"
 #include "GameOfChess.h"
+#include "Perft.h"
 #include "Timer.h"
 //#include "../WaterMelon/Timer.h"
 
-
 #undef main
+
+void PerftTest()
+{
+	PerftRunner perftRunner{"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"};
+
+	std::cout << perftRunner.BulkSearch(4);
+
+
+	std::cout << "\n";
+}
 
 int main()
 {
+	//PerftTest();
+	//return 0;
 	/*int start = 0;
 	Bitboard some = 124123;
 	Square pos = 32;

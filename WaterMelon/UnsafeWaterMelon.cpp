@@ -5,6 +5,7 @@
 // Can NOT use any of the data that get initilized at the GetPossibleMoves, beacous this could be called after a UnMakeMove
 void UnsafeWaterMelon::MakeMove(Move move)
 {
+	currentBoardStateCount++;
 	Square startSquare = GetMoveStart(move);
 	Square targetSquare = GetMoveTarget(move);
 	MoveFlag flag = GetMoveFlag(move);
@@ -92,7 +93,10 @@ void UnsafeWaterMelon::MakeMove(Move move)
 void UnsafeWaterMelon::UnMakeMove()
 {
 
+
+
 	playerTurn ^= PlayerTurnSwitch;
+	currentBoardStateCount--;
 }
 
 
