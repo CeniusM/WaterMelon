@@ -126,6 +126,9 @@
     <ClInclude Include="GameStage.h">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
+    <ClInclude Include="BranchCutter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -150,6 +153,9 @@
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Evaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BranchCutter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

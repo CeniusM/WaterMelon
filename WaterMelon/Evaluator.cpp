@@ -40,3 +40,11 @@ EvaluationF GetKingSaftyEval(const UnsafeWaterMelon& board, float gameStage)
 {
     return Eval_Equal;
 }
+
+EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage)
+{
+    // Bishops attacking the long files is good, bishop close together is good
+    // Also rook open files are really good
+
+    return Eval_Equal;
+}

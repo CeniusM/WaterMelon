@@ -25,4 +25,4 @@ EvaluationF GetKingSaftyEval(const UnsafeWaterMelon& board, float gameStage);
 //EvaluationF GetOutpostEval(const UnsafeWaterMelon& board, float gameStage);
 
 // The more the peices can see the better
-//EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage);
+EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage);

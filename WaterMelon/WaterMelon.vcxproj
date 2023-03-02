@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BranchCutter.cpp" />
     <ClCompile Include="ColoredSquare.cpp" />
     <ClCompile Include="Depth.h" />
     <ClCompile Include="Evaluator.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardSave.h" />
     <ClInclude Include="BoardStateSave.h" />
+    <ClInclude Include="BranchCutter.h" />
     <ClInclude Include="CastleRight.h" />
     <ClInclude Include="ColoredSquare.h" />
     <ClInclude Include="Defines.h" />
