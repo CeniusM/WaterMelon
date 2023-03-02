@@ -120,6 +120,12 @@
     <ClInclude Include="ColoredSquare.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="Evaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStage.h">
+      <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -142,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="ColoredSquare.cpp">
       <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Evaluator.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="ColoredSquare.cpp" />
     <ClCompile Include="Depth.h" />
+    <ClCompile Include="Evaluator.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -151,8 +152,10 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="EnPassantPos.h" />
     <ClInclude Include="Evaluation.h" />
+    <ClInclude Include="Evaluator.h" />
     <ClInclude Include="FENString.h" />
     <ClInclude Include="FENUtility.h" />
+    <ClInclude Include="GameStage.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Move.h" />

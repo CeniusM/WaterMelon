@@ -18,13 +18,17 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	Color OurColor = playerTurn;
 	int OurColorIndex = playerTurn >> 4;
-	bool IsWhiteToMove = OurColorIndex;
+	bool IsWhiteToMove = !(bool)OurColorIndex;
 
 	if (capturedPiece)
 	{
 		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
 		AllPiecePosBitboard ^= (Bitboard)0b1 << targetSquare;
 		PieceBitboardPos[capturedPiece] ^= (Bitboard)0b1 << targetSquare;
+		if (IsWhiteToMove)
+			AllBlackPosBitboard ^= (Bitboard)0b1 << targetSquare;
+		else
+			AllWhitePosBitboard ^= (Bitboard)0b1 << targetSquare;
 	}
 	PieceLists[movingPiece].MovePiece(startSquare, targetSquare);
 	AllPiecePosBitboard ^= moveBitboard;
@@ -731,6 +735,7 @@ void UnsafeWaterMelon::AddKnightMoves()
 	Logger::Log("All friends\n");
 	Logger::LogBitboard(AllFriendlyPosBitboard);
 	Logger::Log("");
+	Bitboard FreeOfFriendlies = AllFriendlyPosBitboard ^ 0xffffffffffffffff;
 	for (size_t i = 0; i < PieceLists[OurKnightKey].PieceNum; i++)
 	{
 		Square pos = PieceLists[OurKnightKey].OccupiedSquares[i];
@@ -738,7 +743,7 @@ void UnsafeWaterMelon::AddKnightMoves()
 		for (size_t i = 0; i < 8; i++)
 		{
 			Square newPos = pos + KnightOffsetsIndexed[i];
-			if (BitboardContains(attacksBitboard ^ AllFriendlyPosBitboard, newPos))
+			if (BitboardContains(attacksBitboard & FreeOfFriendlies, newPos))
 			{
 				if (board[newPos])
 					PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, newPos, NoFlag));
