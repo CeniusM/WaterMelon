@@ -13,7 +13,8 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 	if (fullscreen)
 		flag = SDL_WINDOW_FULLSCREEN;
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	//if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (SDL_Init(SDL_INIT_VIDEO) == 0)
 	{
 		std::cout << "Subsystem has initilized!" << std::endl;
 
@@ -40,25 +41,25 @@ void GameOfChess::Init(const char* title, int xpos, int ypos, int width, int hei
 	//playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	//SDL_FreeSurface(tmpSurface);
 	//playerTexture = sdlHelper.LoadImage("Assets/n.bmp", renderer);
-	
+
 	for (int i = 0; i < 24; i++)
 		sprites[i] = nullptr;
-	sprites[9] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wking.bmp", renderer); //9 WKing
-	sprites[10] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wpawn.bmp", renderer); //10 WPawn
-	sprites[11] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wknight.bmp", renderer); //11 WKnight
-	sprites[13] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wbishop.bmp", renderer); //13 WBishop
-	sprites[14] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wrook.bmp", renderer); //14 WRook
-	sprites[15] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wqueen.bmp", renderer); //15 WQueen
-	sprites[17] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bking.bmp", renderer); //17 BKing
-	sprites[18] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bpawn.bmp", renderer); //18 BPawn
-	sprites[19] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bknight.bmp", renderer); //19 BKnight
-	sprites[21] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bbishop.bmp", renderer); //21 BBishop
-	sprites[22] = sdlHelper.LoadImage(std::string(AssetsPath) + "Brook.bmp", renderer); //22 BRook
-	sprites[23] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bqueen.bmp", renderer); //23 BQueen
+	sprites[WKing] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wking.bmp", renderer);
+	sprites[WPawn] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wpawn.bmp", renderer);
+	sprites[WKnight] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wknight.bmp", renderer);
+	sprites[WBishop] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wbishop.bmp", renderer);
+	sprites[WRook] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wrook.bmp", renderer);
+	sprites[WQueen] = sdlHelper.LoadImage(std::string(AssetsPath) + "Wqueen.bmp", renderer);
+	sprites[BKing] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bking.bmp", renderer);
+	sprites[BPawn] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bpawn.bmp", renderer);
+	sprites[BKnight] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bknight.bmp", renderer);
+	sprites[BBishop] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bbishop.bmp", renderer);
+	sprites[BRook] = sdlHelper.LoadImage(std::string(AssetsPath) + "Brook.bmp", renderer);
+	sprites[BQueen] = sdlHelper.LoadImage(std::string(AssetsPath) + "Bqueen.bmp", renderer);
 }
 
 void GameOfChess::HandleEvents()
-{	
+{
 	SDL_Event event;
 	while (SDL_PollEvent(&event) == 1)
 	{
@@ -72,6 +73,24 @@ void GameOfChess::HandleEvents()
 		}
 
 
+		if (event.type == SDL_KEYDOWN)
+		{
+			if (event.key.keysym.sym == SDLK_l)
+			{
+				board.LoadMoves();
+				Render();
+			}
+			else if (event.key.keysym.sym == SDLK_o)
+			{
+				board.LoadMoves(true);
+				Render();
+			}
+			else if (event.key.keysym.sym == SDLK_SPACE)
+			{
+				board.UnMakeMove();
+				Render();
+			}
+		}
 
 		/*
 
@@ -115,11 +134,11 @@ void GameOfChess::HandleEvents()
 			yMousePos = event.button.y;
 			SomethingHappend = true;
 			MouseDraging = true;
-			m_PieceTypeBeingDraged = board.GetPos(clickedPos);
+			m_PieceTypeBeingDraged = board.GetSquare(clickedPos);
 			m_piecePickedIndex = clickedPos;
 			m_IsPieceBeingDraged = true;
 			pieceHaveBeenPicked = true;
-			if ((board.GetPos(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
+			if ((board.GetSquare(x + (y * 8)) & 0b11000) != board.GetPlayerColour())
 			{
 				m_IsPieceBeingDraged = false;
 				MouseDraging = 0;
@@ -143,10 +162,18 @@ void GameOfChess::HandleEvents()
 			m_IsPieceBeingDraged = false;
 			MouseDraging = 0;
 			//pieceHaveBeenPicked = false;
-
-			if ((xMousePos / 100) + ((yMousePos / 100) * 8) == m_piecePickedIndex) // peice landed on same square
+			int indexPlacements = (xMousePos / 100) + ((yMousePos / 100) * 8);
+			if (indexPlacements == m_piecePickedIndex) // peice landed on same square
 			{
 				pieceHaveBeenPicked = true;
+			}
+			else
+			{
+				//Log("Making a move");
+				std::cout << "Making Move\n";
+				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
+				board.MakeMove(move);
+
 			}
 		}
 	}
@@ -165,8 +192,8 @@ void GameOfChess::Render()
 
 	RenderBackGround();
 
-	if (pieceHaveBeenPicked)
-		std::cout << "true" << std::endl;
+	//if (pieceHaveBeenPicked)
+	//	std::cout << "true" << std::endl;
 	if (pieceHaveBeenPicked)
 		RenderPossibleMoves();
 
@@ -181,6 +208,7 @@ void GameOfChess::Render()
 		RenderPiece(&r, sprites[m_PieceTypeBeingDraged]);
 
 	SDL_RenderPresent(renderer);
+	SomethingHappend = false;
 }
 
 void GameOfChess::Clean()
@@ -195,7 +223,7 @@ void GameOfChess::Clean()
 
 
 
-	SDL_Quit;
+	SDL_Quit();
 	std::cout << "finished cleanup\n";
 }
 
@@ -203,11 +231,11 @@ bool GameOfChess::Running() { return m_isRunning; }
 
 void GameOfChess::RenderBackGround()
 {
+	SDL_Rect rect;
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			SDL_Rect rect;
 			rect.w = 100;
 			rect.h = 100;
 			rect.x = j * 100;
@@ -221,6 +249,20 @@ void GameOfChess::RenderBackGround()
 			SDL_RenderFillRect(renderer, &rect);
 		}
 	}
+
+	auto squaresList = board.GetUnsafeBoardPtr()->SquaresToRenderByGUIForDebuing;
+	std::list<ColoredSquare>::iterator it;
+	for (it = squaresList.begin(); it != squaresList.end(); ++it)
+	{
+		ColoredSquare square = *it;
+		Move fixedMove = board.TransformSquare(square.square);
+		int rank = GetRank(fixedMove);
+		int collum = GetCollum(fixedMove);
+		rect.x = collum * 100;
+		rect.y = rank * 100;
+		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
+		SDL_RenderFillRect(renderer, &rect);
+	}
 }
 
 void GameOfChess::RenderPossibleMoves()
@@ -229,14 +271,16 @@ void GameOfChess::RenderPossibleMoves()
 	int movesCount = board.GetMovesCount();
 	for (int i = 0; i < movesCount; i++)
 	{
-		if (moves[i].StartSquare == m_piecePickedIndex)
+		int move = moves[i];
+		int target = GetMoveTarget(move);
+		if (GetMoveStart(move) == m_piecePickedIndex)
 		{
 			SDL_Rect rect;
 			rect.w = 100;
 			rect.h = 100;
-			rect.x = (moves[i].TargetSquare % 8) * 100;
-			rect.y = (moves[i].TargetSquare >> 3) * 100;
-			if (((moves[i].TargetSquare >> 3) + (moves[i].TargetSquare % 8)) % 2 == 0) // light square
+			rect.x = (target % 8) * 100;
+			rect.y = (target >> 3) * 100;
+			if (((target >> 3) + (target % 8)) % 2 == 0) // light square
 				SDL_SetRenderDrawColor(renderer, 200, 100, 100, 255);
 			else
 				SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
@@ -251,21 +295,21 @@ void GameOfChess::RenderAllPieces(int PieceToLeaveOut)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			int pos = (i*8)+j;
-	
-			if (board.GetPos(pos) == 0)
+			int pos = (i * 8) + j;
+
+			if (board.GetSquare(pos) == 0)
 				continue;
 
 			if (pos == PieceToLeaveOut) // instead of removing it, just put another tranparent layer on it, so its ghost like
 				continue;
-	
+
 			SDL_Rect rect;
 			rect.x = j * 100;
 			rect.y = i * 100;
 			rect.h = 100;
 			rect.w = 100;
-	
-			RenderPiece(&rect, sprites[board.GetPos(pos)]);
+
+			RenderPiece(&rect, sprites[board.GetSquare(pos)]);
 		}
 	}
 }

@@ -13,15 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\BoardLogic">
-      <UniqueIdentifier>{efcaa1c2-5436-4037-9377-af72b97bd11d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\BoardLogic">
-      <UniqueIdentifier>{5dce9dc8-4c0e-495d-a4d1-fdbe09bdd79b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\BoardLogic\PreInitializeData">
-      <UniqueIdentifier>{d5eccfc2-4b56-4dcd-b537-3b2b628a553f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{fd211810-4267-4554-9328-769f1203f771}</UniqueIdentifier>
     </Filter>
@@ -29,15 +20,6 @@
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SafeWaterMelon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UnsafeWaterMelon.cpp">
-      <Filter>Source Files\BoardLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="PossibleMovesGenerator.cpp">
-      <Filter>Source Files\BoardLogic</Filter>
     </ClCompile>
     <ClCompile Include="SDLHelper.cpp">
       <Filter>Source Files\GUI</Filter>
@@ -47,49 +29,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SafeWaterMelon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UnsafeWaterMelon.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="PieceList.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="FENUtility.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
-    <ClInclude Include="FENString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PossibleMovesGenerator.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Perft.h">
-      <Filter>Header Files\BoardLogic</Filter>
-    </ClInclude>
     <ClInclude Include="SDLHelper.h">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GameOfChess.h">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Todo">
-      <Filter>Source Files</Filter>
-    </Text>
   </ItemGroup>
 </Project>
