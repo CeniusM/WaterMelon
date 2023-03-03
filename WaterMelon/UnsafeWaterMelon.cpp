@@ -102,7 +102,7 @@ void UnsafeWaterMelon::UnMakeMove()
 	// copy the board again
 	// compare, repeat
 	// if you dont run GetPossibleMoves(), all the bytes should be complety equal 
-	// (execpt for the stack item wich dont get deleted, just ignored by the stack)
+	// (EXEPT FOR the stack item pointer and capacity)
 
 	if (boardStateStack.GetCount() == 0)
 		ThrowInvalidArgumentException("Can't UnMakeMove when there is not any moves to unmake");

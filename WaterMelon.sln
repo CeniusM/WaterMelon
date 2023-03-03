@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PreInitializedDataGenerator
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WaterMelonTester", "WaterMelonTester\WaterMelonTester.vcxproj", "{C2CFE130-97B6-45AB-9A80-F8015F7956A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiecePlacementBonusesEditor", "PiecePlacementBonusesEditor\PiecePlacementBonusesEditor.csproj", "{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{C2CFE130-97B6-45AB-9A80-F8015F7956A1}.Release|x64.Build.0 = Release|x64
 		{C2CFE130-97B6-45AB-9A80-F8015F7956A1}.Release|x86.ActiveCfg = Release|Win32
 		{C2CFE130-97B6-45AB-9A80-F8015F7956A1}.Release|x86.Build.0 = Release|Win32
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|x64.Build.0 = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Debug|x86.Build.0 = Debug|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|x64.ActiveCfg = Release|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|x64.Build.0 = Release|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0E1A11A5-E306-4BC7-91B2-AA769D889C7B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
