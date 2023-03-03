@@ -20,6 +20,9 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	int OurColorIndex = playerTurn >> 4;
 	bool IsWhiteToMove = !(bool)OurColorIndex;
 
+	// Save state
+	boardStateStack.Push(BoardState{move, capturedPiece, EPSquare, castle, 0, KingInCheck, KingInDoubleCheck});
+
 	if (capturedPiece)
 	{
 		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
@@ -86,9 +89,6 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		PieceBitboardPos[promotionPiece] ^= XOR;
 	}
 
-	// Save State
-	BoardState state = 0;
-	boardStateStack.Push(state);
 	playerTurn ^= PlayerTurnSwitch;
 }
 
@@ -108,8 +108,10 @@ void UnsafeWaterMelon::UnMakeMove()
 		ThrowInvalidArgumentException("Can't UnMakeMove when there is not any moves to unmake");
 
 	playerTurn ^= PlayerTurnSwitch;
-	// Load State
 	BoardState state = boardStateStack.Pop();
+	// Load State
+	
+	
 
 
 }

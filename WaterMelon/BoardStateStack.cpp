@@ -2,16 +2,16 @@
 
 #include "BoardStateStack.h"
 
-BoardStateStack::BoardStateStack(int count)
+BoardStateStack::BoardStateStack(int Capacity)
 {
-	m_capacity = count;
-	m_items = new BoardState[m_capacity];
+	m_capacity = Capacity;
+	m_items = (BoardState*)malloc(m_capacity * sizeof(BoardState));
 	m_top = 0;
 }
 
 BoardStateStack::~BoardStateStack()
 {
-	delete m_items;
+	free(m_items);
 }
 
 void BoardStateStack::Push(BoardState state)
@@ -19,9 +19,9 @@ void BoardStateStack::Push(BoardState state)
 	m_items[m_top++] = state;
 	if (m_top == m_capacity)
 	{
-		delete m_items;
+		free(m_items);
 		m_capacity *= 2;
-		m_items = new BoardState[m_capacity];
+		m_items = (BoardState*)malloc(m_capacity * sizeof(BoardState));
 	}
 }
 

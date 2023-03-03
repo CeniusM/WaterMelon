@@ -48,7 +48,7 @@ void PerftRunner::BulkSearchLog(int depth)
 		Times[i][0] = high_resolution_clock::now();
 
 		board.MakeMove(moves[i]);
-		Counts[i] += Perft(--depth);
+		Counts[i] += Perft(depth - 1);
 		board.UnMakeMove();
 
 		Times[i][1] = high_resolution_clock::now();
@@ -89,7 +89,7 @@ long PerftRunner::Perft(int depth)
 	for (size_t i = 0; i < movesCount; i++)
 	{
 		board.MakeMove(moves[i]);
-		Count += Perft(--depth);
+		Count += Perft(depth - 1);
 		board.UnMakeMove();
 	}
 

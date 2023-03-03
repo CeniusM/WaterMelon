@@ -18,11 +18,11 @@ EvaluationF GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameSt
 // Gets the eval of the pawn structure of each side
 EvaluationF GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage);
 
-// Gets the king safty eval of each side
-EvaluationF GetKingSaftyEval(const UnsafeWaterMelon& board, float gameStage);
+// Gets the king safety eval of each side
+EvaluationF GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage);
 
 // Evaluates how well sertain peices over see the board like knight defended by pawns
 EvaluationF GetOutpostEval(const UnsafeWaterMelon& board, float gameStage);
 
-// The more the peices can see the better
+// The more the peices can see the better, this also looks at what can attack each other
 EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage);

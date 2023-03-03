@@ -11,7 +11,7 @@
 
 void PerftTest()
 {
-	PerftRunner perftRunner{"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"};
+	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 
 	std::cout << perftRunner.BulkSearch(4);
 
@@ -21,6 +21,8 @@ void PerftTest()
 
 int main()
 {
+	//std::cout << sizeof(BoardState);
+	//return 0;
 	//PerftTest();
 	//return 0;
 	/*int start = 0;

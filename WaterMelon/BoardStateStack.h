@@ -6,7 +6,7 @@
 class BoardStateStack
 {
 public:
-	BoardStateStack(int count);
+	BoardStateStack(int Capacity);
 	~BoardStateStack();
 
 	void Push(BoardState state);
@@ -19,6 +19,4 @@ private:
 	int m_capacity;
 	int m_top;
 	BoardState* m_items;
-
-
 };

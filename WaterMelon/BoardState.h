@@ -10,4 +10,27 @@
 // [25,31] castle
 // 50 move rule
 // 
-typedef unsigned long long BoardState;
+//typedef unsigned long long BoardState;
+
+struct BoardState
+{
+	Move move;
+	Piece capturedPiece; // use this as a boolean
+	EnPassantPos epPos;
+	CastleRight castles;
+	short _50MoveRule;
+	bool KingInCheck;
+	bool KingInDoubleCheck;
+
+	BoardState(Move inMove, Piece inCapturedPiece, EnPassantPos inEPPos, CastleRight inCastle, 
+		short in_50MoveRule, bool inKingInCheck, bool inKingInDoubleCheck)
+	{
+		move = inMove;
+		capturedPiece = inCapturedPiece;
+		epPos = inEPPos;
+		castles = inCastle;
+		_50MoveRule = in_50MoveRule;
+		KingInCheck = inKingInCheck;
+		KingInDoubleCheck = inKingInDoubleCheck;
+	}
+};

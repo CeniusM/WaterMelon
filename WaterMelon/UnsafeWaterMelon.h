@@ -44,10 +44,17 @@ public:
 	EnPassantPos EPSquare{};
 	Color playerTurn{};
 
+	int WhitePawnCounts[8]{ 0 };
+	int BlackPawnCounts[8]{ 0 };
+
+
 
 	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
 	void MakeMove(Move move);
 	void UnMakeMove();
+
+	// Used to generate non sliding piece attacks
+	void GenerateBitboards();
 
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
 	int GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false);
@@ -72,22 +79,7 @@ public:
 
 	int kingPos[2]{};
 
-#pragma region Everything PieceList
-	//PieceList WhitePawnsList{};
-	//PieceList WhiteKnightsList{};
-	//PieceList WhiteBishopsList{};
-	//PieceList WhiteRooksList{};
-	//PieceList WhiteQueensList{};
-
-	//PieceList BlackPawnsList{};
-	//PieceList BlackKnightsList{};
-	//PieceList BlackBishopsList{};
-	//PieceList BlackRooksList{};
-	//PieceList BlackQueensList{};
-
-	//PieceList* allPieceLists[24]; // BQueen 23
 	PieceList PieceLists[24]{};
-#pragma endregion
 
 	Move moves[MaxMovesCount];
 	int movesCount;
@@ -189,11 +181,11 @@ private:
 	void RemoveNoneCaptures();
 	void OrderMoves();
 
-	void GenerateBitboards();
 	/// <summary>
 	/// Generate the bitboards for the pinned pieces to the king.
 	/// </summary>
 	void GeneratePinsAndAttacksOnKing();
+
 	void AddKingMoves();
 	void AddPawnMoves();
 	void AddKnightMoves();

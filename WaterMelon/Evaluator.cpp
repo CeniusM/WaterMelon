@@ -9,7 +9,7 @@ EvaluationF GetFullBoardEval(const  UnsafeWaterMelon& board)
 	eval += GetMaterialEval(board, gameStage);
 	eval += GetPiecePlacementMapEval(board, gameStage);
 	eval += GetPawnStructureEval(board, gameStage);
-	eval += GetKingSaftyEval(board, gameStage);
+	eval += GetKingSafetyEval(board, gameStage);
 	eval += GetOutpostEval(board, gameStage);
 	eval += GetPieceActivationEval(board, gameStage);
 
@@ -24,24 +24,6 @@ GameStage GetLateGameMultiplier(const UnsafeWaterMelon& board)
 EvaluationF GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
 {
 	EvaluationF eval = 0;
-
-	constexpr EvaluationF PawnEarlyGameValue = 100;
-	constexpr EvaluationF KnightEarlyGameValue = 400;
-	constexpr EvaluationF BishopEarlyGameValue = 440;
-	constexpr EvaluationF RookEarlyGameValue = 450;
-	constexpr EvaluationF QueenEarlyGameValue = 950;
-
-	constexpr EvaluationF PawnMidGameValue = 100;
-	constexpr EvaluationF KnightMidGameValue = 305;
-	constexpr EvaluationF BishopMidGameValue = 333;
-	constexpr EvaluationF RookMidGameValue = 563;
-	constexpr EvaluationF QueenMidGameValue = 950;
-
-	constexpr EvaluationF PawnLateGameValue = 100;
-	constexpr EvaluationF KnightLateGameValue = 305;
-	constexpr EvaluationF BishopLateGameValue = 333;
-	constexpr EvaluationF RookLateGameValue = 563;
-	constexpr EvaluationF QueenLateGameValue = 950;
 
 	if (gameStage < 0.33f) // early game
 	{
@@ -111,12 +93,52 @@ EvaluationF GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
 	// Evaluates things like passed pawns, how they defend each other, and how much they attack the enemy
 	// If they attack heigh valued peices like queens its good
 
+	EvaluationF eval = 0;
+
+	const Bitboard whitePawnAttacks = board.pieceAttackBitboards[WPawn];
+	const Bitboard blackPawnAttacks = board.pieceAttackBitboards[BPawn];
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		if (board.WhitePawnCounts[i] == 2)
+			eval += DoublePawnPenelty;
+		else if (board.WhitePawnCounts[i] == 3)
+			eval += TriplePawnPenelty;
+
+		if (board.BlackPawnCounts[i] == 2)
+			eval -= DoublePawnPenelty;
+		else if (board.BlackPawnCounts[i] == 3)
+			eval -= TriplePawnPenelty;
+	}
+
+	const int whitePawnCount = board.PieceLists[WPawn].PieceNum;
+	const int blackPawnCount = board.PieceLists[BPawn].PieceNum;
+
+	for (size_t i = 0; i < whitePawnCount; i++)
+		if (BitboardContains(whitePawnAttacks, board.PieceLists[WPawn].OccupiedSquares[i]))
+			eval += PawnLinkBonus;
+
+	for (size_t i = 0; i < blackPawnCount; i++)
+		if (BitboardContains(blackPawnAttacks, board.PieceLists[WPawn].OccupiedSquares[i]))
+			eval -= PawnLinkBonus;
+
 	return Eval_Equal;
 }
 
-EvaluationF GetKingSaftyEval(const UnsafeWaterMelon& board, float gameStage)
+EvaluationF GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
 {
-	return Eval_Equal;
+	// this is tricky beacous it also changes between the difrent game stages
+	// in the begining the enemy cant attack the king to much
+	// mid game the king needs to be defended from the enemy active pieces
+	// late game the king needs to come out and help, 
+	// it does not help the king just stands with 3 pawns in the cornor not promoting
+
+	EvaluationF kingSafetyEval = 0; // important early game, but more so mid
+	EvaluationF kingActivationEval = 0; // more and more imporatan the later the game
+
+
+
+	return 0;
 }
 
 EvaluationF GetOutpostEval(const UnsafeWaterMelon& board, float gameStage)
@@ -128,6 +150,10 @@ EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStag
 {
 	// Bishops attacking the long files is good, bishop close together is good
 	// Also rook open files are really good
+
+	// Another thing is if there for example is a queen inside the enemy pawn attacks
+	// this will give a bad eval for when its the queens turn, and even worse if the pawns turn
+	// This does that for all the pieces EXECPT pawns (that is allready done)
 
 	return Eval_Equal;
 }
