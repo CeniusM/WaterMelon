@@ -238,6 +238,20 @@ while (Running)
             }
         }
 
+        else if (e.type == SDL.SDL_EventType.SDL_MOUSEWHEEL)
+        {
+            int amount = e.wheel.y;
+            //Console.WriteLine("Amount: " + amount);
+            //Console.WriteLine("Dir: " + dir);
+
+            if (amount < 0)
+                while (amount++ < 0)
+                    DecreaseValue();
+            else
+                while (amount-- > 0)
+                    IncreaseValue();
+        }
+
         else if (e.type == SDL.SDL_EventType.SDL_KEYDOWN)
         {
             if (e.key.keysym.sym == SDL.SDL_Keycode.SDLK_SPACE)
@@ -301,6 +315,8 @@ while (Running)
     }
 
     SDL.SDL_RenderPresent(renderer);
+
+    Thread.Sleep(16);
 }
 
 SDL.SDL_DestroyWindow(window);
