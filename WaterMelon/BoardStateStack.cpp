@@ -14,7 +14,7 @@ BoardStateStack::~BoardStateStack()
 	free(m_items);
 }
 
-void BoardStateStack::Push(BoardState state)
+void BoardStateStack::Push(const BoardState& state)
 {
 	m_items[m_top++] = state;
 	if (m_top == m_capacity)

@@ -66,12 +66,12 @@ constexpr Move CreateMove(Pos start, Pos target, MoveFlag flag)
 	//if (flag & 0b11100000000000000 != 0)
 	// error
 
-	return ((start) | ((target) << 6) | ((flag) << 12));
+	return start | (target << 6) | flag;
 }
 #else
 constexpr Move CreateMove(Square start, Square target, MoveFlag flag)
 {
-	return start | (target << 6) | (flag << 12);
+	return start | (target << 6) | flag;
 }
 #endif
 

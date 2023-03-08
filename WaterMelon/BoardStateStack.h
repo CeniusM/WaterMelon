@@ -9,7 +9,7 @@ public:
 	BoardStateStack(int Capacity);
 	~BoardStateStack();
 
-	void Push(BoardState state);
+	void Push(const BoardState& state);
 	BoardState Peek();
 	BoardState Pop();
 

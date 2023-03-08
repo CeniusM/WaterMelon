@@ -40,6 +40,9 @@ public:
 	BoardStateStack boardStateStack{ 128 };
 
 	Piece board[64]{};
+
+	// Castle right will be removed acording to what pieces have moved, so if king moves, the caslte for that side will just be set to 0
+	// Or if for example white moves, and it is from either 0 or 7, that side casteling will be removed
 	CastleRight castle{};
 	EnPassantPos EPSquare{};
 	Color playerTurn{};
@@ -192,6 +195,7 @@ private:
 	void AddRookMoves();
 	void AddBishopMoves();
 	void AddQueenMoves();
+	void AddCastleMoves();
 
 	void PushMove(Move move);
 	void PushMoveIfPinnsAllow(Move move);

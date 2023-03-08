@@ -271,7 +271,7 @@ void GameOfChess::RenderPossibleMoves()
 	int movesCount = board.GetMovesCount();
 	for (int i = 0; i < movesCount; i++)
 	{
-		int move = moves[i];
+		int move = board.TransfomMove(moves[i]);
 		int target = GetMoveTarget(move);
 		if (GetMoveStart(move) == m_piecePickedIndex)
 		{

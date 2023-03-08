@@ -4,14 +4,14 @@
 Board:
 
 	a	b	c	d	e	f	g	h
-1  WR  WK  WB  WQ  WK  WB  WK  WR
+1  WR  WN  WB  WQ  WK  WB  WN  WR
 2  WB  WB  WB  WB  WB  WB  WB  WB
 3
 4
 5
 6
 7  BB  BB  BB  BB  BB  BB  BB  BB
-8  BR  BK  BB  BQ  BK  BB  BK  BR
+8  BR  BN  BB  BQ  BK  BB  BN  BR
 
 	a	b	c	d	e	f	g	h
 1  [00][01][02][03][04][05][06][07]

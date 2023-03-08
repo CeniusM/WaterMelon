@@ -10,7 +10,6 @@ Logger::~Logger()
 
 void Logger::LogBitboard(unsigned long long board)
 {
-	return;
 	for (size_t i = 0; i < 8; i++)
 	{
 		for (size_t j = 0; j < 8; j++)
@@ -25,12 +24,10 @@ void Logger::LogBitboard(unsigned long long board)
 
 void Logger::Log(char* message)
 {
-	return;
 	std::cout << message;
 }
 
 void Logger::Log(std::string str)
 {
-	return;
 	std::cout << str;
 }
