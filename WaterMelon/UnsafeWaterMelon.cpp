@@ -486,7 +486,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 
 						if (OurPiecePos == InvalidSquare) // Attack On King
 						{
-							//attacksOnKing = GetGetBitboardFromSquareToSquare(ourKingPos + offset, rayPos);
+							rayBoard |= (0b1ULL << rayPos);
 							attacksOnKing = rayBoard;
 							if (KingInCheck)
 							{
@@ -1251,6 +1251,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	{
 		for (size_t i = 0; i < movesCount; i++)
 			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
 	}
@@ -1272,6 +1273,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	for (size_t i = 0; i < movesCount; i++)
 		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+	//Logger::Log(std::to_string(movesCount));
 
 	// Testing
 	//movesCount = 0;

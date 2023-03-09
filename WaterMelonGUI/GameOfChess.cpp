@@ -179,9 +179,23 @@ void GameOfChess::HandleEvents()
 	}
 }
 
+
+int twoFive = 0;
 void GameOfChess::Update()
 {
 	m_Count++;
+
+	twoFive--;
+	if (twoFive < 0)
+	{
+		twoFive = 10;
+		board.LoadMoves();
+		if (board.GetMovesCount() == 0)
+			return;
+		Move move = board.GetMovePointer()[rand() % board.GetMovesCount()];
+		board.MakeMove(move);
+		SomethingHappend = true;
+	}
 
 	//std::cout << m_Count << std::endl
 }
@@ -250,6 +264,7 @@ void GameOfChess::RenderBackGround()
 		}
 	}
 
+	return;
 	auto squaresList = board.GetUnsafeBoardPtr()->SquaresToRenderByGUIForDebuing;
 	std::list<ColoredSquare>::iterator it;
 	for (it = squaresList.begin(); it != squaresList.end(); ++it)

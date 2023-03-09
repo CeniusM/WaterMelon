@@ -21,6 +21,8 @@ void PerftTest()
 
 int main()
 {
+	srand(312345654);
+
 	//std::cout << sizeof(BoardState);
 	//return 0;
 	//PerftTest();

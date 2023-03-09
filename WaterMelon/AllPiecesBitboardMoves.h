@@ -99,14 +99,14 @@ constexpr char GetDistanceToBoardInDirection(Square square, DirectionIndex direc
 #pragma endregion
 
 #pragma region GetDirectionIndex
-constexpr char DirectionIndexFromSquareToSquare[]
-{
-1, // Did not work
-};
-constexpr char GetDirectionIndexFromSquareToSquare(Square start, Square target)
-{
-	return DirectionIndexFromSquareToSquare[start | (target << 6)];
-}
+//constexpr char DirectionIndexFromSquareToSquare[]
+//{
+//1, // Did not work
+//};
+//constexpr char GetDirectionIndexFromSquareToSquare(Square start, Square target)
+//{
+//	return DirectionIndexFromSquareToSquare[start | (target << 6)];
+//}
 #pragma endregion
 
 #pragma region GetBitboard
