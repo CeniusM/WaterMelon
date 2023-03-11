@@ -190,6 +190,8 @@ private:
 	void GeneratePinsAndAttacksOnKing();
 
 	void AddKingMoves();
+
+	inline void AddPormotionMoves(int from, int to, unsigned short captureBit);
 	void AddPawnMoves();
 	void AddKnightMoves();
 	void AddRookMoves();

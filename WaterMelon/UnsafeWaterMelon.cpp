@@ -144,7 +144,16 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		PieceBitboardPos[promotionPiece] ^= XOR;
 	}
 
-	playerTurn ^= PlayerTurnSwitch;
+
+	// debuging
+	int kingsFound = 0;
+	for (size_t i = 0; i < 64; i++)
+		if (board[i] == BKing)
+			kingsFound++;
+	if (kingsFound > 1)
+		std::cout << "huh";
+
+		playerTurn ^= PlayerTurnSwitch;
 
 	//Logger::Log("White King Side " + std::to_string(castle & CastleRights::WhiteKingSide) + "\n");
 	//Logger::Log("White Queen Side " + std::to_string(castle & CastleRights::WhiteQueenSide) + "\n");
@@ -636,6 +645,14 @@ void UnsafeWaterMelon::AddKingMoves()
 	}
 }
 
+inline void UnsafeWaterMelon::AddPormotionMoves(int from, int to, unsigned short captureBit)
+{
+	PushMove(CreateMove(from, to, MoveFlags::PromoteToQueenCapture | captureBit));
+	PushMove(CreateMove(from, to, MoveFlags::PromoteToKnightCapture | captureBit));
+	PushMove(CreateMove(from, to, MoveFlags::PromoteToRookCapture | captureBit));
+	PushMove(CreateMove(from, to, MoveFlags::PromoteToBishopCapture | captureBit));
+}
+
 void UnsafeWaterMelon::AddPawnMoves()
 {
 	if (whiteToMove)
@@ -750,7 +767,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 		{
 			// becous Enpassant moves two pieces, we do the King check check here.
 			// Just check if the king is on the same rank, and if there by chance 
-			// also is an enemy queen or rook on the same diagonal
+			// also is an enemy queen or rook on the same rank now not blocked
 
 
 		}
@@ -867,7 +884,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 		{
 			// becous Enpassant moves two pieces, we do the King check check here.
 			// Just check if the king is on the same rank, and if there by chance 
-			// also is an enemy queen or rook on the same diagonal
+			// also is an enemy queen or rook on the same rank now not blocked
 
 
 		}
