@@ -1,7 +1,10 @@
 #include "Memcompare.h"
 
-void MemCopare(bool* result, int size, void* obj1, void* obj2)
+bool* MemCopare(int size, void* obj1, void* obj2)
 {
+	bool* result = nullptr;
+	while (!result)
+		result = (bool*)malloc(size);
 	char* ptr1 = (char*)obj1;
 	char* ptr2 = (char*)obj2;
 	for (size_t i = 0; i < size; i++)
@@ -11,4 +14,5 @@ void MemCopare(bool* result, int size, void* obj1, void* obj2)
 		else
 			result[i] = false;
 	}
+	return result;
 }

@@ -24,13 +24,29 @@ int main()
 {
 	srand(312345654);
 
-	bool* result = (bool*)malloc(sizeof(UnsafeWaterMelon));
-	while (!result)
-		result = (bool*)malloc(sizeof(UnsafeWaterMelon));
 	UnsafeWaterMelon obj1;
-	UnsafeWaterMelon obj2;
-	MemCopare(result, sizeof(UnsafeWaterMelon), &obj1, &obj2);
+	char* obj1Save = nullptr;
+	while (obj1Save == nullptr)
+		obj1Save = (char*)malloc(sizeof(obj1));
+
+	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+		obj1Save[i] = ((char*)&obj1)[i];
+
+	bool* result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
 	std::cout << "Size of UnsafeWaterMelon" << sizeof(UnsafeWaterMelon) << "\n";
+	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+	{
+		std::cout << result[i];
+	}
+
+	obj1.MakeMove(CreateMove(56, 56 - 8, 0));
+	void* temp = nullptr;
+	while (temp == nullptr)
+		temp = malloc(256 * sizeof(Move));
+
+	obj1.GetPossibleMoves((Move*)temp, false, false);
+	result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
+	std::cout << "\n\n\n\n";
 	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
 	{
 		std::cout << result[i];

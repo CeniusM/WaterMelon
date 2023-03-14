@@ -1,3 +1,5 @@
 #pragma once
 
-void MemCopare(bool* result, int size, void* obj1, void* obj2);
+#include <stdlib.h>
+
+bool* MemCopare(int size, void* obj1, void* obj2);
