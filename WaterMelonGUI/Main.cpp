@@ -25,6 +25,8 @@ int main()
 	srand(312345654);
 
 	bool* result = (bool*)malloc(sizeof(UnsafeWaterMelon));
+	while (!result)
+		result = (bool*)malloc(sizeof(UnsafeWaterMelon));
 	UnsafeWaterMelon obj1;
 	UnsafeWaterMelon obj2;
 	MemCopare(result, sizeof(UnsafeWaterMelon), &obj1, &obj2);
