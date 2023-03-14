@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iostream>
+#include "Memcompare.h"
 
 #include "SDL.h"
 #include "GameOfChess.h"
@@ -22,6 +23,18 @@ void PerftTest()
 int main()
 {
 	srand(312345654);
+
+	bool* result = (bool*)malloc(sizeof(UnsafeWaterMelon));
+	UnsafeWaterMelon obj1;
+	UnsafeWaterMelon obj2;
+	MemCopare(result, sizeof(UnsafeWaterMelon), &obj1, &obj2);
+	std::cout << "Size of UnsafeWaterMelon" << sizeof(UnsafeWaterMelon) << "\n";
+	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+	{
+		std::cout << result[i];
+	}
+	return 0;
+
 
 	//std::cout << sizeof(BoardState);
 	//return 0;
