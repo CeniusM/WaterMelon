@@ -4,23 +4,38 @@
 
 typedef unsigned long long Bitboard;
 
-constexpr Bitboard SignificantBit = 0b1;//0x8000000000000000
-constexpr Bitboard LeftSide = 0x8080808080808080;
-constexpr Bitboard RightSide = 0x0101010101010101;
-constexpr Bitboard TopSide = 0xff;
-constexpr Bitboard ButtomSide = 0xff00000000000000;
+constexpr Bitboard SignificantBit = 0b1ULL;//0x8000000000000000ULL
+constexpr Bitboard LeftSide = 0x8080808080808080ULL;
+constexpr Bitboard RightSide = 0x0101010101010101ULL;
+constexpr Bitboard TopSide = 0xffULL;
+constexpr Bitboard ButtomSide = 0xff00000000000000ULL;
 
 constexpr Bitboard WhitePromotionLine = ButtomSide;
-constexpr Bitboard WhiteTwoMoveLine = 0xFF00;
-constexpr Bitboard BlackPromotionLine = 0xff;
-constexpr Bitboard BlackTwoMoveLine = 0xFF000000000000;
+constexpr Bitboard WhiteTwoMoveLine = 0xFF00ULL;
+constexpr Bitboard BlackPromotionLine = TopSide;
+constexpr Bitboard BlackTwoMoveLine = 0xFF000000000000ULL;
 
-constexpr Bitboard RightSideIs0 = 0b0111111101111111011111110111111101111111011111110111111101111111;
-constexpr Bitboard LeftSideIs0 = 0b1111111011111110111111101111111011111110111111101111111011111110;
+constexpr Bitboard RightSideIs0 = 0b0111111101111111011111110111111101111111011111110111111101111111ULL;
+constexpr Bitboard LeftSideIs0 = 0b1111111011111110111111101111111011111110111111101111111011111110ULL;
 
 constexpr bool BitboardContains(Bitboard bitboard, Square pos)
 {
 	return (bitboard >> pos) & SignificantBit;
+}
+
+constexpr Bitboard BitboardFromSquare(Square pos)
+{
+	return 0b1ULL << pos;
+}
+
+constexpr Bitboard BitboardSetSquare(Bitboard bitboard, Square pos)
+{
+	return bitboard | (0b1ULL << pos);
+}
+
+constexpr Bitboard BitboardSetSquares(Bitboard bitboard, Square pos1, Square pos2)
+{
+	return bitboard | (0b1ULL << pos1) | (0b1ULL << pos2);
 }
 
 constexpr bool BitboardsCollide(Bitboard bitboard, Bitboard bitboard2)
@@ -30,24 +45,24 @@ constexpr bool BitboardsCollide(Bitboard bitboard, Bitboard bitboard2)
 
 constexpr bool PosOnLeftSide(Square pos)
 {
-	return ((LeftSide >> pos) & SignificantBit) == SignificantBit;
+	return (LeftSide >> pos) & SignificantBit;
 }
 
 constexpr bool PosOnRightSide(Square pos)
 {
-	return ((RightSide >> pos) & SignificantBit) == SignificantBit;
+	return (RightSide >> pos) & SignificantBit;
 }
 
 // Black side
 constexpr bool OnTop(Square pos)
 {
-	return ((TopSide >> pos) & SignificantBit) == SignificantBit;
+	return (TopSide >> pos) & SignificantBit;
 }
 
 // White side
 constexpr bool OnButtom(Square pos)
 {
-	return ((ButtomSide >> pos) & SignificantBit) == SignificantBit;
+	return (ButtomSide >> pos) & SignificantBit;
 }
 
 // Just have a one at the given pos

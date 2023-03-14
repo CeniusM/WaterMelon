@@ -56,8 +56,8 @@ public:
 	void MakeMove(Move move);
 	void UnMakeMove();
 
-	// Used to generate non sliding piece attacks
-	void GenerateBitboards();
+	// Init everything, used inside GetPossibleMoves(), this can be used if you wanna evaluate a position with some of the internal varibles
+	void InitBoard();
 
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
 	int GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false);
@@ -67,7 +67,6 @@ public:
 
 	/// WARNING: ONLY CALL THIS AFTER GetPossibleMoves() IS CALLED. Positiv is good for white and negativ is good for black.
 	int GetEvaluation();
-
 
 	void InitFEN(const std::string FEN);
 	std::string GetFEN();
@@ -133,6 +132,8 @@ public:
 	int ourKingPos;
 	int ourColorIndex;
 
+	Bitboard ourKingBitboard;
+
 	int enemyColour;
 	int enemyKingPos;
 	int enemyColorIndex;
@@ -183,6 +184,12 @@ private:
 
 	void RemoveNoneCaptures();
 	void OrderMoves();
+
+	// Sets the draw flag if the game is a draw
+	void CheckDraw();
+
+	// Used to generate non sliding piece attacks
+	void GenerateBitboards();
 
 	/// <summary>
 	/// Generate the bitboards for the pinned pieces to the king.

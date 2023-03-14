@@ -9,12 +9,15 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	Square targetSquare = GetMoveTarget(move);
 	MoveFlag flag = GetMoveFlag(move);
 
+	Bitboard startBit = BitboardFromSquare(startSquare);
+	Bitboard targetBit = BitboardFromSquare(targetSquare);
+
 	Piece movingPiece = board[startSquare];
 	PieceType movingPieceType = GetPieceType(movingPiece);
 	Piece capturedPiece = board[targetSquare];
 	PieceType capturedPieceType = GetPieceType(capturedPiece);
 
-	Bitboard moveBitboard = (0b1ULL << startSquare) | (0b1ULL << targetSquare);
+	Bitboard moveBitboard = startBit | targetBit;
 
 	Color OurColor = playerTurn;
 	int OurColorIndex = playerTurn >> 4;
@@ -22,22 +25,51 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	BoardState stateSave{ move, capturedPiece, EPSquare, castle, 0, KingInCheck, KingInDoubleCheck };
 
+
+	// Debbuging
+	if (targetSquare == kingPos[0])
+		std::cout << "king capture";
+	if (targetSquare == kingPos[1])
+		std::cout << "king capture";
+	// ~Debbuging
+
+
 	if (capturedPiece)
 	{
 		PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-		AllPiecePosBitboard ^= 0b1ULL << targetSquare;
-		PieceBitboardPos[capturedPiece] ^= 0b1ULL << targetSquare;
+		AllPiecePosBitboard ^= targetBit;
+		PieceBitboardPos[capturedPiece] ^= targetBit;
 		if (IsWhiteToMove)
-			AllBlackPosBitboard ^= 0b1ULL << targetSquare;
+			AllBlackPosBitboard ^= targetBit;
 		else
-			AllWhitePosBitboard ^= 0b1ULL << targetSquare;
+			AllWhitePosBitboard ^= targetBit;
 	}
 	PieceLists[movingPiece].MovePiece(startSquare, targetSquare);
 	AllPiecePosBitboard ^= moveBitboard;
 	PieceBitboardPos[movingPiece] ^= moveBitboard;
+
+	if (movingPieceType == Pawn)
+	{
+		if (whiteToMove)
+		{
+			WhitePawnCounts[GetCollum(startSquare)]--;
+			WhitePawnCounts[GetCollum(targetSquare)]++;
+		}
+		else
+		{
+			BlackPawnCounts[GetCollum(startSquare)]--;
+			BlackPawnCounts[GetCollum(targetSquare)]++;
+		}
+	}
+
 	if (IsWhiteToMove)
 	{
 		AllWhitePosBitboard ^= moveBitboard;
+
+		// USE BITBOARDS TO CHECK castle 
+		// also use bitboards to check in the move generation code, and just bitshift after a move
+		// use like whitePeicePoses and black instead of checking board[]
+
 
 		if (startSquare == 0) // queen rook
 			castle &= CastleRights::AllBlack | CastleRights::WhiteKingSide;
@@ -80,8 +112,8 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			capturedPiece = BPawn;
 			targetSquare -= 8;
 			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-			AllPiecePosBitboard ^= 0b1ULL << targetSquare;
-			PieceBitboardPos[capturedPiece] ^= 0b1ULL << targetSquare;
+			AllPiecePosBitboard ^= targetBit;
+			PieceBitboardPos[capturedPiece] ^= targetBit;
 			stateSave.capturedPiece = BPawn;
 		}
 		else
@@ -89,8 +121,8 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			capturedPiece = WPawn;
 			targetSquare += 8;
 			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-			AllPiecePosBitboard ^= 0b1ULL << targetSquare;
-			PieceBitboardPos[capturedPiece] ^= 0b1ULL << targetSquare;
+			AllPiecePosBitboard ^= targetBit;
+			PieceBitboardPos[capturedPiece] ^= targetBit;
 			stateSave.capturedPiece = WPawn;
 		}
 	}
@@ -139,9 +171,10 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		PieceLists[movingPiece].RemovePieceAtSquare(targetSquare);
 		Piece promotionPiece = GetPromotionPieceType(flag) | OurColor;
 		PieceLists[promotionPiece].AddPieceAtSquare(targetSquare);
-		Bitboard XOR = 0b1ULL << targetSquare;
+		Bitboard XOR = targetBit;
 		PieceBitboardPos[movingPiece] ^= XOR;
 		PieceBitboardPos[promotionPiece] ^= XOR;
+		board[targetSquare] = promotionPiece;
 	}
 
 
@@ -153,7 +186,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	if (kingsFound > 1)
 		std::cout << "huh";
 
-		playerTurn ^= PlayerTurnSwitch;
+	playerTurn ^= PlayerTurnSwitch;
 
 	//Logger::Log("White King Side " + std::to_string(castle & CastleRights::WhiteKingSide) + "\n");
 	//Logger::Log("White Queen Side " + std::to_string(castle & CastleRights::WhiteQueenSide) + "\n");
@@ -187,7 +220,9 @@ void UnsafeWaterMelon::UnMakeMove()
 	BoardState state = boardStateStack.Pop();
 	// Load State and reverse
 
+	gameState = Running;
 
+	
 
 
 }
@@ -386,9 +421,16 @@ MovesGoneOver++;
 	// Rest of moves
 }
 
+void UnsafeWaterMelon::CheckDraw()
+{
+	// Check repetition and 50 move rule
+	if (false)
+		gameState = Draw;
+}
+
 void UnsafeWaterMelon::GenerateBitboards()
 {
-	// The sliding pieces will be initilized when they get there moves generated
+	// NOTE* The non sliding attacks can maby be changed at make and unmake moves
 
 	allFriendlyAttakcsNonSliding = 0;
 	allEnemyAttacksNonSliding = 0;
@@ -521,7 +563,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 		}
 	}
 
-	if (pieceAttackBitboards[EnemyKnightKey] & (0b1ULL << ourKingPos))
+	if (pieceAttackBitboards[EnemyKnightKey] & ourKingBitboard)
 	{
 		if (KingInCheck) // no need to know where the attack comes from
 		{
@@ -543,7 +585,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 		}
 	}
 
-	if (pieceAttackBitboards[EnemyPawnKey] & (0b1ULL << ourKingPos))
+	if (pieceAttackBitboards[EnemyPawnKey] & ourKingBitboard)
 	{
 		if (KingInCheck) // no need to know where the attack comes from
 		{
@@ -557,12 +599,12 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			if (board[ourKingPos + 7] == BPawn)
 			{
 				KingInCheck = true;
-				attacksOnKing |= 0b1ULL << ourKingPos + 7;
+				attacksOnKing |= 0b1ULL << (ourKingPos + 7);
 			}
 			else
 			{
 				KingInCheck = true;
-				attacksOnKing |= 0b1ULL << ourKingPos + 9;
+				attacksOnKing |= 0b1ULL << (ourKingPos + 9);
 			}
 		}
 		else
@@ -570,12 +612,12 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			if (board[ourKingPos - 7] == BPawn)
 			{
 				KingInCheck = true;
-				attacksOnKing |= 0b1ULL << ourKingPos - 7;
+				attacksOnKing |= 0b1ULL << (ourKingPos - 7);
 			}
 			else
 			{
 				KingInCheck = true;
-				attacksOnKing |= 0b1ULL << ourKingPos - 9;
+				attacksOnKing |= 0b1ULL << (ourKingPos - 9);
 			}
 		}
 
@@ -1105,10 +1147,10 @@ void UnsafeWaterMelon::AddQueenMoves()
 			for (size_t i = 0; i < distance; i++)
 			{
 				ray += offset;
-				Piece hitPiece = board[ray];
-				if (hitPiece)
+
+				if (BitboardContains(AllPiecePosBitboard, ray))
 				{
-					if (IsPieceColor(hitPiece, enemyColour))
+					if (BitboardContains(AllEnemyPosBitboard, ray))
 						PushMoveIfPinnsAllowAndKingNotInCheck(CreateMove(pos, ray, NoFlagCapture));
 					break;
 				}
@@ -1197,7 +1239,52 @@ void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
+	InitBoard();
+	if (gameState == Draw)
+		return 0;
+
+	AddKingMoves();
+
+	if (KingInDoubleCheck)
+	{
+		for (size_t i = 0; i < movesCount; i++)
+			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+		//Logger::Log(std::to_string(movesCount));
+		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
+		return movesCount;
+	}
+	else if (!KingInCheck)
+		attacksOnKing = 0xffffffffffffffff;
+
+	AddPawnMoves();
+	AddKnightMoves();
+	AddRookMoves();
+	AddBishopMoves();
+	AddQueenMoves();
+	AddCastleMoves();
+
+
+	if (onlyCaptures)
+		RemoveNoneCaptures();
+	if (moveOrder)
+		OrderMoves();
+
+	for (size_t i = 0; i < movesCount; i++)
+		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+	//Logger::Log(std::to_string(movesCount));
+
+	// Testing
+	//movesCount = 0;
+	//PushMove(CreateMove(4, 24, MoveFlags::Castling));
+
+	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
+	return movesCount;
+}
+
+void UnsafeWaterMelon::InitBoard()
+{
 	SquaresToRenderByGUIForDebuing.clear();
+
 	/*for (size_t i = 0; i < 24; i++)
 		for (size_t j = 0; j < PieceLists[i].PieceNum; j++)
 			SquaresToRenderByGUIForDebuing.push_back(PieceLists[i].OccupiedSquares[j]);
@@ -1255,49 +1342,13 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		AllFriendlyPosBitboard = AllBlackPosBitboard;
 		AllEnemyPosBitboard = AllWhitePosBitboard;
 	}
-
-
+	ourKingBitboard = PieceBitboardPos[OurKingKey];
 
 	GenerateBitboards();
 
 	GeneratePinsAndAttacksOnKing();
 
-	AddKingMoves();
-
-	if (KingInDoubleCheck)
-	{
-		for (size_t i = 0; i < movesCount; i++)
-			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
-		//Logger::Log(std::to_string(movesCount));
-		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
-		return movesCount;
-	}
-	else if (!KingInCheck)
-		attacksOnKing = 0xffffffffffffffff;
-
-	AddPawnMoves();
-	AddKnightMoves();
-	AddRookMoves();
-	AddBishopMoves();
-	AddQueenMoves();
-	AddCastleMoves();
-
-
-	if (onlyCaptures)
-		RemoveNoneCaptures();
-	if (moveOrder)
-		OrderMoves();
-
-	for (size_t i = 0; i < movesCount; i++)
-		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
-	//Logger::Log(std::to_string(movesCount));
-
-	// Testing
-	//movesCount = 0;
-	//PushMove(CreateMove(4, 24, MoveFlags::Castling));
-
-	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
-	return movesCount;
+	CheckDraw();
 }
 
 #pragma endregion

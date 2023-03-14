@@ -184,7 +184,7 @@ int twoFive = 0;
 void GameOfChess::Update()
 {
 	m_Count++;
-
+	//return;
 	twoFive--;
 	if (twoFive < 0)
 	{

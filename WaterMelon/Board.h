@@ -64,6 +64,7 @@ constexpr Rank GetRank(Square sq)
 
 constexpr Collum GetCollum(Square sq)
 {
+	// ideer, use an array to index in to for the collum
 	return sq % 8;
 }
 
