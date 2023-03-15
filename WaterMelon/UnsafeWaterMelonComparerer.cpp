@@ -1,6 +1,6 @@
 #include "UnsafeWaterMelonComparerer.h"
 
-void Failed(const char* message)
+void Failed(std::string message)
 {
 	std::cout << "Failed: " << message << "\n";
 }
@@ -153,7 +153,7 @@ void CompareWaterMelons(UnsafeWaterMelon* mel1, UnsafeWaterMelon* mel2)
 			{
 				if (mel1->PieceLists[i].OccupiedSquares[j] != mel2->PieceLists[i].OccupiedSquares[j])
 				{
-					Failed("PieceLists[i].OccupiedSquares[j]");
+					Failed(std::string("PieceLists[") + FENUtility::IntToChar[i] + "].OccupiedSquares[" + std::to_string(j) + "]");
 				}
 			}
 		}

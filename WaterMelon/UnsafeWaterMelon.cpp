@@ -62,6 +62,14 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		}
 	}
 
+	if (capturedPieceType == Pawn)
+	{
+		if (IsWhiteToMove)
+			BlackPawnCounts[GetCollum(targetSquare)]--;
+		else
+			WhitePawnCounts[GetCollum(targetSquare)]--;
+	}
+
 	if (IsWhiteToMove)
 	{
 		AllWhitePosBitboard ^= moveBitboard;
@@ -70,6 +78,25 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		// also use bitboards to check in the move generation code, and just bitshift after a move
 		// use like whitePeicePoses and black instead of checking board[]
 
+
+		/*
+		
+		
+		
+		
+		
+		
+		
+		THIS DOES NOT WORK. CANT STILL CASTLE IF PEICE WAS CAPTURED. USE BITBOARDS TO SEE IF THE DIFRENT PLACES ARE GETTING MOVED/HIT
+		
+		
+		
+		
+		
+		
+		
+		
+		*/
 
 		if (startSquare == 0) // queen rook
 			castle &= CastleRights::AllBlack | CastleRights::WhiteKingSide;
@@ -135,6 +162,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[WRook].MovePiece(0, 3);
 			Bitboard rookmove = (0b1ULL << 0) | (0b1ULL << 3);
 			AllPiecePosBitboard ^= rookmove;
+			AllWhitePosBitboard ^= rookmove;
 			PieceBitboardPos[WRook] ^= rookmove;
 		}
 		else if (targetSquare == 6) // WhiteKingSide
@@ -144,6 +172,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[WRook].MovePiece(7, 5);
 			Bitboard rookmove = (0b1ULL << 7) | (0b1ULL << 5);
 			AllPiecePosBitboard ^= rookmove;
+			AllWhitePosBitboard ^= rookmove;
 			PieceBitboardPos[WRook] ^= rookmove;
 		}
 		else if (targetSquare == 58) // BlackQueenSide
@@ -153,6 +182,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[BRook].MovePiece(56, 59);
 			Bitboard rookmove = (0b1ULL << 56) | (0b1ULL << 59);
 			AllPiecePosBitboard ^= rookmove;
+			AllBlackPosBitboard ^= rookmove;
 			PieceBitboardPos[BRook] ^= rookmove;
 		}
 		else if (targetSquare == 62) // BlackKingSide
@@ -162,6 +192,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[BRook].MovePiece(63, 61);
 			Bitboard rookmove = (0b1ULL << 63) | (0b1ULL << 61);
 			AllPiecePosBitboard ^= rookmove;
+			AllBlackPosBitboard ^= rookmove;
 			PieceBitboardPos[BRook] ^= rookmove;
 		}
 	}
@@ -249,18 +280,26 @@ void UnsafeWaterMelon::UnMakeMove()
 	{
 		if (IsWhiteToMove)
 		{
-			WhitePawnCounts[GetCollum(startSquare)]--;
-			WhitePawnCounts[GetCollum(targetSquare)]++;
+			WhitePawnCounts[GetCollum(startSquare)]++;
+			WhitePawnCounts[GetCollum(targetSquare)]--;
 		}
 		else
 		{
-			BlackPawnCounts[GetCollum(startSquare)]--;
-			BlackPawnCounts[GetCollum(targetSquare)]++;
+			BlackPawnCounts[GetCollum(startSquare)]++;
+			BlackPawnCounts[GetCollum(targetSquare)]--;
 		}
 	}
 
+	if (capturedPieceType == Pawn)
+	{
+		if (IsWhiteToMove)
+			BlackPawnCounts[GetCollum(targetSquare)]++;
+		else
+			WhitePawnCounts[GetCollum(targetSquare)]++;
+	}
+
 	if (movingPiece == (King | OurColor))
-		kingPos[OurColorIndex] = targetSquare;
+		kingPos[OurColorIndex] = startSquare;
 
 	if (flag == MoveFlags::PawnDoubleForward)
 	{
@@ -291,6 +330,7 @@ void UnsafeWaterMelon::UnMakeMove()
 			PieceLists[WRook].MovePiece(3, 0);
 			Bitboard rookmove = (0b1ULL << 0) | (0b1ULL << 3);
 			AllPiecePosBitboard ^= rookmove;
+			AllWhitePosBitboard ^= rookmove;
 			PieceBitboardPos[WRook] ^= rookmove;
 		}
 		else if (targetSquare == 6) // WhiteKingSide
@@ -300,6 +340,7 @@ void UnsafeWaterMelon::UnMakeMove()
 			PieceLists[WRook].MovePiece(5, 7);
 			Bitboard rookmove = (0b1ULL << 7) | (0b1ULL << 5);
 			AllPiecePosBitboard ^= rookmove;
+			AllWhitePosBitboard ^= rookmove;
 			PieceBitboardPos[WRook] ^= rookmove;
 		}
 		else if (targetSquare == 58) // BlackQueenSide
@@ -309,6 +350,7 @@ void UnsafeWaterMelon::UnMakeMove()
 			PieceLists[BRook].MovePiece(59, 56);
 			Bitboard rookmove = (0b1ULL << 56) | (0b1ULL << 59);
 			AllPiecePosBitboard ^= rookmove;
+			AllBlackPosBitboard ^= rookmove;
 			PieceBitboardPos[BRook] ^= rookmove;
 		}
 		else if (targetSquare == 62) // BlackKingSide
@@ -318,11 +360,13 @@ void UnsafeWaterMelon::UnMakeMove()
 			PieceLists[BRook].MovePiece(61, 63);
 			Bitboard rookmove = (0b1ULL << 63) | (0b1ULL << 61);
 			AllPiecePosBitboard ^= rookmove;
+			AllBlackPosBitboard ^= rookmove;
 			PieceBitboardPos[BRook] ^= rookmove;
 		}
 	}
 	else if (flag != MoveFlags::NoFlag) // Is promotion
 	{
+		movingPiece = Pawn | OurColor;
 		// remove pawn and replace it with the given promotion piece
 		Piece promotionPiece = GetPromotionPieceType(flag) | OurColor;
 		PieceLists[promotionPiece].RemovePieceAtSquare(targetSquare);
@@ -344,6 +388,7 @@ void UnsafeWaterMelon::UnMakeMove()
 		PieceLists[capturedPiece].AddPieceAtSquare(targetSquare);
 		AllPiecePosBitboard ^= targetBit;
 		PieceBitboardPos[capturedPiece] ^= targetBit;
+		board[targetSquare] = capturedPiece;
 		if (IsWhiteToMove)
 			AllBlackPosBitboard ^= targetBit;
 		else
