@@ -135,6 +135,9 @@
     <ClInclude Include="Memcompare.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="UnsafeWaterMelonComparerer.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -168,6 +171,9 @@
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Memcompare.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsafeWaterMelonComparerer.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>

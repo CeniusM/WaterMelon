@@ -1,7 +1,8 @@
 #include <chrono>
 #include <iostream>
-#include "Memcompare.h"
 
+#include "Memcompare.h"
+#include "UnsafeWaterMelonComparerer.h"
 #include "SDL.h"
 #include "GameOfChess.h"
 #include "Perft.h"
@@ -24,34 +25,42 @@ int main()
 {
 	srand(312345654);
 
-	UnsafeWaterMelon obj1;
-	char* obj1Save = nullptr;
-	while (obj1Save == nullptr)
-		obj1Save = (char*)malloc(sizeof(obj1));
+	//UnsafeWaterMelon obj1;
+	//void* temp = nullptr;
+	//while (temp == nullptr)
+	//	temp = malloc(256 * sizeof(Move));
+	//obj1.GetPossibleMoves((Move*)temp, false, false);
+	//char* obj1Save = nullptr;
+	//while (obj1Save == nullptr)
+	//	obj1Save = (char*)malloc(sizeof(obj1));
 
-	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
-		obj1Save[i] = ((char*)&obj1)[i];
+	//for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+	//	obj1Save[i] = ((char*)&obj1)[i];
 
-	bool* result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
-	std::cout << "Size of UnsafeWaterMelon" << sizeof(UnsafeWaterMelon) << "\n";
-	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
-	{
-		std::cout << result[i];
-	}
+	//bool* result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
+	//std::cout << "Size of UnsafeWaterMelon" << sizeof(UnsafeWaterMelon) << "\n";
+	//for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+	//{
+	//	std::cout << result[i];
+	//}
 
-	obj1.MakeMove(CreateMove(56, 56 - 8, 0));
-	void* temp = nullptr;
-	while (temp == nullptr)
-		temp = malloc(256 * sizeof(Move));
+	//obj1.MakeMove(CreateMove(56, 56 - 8, 0));
+	//obj1.UnMakeMove();
+	//obj1.GetPossibleMoves((Move*)temp, false, false);
+	//result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
+	//std::cout << "\n\n\n\n";
+	//for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
+	//{
+	//	std::cout << result[i];
+	//}
 
-	obj1.GetPossibleMoves((Move*)temp, false, false);
-	result = MemCopare(sizeof(UnsafeWaterMelon), &obj1, (void*)obj1Save);
-	std::cout << "\n\n\n\n";
-	for (size_t i = 0; i < sizeof(UnsafeWaterMelon); i++)
-	{
-		std::cout << result[i];
-	}
-	return 0;
+	//UnsafeWaterMelon mel1{};
+	//UnsafeWaterMelon mel2{};
+	////CompareWaterMelons(&mel1, &mel2);
+	//mel1.MakeMove(CreateMove(8, 8 + 16, PawnDoubleForward));
+	//mel1.UnMakeMove();
+	//CompareWaterMelons(&mel1, &mel2);
+	//return 0;
 
 
 	//std::cout << sizeof(BoardState);

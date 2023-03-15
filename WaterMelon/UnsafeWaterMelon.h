@@ -86,7 +86,7 @@ public:
 
 	PieceList PieceLists[24]{};
 
-	Move moves[MaxMovesCount];
+	Move moves[MaxMovesCount]{};
 	int movesCount;
 
 #pragma region Bitboards

@@ -50,7 +50,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	if (movingPieceType == Pawn)
 	{
-		if (whiteToMove)
+		if (IsWhiteToMove)
 		{
 			WhitePawnCounts[GetCollum(startSquare)]--;
 			WhitePawnCounts[GetCollum(targetSquare)]++;
@@ -93,7 +93,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	board[startSquare] = 0;
 	board[targetSquare] = movingPiece;
 
-	if (movingPiece == OurKingKey)
+	if (movingPiece == (King | OurColor))
 		kingPos[OurColorIndex] = targetSquare;
 
 	EPSquare = EmptyEnPassantPos;
@@ -110,19 +110,19 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		if (IsWhiteToMove)
 		{
 			capturedPiece = BPawn;
-			targetSquare -= 8;
-			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-			AllPiecePosBitboard ^= targetBit;
-			PieceBitboardPos[capturedPiece] ^= targetBit;
+			stateSave.capturedPiece = BPawn;
+			PieceLists[BPawn].RemovePieceAtSquare(targetSquare - 8);
+			AllPiecePosBitboard ^= (targetBit >> 8);
+			PieceBitboardPos[BPawn] ^= (targetBit >> 8);
 			stateSave.capturedPiece = BPawn;
 		}
 		else
 		{
 			capturedPiece = WPawn;
-			targetSquare += 8;
-			PieceLists[capturedPiece].RemovePieceAtSquare(targetSquare);
-			AllPiecePosBitboard ^= targetBit;
-			PieceBitboardPos[capturedPiece] ^= targetBit;
+			stateSave.capturedPiece = WPawn;
+			PieceLists[WPawn].RemovePieceAtSquare(targetSquare + 8);
+			AllPiecePosBitboard ^= (targetBit << 8);
+			PieceBitboardPos[WPawn] ^= (targetBit << 8);
 			stateSave.capturedPiece = WPawn;
 		}
 	}
@@ -171,9 +171,8 @@ void UnsafeWaterMelon::MakeMove(Move move)
 		PieceLists[movingPiece].RemovePieceAtSquare(targetSquare);
 		Piece promotionPiece = GetPromotionPieceType(flag) | OurColor;
 		PieceLists[promotionPiece].AddPieceAtSquare(targetSquare);
-		Bitboard XOR = targetBit;
-		PieceBitboardPos[movingPiece] ^= XOR;
-		PieceBitboardPos[promotionPiece] ^= XOR;
+		PieceBitboardPos[movingPiece] ^= targetBit;
+		PieceBitboardPos[promotionPiece] ^= targetBit;
 		board[targetSquare] = promotionPiece;
 	}
 
@@ -217,14 +216,154 @@ void UnsafeWaterMelon::UnMakeMove()
 		return;
 
 	playerTurn ^= PlayerTurnSwitch;
+
 	BoardState state = boardStateStack.Pop();
+
+	castle = state.castles;
+	EPSquare = state.epPos;
+	//state.KingInCheck;
+	//state.KingInDoubleCheck;
+	//state.move;
+	//state._50MoveRule;
+
 	// Load State and reverse
+	Square startSquare = GetMoveStart(state.move);
+	Square targetSquare = GetMoveTarget(state.move);
+	MoveFlag flag = GetMoveFlag(state.move);
+
+	Bitboard startBit = BitboardFromSquare(startSquare);
+	Bitboard targetBit = BitboardFromSquare(targetSquare);
+
+	Piece movingPiece = board[targetSquare];
+	PieceType movingPieceType = GetPieceType(movingPiece);
+	Piece capturedPiece = state.capturedPiece;
+	PieceType capturedPieceType = GetPieceType(capturedPiece);
+
+	Bitboard moveBitboard = startBit | targetBit;
+
+	Color OurColor = playerTurn;
+	int OurColorIndex = playerTurn >> 4;
+	bool IsWhiteToMove = !(bool)OurColorIndex;
+
+	if (movingPieceType == Pawn)
+	{
+		if (IsWhiteToMove)
+		{
+			WhitePawnCounts[GetCollum(startSquare)]--;
+			WhitePawnCounts[GetCollum(targetSquare)]++;
+		}
+		else
+		{
+			BlackPawnCounts[GetCollum(startSquare)]--;
+			BlackPawnCounts[GetCollum(targetSquare)]++;
+		}
+	}
+
+	if (movingPiece == (King | OurColor))
+		kingPos[OurColorIndex] = targetSquare;
+
+	if (flag == MoveFlags::PawnDoubleForward)
+	{
+	}
+	else if (flag == MoveFlags::EnPassantCapture)
+	{
+		if (IsWhiteToMove)
+		{
+			PieceLists[BPawn].AddPieceAtSquare(targetSquare - 8);
+			AllPiecePosBitboard ^= (targetBit >> 8);
+			PieceBitboardPos[BPawn] ^= (targetBit >> 8);
+			capturedPiece = 0;
+		}
+		else
+		{
+			PieceLists[WPawn].AddPieceAtSquare(targetSquare + 8);
+			AllPiecePosBitboard ^= (targetBit << 8);
+			PieceBitboardPos[WPawn] ^= (targetBit << 8);
+			capturedPiece = 0;
+		}
+	}
+	else if (flag == MoveFlags::Castling)
+	{
+		if (targetSquare == 2) // WhiteQueenSide
+		{
+			board[3] = 0;
+			board[0] = WRook;
+			PieceLists[WRook].MovePiece(3, 0);
+			Bitboard rookmove = (0b1ULL << 0) | (0b1ULL << 3);
+			AllPiecePosBitboard ^= rookmove;
+			PieceBitboardPos[WRook] ^= rookmove;
+		}
+		else if (targetSquare == 6) // WhiteKingSide
+		{
+			board[5] = 0;
+			board[7] = WRook;
+			PieceLists[WRook].MovePiece(5, 7);
+			Bitboard rookmove = (0b1ULL << 7) | (0b1ULL << 5);
+			AllPiecePosBitboard ^= rookmove;
+			PieceBitboardPos[WRook] ^= rookmove;
+		}
+		else if (targetSquare == 58) // BlackQueenSide
+		{
+			board[59] = 0;
+			board[56] = BRook;
+			PieceLists[BRook].MovePiece(59, 56);
+			Bitboard rookmove = (0b1ULL << 56) | (0b1ULL << 59);
+			AllPiecePosBitboard ^= rookmove;
+			PieceBitboardPos[BRook] ^= rookmove;
+		}
+		else if (targetSquare == 62) // BlackKingSide
+		{
+			board[61] = 0;
+			board[63] = BRook;
+			PieceLists[BRook].MovePiece(61, 63);
+			Bitboard rookmove = (0b1ULL << 63) | (0b1ULL << 61);
+			AllPiecePosBitboard ^= rookmove;
+			PieceBitboardPos[BRook] ^= rookmove;
+		}
+	}
+	else if (flag != MoveFlags::NoFlag) // Is promotion
+	{
+		// remove pawn and replace it with the given promotion piece
+		Piece promotionPiece = GetPromotionPieceType(flag) | OurColor;
+		PieceLists[promotionPiece].RemovePieceAtSquare(targetSquare);
+		PieceLists[movingPiece].AddPieceAtSquare(targetSquare);
+		PieceBitboardPos[promotionPiece] ^= targetBit;
+		PieceBitboardPos[movingPiece] ^= targetBit;
+		board[targetSquare] = movingPiece;
+	}
+
+
+
+	board[startSquare] = movingPiece;
+	PieceLists[movingPiece].MovePiece(targetSquare, startSquare);
+	AllPiecePosBitboard ^= moveBitboard;
+	PieceBitboardPos[movingPiece] ^= moveBitboard;
+
+	if (capturedPiece)
+	{
+		PieceLists[capturedPiece].AddPieceAtSquare(targetSquare);
+		AllPiecePosBitboard ^= targetBit;
+		PieceBitboardPos[capturedPiece] ^= targetBit;
+		if (IsWhiteToMove)
+			AllBlackPosBitboard ^= targetBit;
+		else
+			AllWhitePosBitboard ^= targetBit;
+	}
+	else
+		board[targetSquare] = 0;
+
+	if (IsWhiteToMove)
+		AllWhitePosBitboard ^= moveBitboard;
+	else
+		AllBlackPosBitboard ^= moveBitboard;
+
+
+
+
+
+
 
 	gameState = Running;
-
-	
-
-
 }
 
 void UnsafeWaterMelon::InitSimpleBitboards()

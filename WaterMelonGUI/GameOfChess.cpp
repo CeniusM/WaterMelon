@@ -183,18 +183,24 @@ void GameOfChess::HandleEvents()
 int twoFive = 0;
 void GameOfChess::Update()
 {
-	m_Count++;
-	//return;
-	twoFive--;
-	if (twoFive < 0)
-	{
-		twoFive = 10;
-		board.LoadMoves();
-		if (board.GetMovesCount() == 0)
-			return;
-		Move move = board.GetMovePointer()[rand() % board.GetMovesCount()];
-		board.MakeMove(move);
-		SomethingHappend = true;
+	//m_Count++;
+	////return;
+	//twoFive--;
+	//if (twoFive < 0)
+	//{
+	//	twoFive = 10;
+	//	board.LoadMoves();
+	//	if (board.GetMovesCount() == 0)
+	//		return;
+	//	UnsafeWaterMelon* save = new UnsafeWaterMelon;
+	//	Move move = board.GetMovePointer()[rand() % board.GetMovesCount()];
+	//	memcpy_s(save, sizeof(UnsafeWaterMelon), board.GetUnsafeBoardPtr(), sizeof(UnsafeWaterMelon));
+	//	board.MakeMove(move);
+	//	board.UnMakeMove();
+	//	LoadMoves();
+	//	CompareWaterMelons(save, board.GetUnsafeBoardPtr());
+	//	board.MakeMove(move);
+	//	SomethingHappend = true;
 	}
 
 	//std::cout << m_Count << std::endl

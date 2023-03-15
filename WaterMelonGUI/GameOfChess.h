@@ -6,6 +6,7 @@
 #include "SDL_image.h"
 #include "SDLHelper.h"
 #include "SafeWaterMelon.h"
+#include "UnsafeWaterMelonComparerer.h"
 
 class GameOfChess
 {

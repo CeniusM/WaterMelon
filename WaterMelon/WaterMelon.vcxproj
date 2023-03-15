@@ -145,6 +145,7 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="ThrowHelper.cpp" />
     <ClCompile Include="UnsafeWaterMelon.cpp" />
+    <ClCompile Include="UnsafeWaterMelonComparerer.cpp" />
     <ClInclude Include="Bitboard.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardState.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TypesIncludes.h" />
     <ClInclude Include="UnsafeWaterMelon.h" />
+    <ClInclude Include="UnsafeWaterMelonComparerer.h" />
     <ClInclude Include="ZobristKey.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
