@@ -227,6 +227,11 @@ void UnsafeWaterMelon::UnMakeMove()
 
 }
 
+void UnsafeWaterMelon::InitSimpleBitboards()
+{
+	GenerateBitboards();
+}
+
 
 #pragma region Initilization
 UnsafeWaterMelon::UnsafeWaterMelon()

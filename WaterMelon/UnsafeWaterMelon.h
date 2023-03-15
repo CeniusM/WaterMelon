@@ -56,6 +56,9 @@ public:
 	void MakeMove(Move move);
 	void UnMakeMove();
 
+	// Init simple non sliding piece attack bitboards
+	void InitSimpleBitboards();
+
 	// Init everything, used inside GetPossibleMoves(), this can be used if you wanna evaluate a position with some of the internal varibles
 	void InitBoard();
 
