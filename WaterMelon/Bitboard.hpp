@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Square.h"
+#include "Square.hpp"
 
 typedef unsigned long long Bitboard;
 

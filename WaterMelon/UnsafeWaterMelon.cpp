@@ -1,6 +1,6 @@
 
 
-#include "UnsafeWaterMelon.h"
+#include "UnsafeWaterMelon.hpp"
 
 // Can NOT use any of the data that get initilized at the GetPossibleMoves, beacous this could be called after a UnMakeMove
 void UnsafeWaterMelon::MakeMove(Move move)

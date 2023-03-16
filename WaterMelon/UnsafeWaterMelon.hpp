@@ -4,12 +4,12 @@
 #include <iterator> // for debuging
 #include <list> // for debuging
 
-#include "PieceList.h"
-#include "FENUtility.h"
-#include "Logger.h"
-#include "TypesIncludes.h"
-#include "ThrowHelper.h"
-#include "BoardStateStack.h"
+#include "PieceList.hpp"
+#include "FENUtility.hpp"
+#include "Logger.hpp"
+#include "TypesIncludes.hpp"
+#include "ThrowHelper.hpp"
+#include "BoardStateStack.hpp"
 
 #define MaxMovesCount 256
 

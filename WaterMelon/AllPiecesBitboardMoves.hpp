@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Direction.h"
-#include "Square.h"
-#include "Bitboard.h"
+#include "Direction.hpp"
+#include "Square.hpp"
+#include "Bitboard.hpp"
 
 #pragma region SlidingPiece
 constexpr Bitboard SlidingPieceSquareToAllDir[]

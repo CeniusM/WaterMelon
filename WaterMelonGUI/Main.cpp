@@ -1,13 +1,13 @@
 #include <chrono>
 #include <iostream>
 
-#include "Memcompare.h"
-#include "UnsafeWaterMelonComparerer.h"
 #include "SDL.h"
-#include "GameOfChess.h"
-#include "Perft.h"
-#include "Timer.h"
-//#include "../WaterMelon/Timer.h"
+#include "Memcompare.hpp"
+#include "UnsafeWaterMelonComparerer.hpp"
+#include "GameOfChess.hpp"
+#include "Perft.hpp"
+#include "Timer.hpp"
+//#include "../WaterMelon/Timer.hpp"
 
 #undef main
 

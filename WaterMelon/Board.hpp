@@ -27,7 +27,7 @@ Board:
 
 #pragma once
 
-#include "Square.h"
+#include "Square.hpp"
 
 typedef int Rank;
 typedef int Collum;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Assert.h"
-//#include "WaterMelon.h"
+#include "Assert.hpp"
+//#include "WaterMelon.hpp"
 
 void PieceMaterialCountingTest();
 void CreateMoveTest();

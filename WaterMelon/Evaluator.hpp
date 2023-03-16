@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TypesIncludes.h"
-#include "UnsafeWaterMelon.h"
+#include "TypesIncludes.hpp"
+#include "UnsafeWaterMelon.hpp"
 
 // Returns an evaluation that uses all the difrent methods of evaluating the board
 EvaluationF GetFullBoardEval(const UnsafeWaterMelon& board);

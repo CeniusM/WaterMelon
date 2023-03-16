@@ -1,6 +1,6 @@
 #pragma once
 
-#include "UnsafeWaterMelon.h"
+#include "UnsafeWaterMelon.hpp"
 
 // This will tell the seach how much depth to cut of a tree
 // This could cut of 1 or 2 depth if for example the queen walks into an enemy pawn attack

@@ -29,10 +29,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SDLHelper.h">
+    <ClInclude Include="SDLHelper.hpp">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GameOfChess.h">
+    <ClInclude Include="GameOfChess.hpp">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>

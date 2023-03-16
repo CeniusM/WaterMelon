@@ -1,4 +1,4 @@
-#include "ThrowHelper.h"
+#include "ThrowHelper.hpp"
 
 void ThrowNotImplementedException(std::string message)
 {

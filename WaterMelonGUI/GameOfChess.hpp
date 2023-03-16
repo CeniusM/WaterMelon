@@ -4,9 +4,9 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
-#include "SDLHelper.h"
-#include "SafeWaterMelon.h"
-#include "UnsafeWaterMelonComparerer.h"
+#include "SDLHelper.hpp"
+#include "SafeWaterMelon.hpp"
+#include "UnsafeWaterMelonComparerer.hpp"
 
 class GameOfChess
 {

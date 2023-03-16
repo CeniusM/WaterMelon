@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Square.h"
-#include "Piece.h"
+#include "Square.hpp"
+#include "Piece.hpp"
 
 typedef unsigned long long ZobristKey;
 

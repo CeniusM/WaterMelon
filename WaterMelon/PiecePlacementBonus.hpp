@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Evaluation.h"
-#include "Piece.h"
-#include "Square.h";
+#include "Evaluation.hpp"
+#include "Piece.hpp"
+#include "Square.hpp";
 
 // 15 * 64
 constexpr EvaluationF PiecePlacementBonuses[]

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Move.h"
-#include "CastleRight.h"
-#include "EnPassantPos.h"
+#include "Move.hpp"
+#include "CastleRight.hpp"
+#include "EnPassantPos.hpp"
 
 // [0,15] Bits Move
 // [16-20] Captured Piece

@@ -137,8 +137,8 @@
     <ClCompile Include="WaterMelonTester.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Assert.h" />
-    <ClInclude Include="Tests.h" />
+    <ClInclude Include="Assert.hpp" />
+    <ClInclude Include="Tests.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaterMelon\WaterMelon.vcxproj">

@@ -1,4 +1,4 @@
-#include "Tests.h"
+#include "Tests.hpp"
 
 void PieceMaterialCountingTest()
 {

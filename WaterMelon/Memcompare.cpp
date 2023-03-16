@@ -1,4 +1,4 @@
-#include "Memcompare.h"
+#include "Memcompare.hpp"
 
 bool* MemCopare(int size, void* obj1, void* obj2)
 {

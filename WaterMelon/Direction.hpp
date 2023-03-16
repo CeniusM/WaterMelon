@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Offset.h"
+#include "Offset.hpp"
 
 typedef int DirectionIndex;
 typedef Offset DirectionOffset;

@@ -1,4 +1,4 @@
-#include "BranchCutter.h"
+#include "BranchCutter.hpp"
 
 int GetBranchDepthCut(const UnsafeWaterMelon& board)
 {

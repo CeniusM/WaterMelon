@@ -2,6 +2,6 @@
 
 #include <stdlib.h>
 
-#include "UnsafeWaterMelon.h"
+#include "UnsafeWaterMelon.hpp"
 
 void CompareWaterMelons(UnsafeWaterMelon* mel1, UnsafeWaterMelon* mel2);

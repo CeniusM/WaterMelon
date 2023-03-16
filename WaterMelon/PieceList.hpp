@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Piece.h"
-#include "Move.h"
+#include "Piece.hpp"
+#include "Move.hpp"
 
 // --- by Sebastian Lague ---
 

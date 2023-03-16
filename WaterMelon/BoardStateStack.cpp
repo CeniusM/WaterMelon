@@ -1,6 +1,6 @@
 
 
-#include "BoardStateStack.h"
+#include "BoardStateStack.hpp"
 
 BoardStateStack::BoardStateStack(int Capacity)
 {

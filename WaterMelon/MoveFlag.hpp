@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Move.h"
-#include "Piece.h"
-#include "ThrowHelper.h"
+#include "Move.hpp"
+#include "Piece.hpp"
+#include "ThrowHelper.hpp"
 
 // Number between [0 - 7] // Maby 15 later so we can see if it was a capture
 typedef unsigned short MoveFlag;

@@ -1,5 +1,5 @@
-#include "Tests.h"
-//#include "WaterMelon.h"
+#include "Tests.hpp"
+//#include "WaterMelon.hpp"
 
 void CreateMoveTest()
 {

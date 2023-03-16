@@ -143,8 +143,8 @@
     <ClCompile Include="SDLHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameOfChess.h" />
-    <ClInclude Include="SDLHelper.h" />
+    <ClInclude Include="GameOfChess.hpp" />
+    <ClInclude Include="SDLHelper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WaterMelon\WaterMelon.vcxproj">

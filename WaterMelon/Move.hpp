@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "Square.h"
-#include "MoveFlag.h"
+#include "Square.hpp"
+#include "MoveFlag.hpp"
 
 //#define DEBUG_DoChecks
 

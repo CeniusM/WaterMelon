@@ -1,5 +1,5 @@
 
-#include "GameOfChess.h"
+#include "GameOfChess.hpp"
 
 const char* AssetsPath = "Assets\\";
 

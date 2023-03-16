@@ -1,4 +1,4 @@
-#include "ColoredSquare.h"
+#include "ColoredSquare.hpp"
 
 
 ColoredSquare::ColoredSquare(int square, char r, char g, char b)

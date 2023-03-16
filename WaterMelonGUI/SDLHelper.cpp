@@ -1,5 +1,5 @@
 
-#include "SDLHelper.h"
+#include "SDLHelper.hpp"
 
 
 SDL_Texture* SDLHelper::LoadImage(std::string file, SDL_Renderer* r)

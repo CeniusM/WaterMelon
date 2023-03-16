@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Piece.h"
-#include "UnsafeWaterMelon.h"
+#include "Piece.hpp"
+#include "UnsafeWaterMelon.hpp"
 
 namespace FENUtility
 {
