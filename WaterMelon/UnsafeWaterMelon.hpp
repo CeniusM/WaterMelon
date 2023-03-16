@@ -13,6 +13,8 @@
 
 #define MaxMovesCount 256
 
+//#define SquareToRender
+
 #pragma region Consts
 constexpr int WhiteIndex = 0;
 constexpr int BlackIndex = 1;
@@ -30,8 +32,10 @@ class UnsafeWaterMelon
 public:
 
 	// --- DEBUGING ---
-
+	
+#ifdef SquareToRender
 	std::list<ColoredSquare> SquaresToRenderByGUIForDebuing{}; // Don't mind the name
+#endif
 
 	// ^^^ DEBGUING ^^^
 

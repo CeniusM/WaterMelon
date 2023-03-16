@@ -27,10 +27,10 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 
 	// Debbuging
-	if (targetSquare == kingPos[0])
-		std::cout << "king capture";
-	if (targetSquare == kingPos[1])
-		std::cout << "king capture";
+	//if (targetSquare == kingPos[0])
+	//	std::cout << "king capture";
+	//if (targetSquare == kingPos[1])
+	//	std::cout << "king capture";
 	// ~Debbuging
 
 
@@ -209,12 +209,12 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 
 	// debuging
-	int kingsFound = 0;
-	for (size_t i = 0; i < 64; i++)
-		if (board[i] == BKing)
-			kingsFound++;
-	if (kingsFound > 1)
-		std::cout << "huh";
+	//int kingsFound = 0;
+	//for (size_t i = 0; i < 64; i++)
+	//	if (board[i] == BKing)
+	//		kingsFound++;
+	//if (kingsFound > 1)
+	//	std::cout << "huh";
 
 	playerTurn ^= PlayerTurnSwitch;
 
@@ -812,7 +812,10 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 
 	}
 
+#ifdef SquareToRender
 	SquaresToRenderByGUIForDebuing.clear();
+#endif
+
 	//if (KingInDoubleCheck)
 	//	Logger::Log("King under double attack");
 	//else if (KingInCheck)
@@ -823,6 +826,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 	//Logger::LogBitboard(attacksOnKing);
 	//Logger::Log("PinnedPieces:\n");
 	//Logger::LogBitboard(pinnedPieces);
+#ifdef SquareToRender
 	for (size_t i = 0; i < 64; i++)
 	{
 		if (pinnedPieces & (0b1ULL << i))
@@ -835,6 +839,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 		}
 
 	}
+#endif
 }
 
 void UnsafeWaterMelon::AddKingMoves()
@@ -1436,8 +1441,10 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	if (KingInDoubleCheck)
 	{
+#ifdef SquareToRender
 		for (size_t i = 0; i < movesCount; i++)
 			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+#endif
 		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
@@ -1458,8 +1465,11 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	if (moveOrder)
 		OrderMoves();
 
+
+#ifdef SquareToRender
 	for (size_t i = 0; i < movesCount; i++)
 		SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(GetMoveTarget(moves[i]), 0, 0, 200));
+#endif
 	//Logger::Log(std::to_string(movesCount));
 
 	// Testing
@@ -1472,7 +1482,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 void UnsafeWaterMelon::InitBoard()
 {
+#ifdef SquareToRender
 	SquaresToRenderByGUIForDebuing.clear();
+#endif
 
 	/*for (size_t i = 0; i < 24; i++)
 		for (size_t j = 0; j < PieceLists[i].PieceNum; j++)
