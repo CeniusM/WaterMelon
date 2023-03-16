@@ -683,9 +683,9 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 	{
 		if (GetSlidingPieceBitboardFromInDir(ourKingPos, dir) & slidingPieces) // There is something there
 		{
-			if (dir == DirectionIndexs::SouthWestI)
-				std::cout << "";
-			std::cout << dir;
+			//if (dir == DirectionIndexs::SouthWestI)
+				//std::cout << "";
+			//std::cout << dir;
 
 			Bitboard rayBoard = 0;
 

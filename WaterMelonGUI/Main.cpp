@@ -13,9 +13,15 @@
 
 void PerftTest()
 {
+	std::cout << "Note: Test this with graphics so you can see where its goes wrong \n";
+
+
 	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 
-	std::cout << perftRunner.BulkSearch(4);
+	std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
+	std::cout << "2 -> " << perftRunner.BulkSearch(2) << "\n";
+	std::cout << "3 -> " << perftRunner.BulkSearch(3) << "\n";
+	std::cout << "4 -> " << perftRunner.BulkSearch(4) << "\n";
 
 
 	std::cout << "\n";
@@ -65,7 +71,9 @@ int main()
 
 	//std::cout << sizeof(BoardState);
 	//return 0;
-	//PerftTest();
+
+	PerftTest();
+
 	//return 0;
 	/*int start = 0;
 	Bitboard some = 124123;

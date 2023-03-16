@@ -149,11 +149,22 @@ void CompareWaterMelons(UnsafeWaterMelon* mel1, UnsafeWaterMelon* mel2)
 		}
 		else
 		{
+			int square1[64]{ 0 };
+			int square2[64]{ 0 };
 			for (size_t j = 0; j < mel1->PieceLists[i].PieceNum; j++)
 			{
-				if (mel1->PieceLists[i].OccupiedSquares[j] != mel2->PieceLists[i].OccupiedSquares[j])
+				//if (mel1->PieceLists[i].OccupiedSquares[j] != mel2->PieceLists[i].OccupiedSquares[j])
+				//{
+				//	Failed(std::string("PieceLists[") + FENUtility::IntToChar[i] + "].OccupiedSquares[" + std::to_string(j) + "]");
+				//}
+				square1[mel1->PieceLists[i].OccupiedSquares[j]]++;
+				square2[mel2->PieceLists[i].OccupiedSquares[j]]++;
+			}
+			for (size_t k = 0; k < 64; k++)
+			{
+				if (square1[k] != square2[k])
 				{
-					Failed(std::string("PieceLists[") + FENUtility::IntToChar[i] + "].OccupiedSquares[" + std::to_string(j) + "]");
+					Failed(std::string("PieceLists[") + FENUtility::IntToChar[i] + "] Square[" + std::to_string(k) + "]");
 				}
 			}
 		}

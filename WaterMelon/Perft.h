@@ -80,9 +80,9 @@ long PerftRunner::BulkSearch(int depth)
 
 long PerftRunner::Perft(int depth)
 {
-	long Count = 1;
 	if (depth == 0)
-		return Count;
+		return 1;
+	long Count = 0;
 	Move moves[MaxMovesCount];
 	int movesCount = board.GetPossibleMoves(moves);
 
