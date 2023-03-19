@@ -213,10 +213,10 @@ private:
 	void AddQueenMoves();
 	void AddCastleMoves();
 
-	void PushMove(Move move);
-	void PushMoveIfPinnsAllow(Move move);
-	void PushMoveIfPinnsAllowAndKingNotInCheck(Move move);
-	void PushMoveIfKingNotInCheck(Move move);
+	inline void PushMove(Square start, Square target, MoveFlag flag);
+	inline void PushMoveIfPinnsAllow(Square start, Square target, MoveFlag flag);
+	inline void PushMoveIfPinnsAllowAndKingNotInCheck(Square start, Square target, MoveFlag flag);
+	inline void PushMoveIfKingNotInCheck(Square start, Square target, MoveFlag flag);
 
 	constexpr bool IsPiecePinned(Square pos)
 	{
