@@ -1024,7 +1024,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 			if (isPromotion)
 			{
 				if (BitboardContains(blackPawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), White))
+					if (IsPieceColor(GetColor(board[leftPos]), White)) // this could again just be with bitboards
 					{
 						if (AND) // Is pinned
 						{
