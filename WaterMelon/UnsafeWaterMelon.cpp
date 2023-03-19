@@ -1427,7 +1427,7 @@ void UnsafeWaterMelon::PushMoveIfKingNotInCheck(Move move)
 	if (!KingInCheck)
 		PushMove(move);
 	Square target = GetMoveTarget(move);
-	if (BitboardContains(attacksOnKing, target) || !KingInCheck) // blocks check
+	if (BitboardContains(attacksOnKing, target)) // blocks check
 		PushMove(move);
 }
 
