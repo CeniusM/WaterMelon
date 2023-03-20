@@ -27,12 +27,18 @@
     <ClCompile Include="GameOfChess.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="BoardRenderer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SDLHelper.hpp">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="GameOfChess.hpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardRenderer.hpp">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -144,11 +144,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoardRenderer.cpp" />
     <ClCompile Include="GameOfChess.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SDLHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoardRenderer.hpp" />
     <ClInclude Include="GameOfChess.hpp" />
     <ClInclude Include="SDLHelper.hpp" />
   </ItemGroup>
