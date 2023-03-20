@@ -17,9 +17,10 @@ void PerftTest()
 
 
 	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
 
-	//std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
-	std::cout << "2 -> " << perftRunner.BulkSearch(2) << "\n";
+	PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
 	//std::cout << "3 -> " << perftRunner.BulkSearch(3) << "\n";
 
 	//{
