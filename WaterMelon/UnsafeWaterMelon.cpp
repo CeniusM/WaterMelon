@@ -357,16 +357,8 @@ void UnsafeWaterMelon::UnMakeMove()
 	else
 		board[targetSquare] = 0;
 
-	if (IsWhiteToMove)
-		AllWhitePosBitboard ^= moveBitboard;
-	else
-		AllBlackPosBitboard ^= moveBitboard;
-
-
-
-
-
-
+	// Very unsafe... AllWhitePosBitboard have to be right above AllBlackPosBitboard
+	(&AllWhitePosBitboard)[OurColorIndex] ^= moveBitboard;
 
 	gameState = Running;
 }
