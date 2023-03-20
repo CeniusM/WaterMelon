@@ -37,6 +37,10 @@ void PerftTest()
 
 int main()
 {
+	//Logger::LogBitboard(BitboardFromSquare(59) | BitboardFromSquare(58) | BitboardFromSquare(57));
+	//Logger::Log(std::to_string(BitboardFromSquare(59) | BitboardFromSquare(58) | BitboardFromSquare(57)));
+	//return 0;
+
 	srand(312345654);
 
 	//UnsafeWaterMelon obj1;

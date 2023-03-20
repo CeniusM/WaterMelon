@@ -38,7 +38,7 @@ constexpr Bitboard BitboardSetSquares(Bitboard bitboard, Square pos1, Square pos
 	return bitboard | (0b1ULL << pos1) | (0b1ULL << pos2);
 }
 
-constexpr bool BitboardsCollide(Bitboard bitboard, Bitboard bitboard2)
+constexpr Bitboard BitboardsCollide(Bitboard bitboard, Bitboard bitboard2)
 {
 	return bitboard & bitboard2;
 }
