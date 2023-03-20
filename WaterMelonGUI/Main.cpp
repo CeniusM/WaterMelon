@@ -31,6 +31,10 @@ void PerftTest()
 		Timer timer{};
 		std::cout << "5 -> " << perftRunner.BulkSearch(5) << "\n";
 	}
+	//{
+	//	Timer timer{};
+	//	std::cout << "6 -> " << perftRunner.BulkSearch(6) << "\n";
+	//}
 
 
 	std::cout << "\n";

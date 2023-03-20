@@ -18,7 +18,8 @@ public:
 
 private:
 	bool m_running{ 0 };
-	UnsafeWaterMelon board{ };
+	UnsafeWaterMelon board{};
+	//UnsafeWaterMelon board;
 	std::string FEN;
 
 	long Perft(int depth);
@@ -27,7 +28,8 @@ private:
 PerftRunner::PerftRunner(std::string FEN)
 {
 	this->FEN = FEN;
-	board.InitFEN(FEN);
+	//UnsafeWaterMelon temp{ FEN };
+	//memcpy_s(&board, sizeof(UnsafeWaterMelon), &temp, sizeof(UnsafeWaterMelon));
 }
 
 PerftRunner::~PerftRunner()

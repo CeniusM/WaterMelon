@@ -52,8 +52,8 @@ public:
 	EnPassantPos EPSquare{};
 	Color playerTurn{};
 
-	int WhitePawnCounts[8]{ 0 };
-	int BlackPawnCounts[8]{ 0 };
+	int WhitePawnCounts[8]{ 1 };
+	int BlackPawnCounts[8]{ 1 };
 	//int PawnCounts[2][8]{ 0 }; // color index ][ file
 
 

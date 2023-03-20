@@ -387,7 +387,13 @@ UnsafeWaterMelon::~UnsafeWaterMelon()
 
 void UnsafeWaterMelon::InitFEN(const std::string FEN)
 {
+	if (m_HasInit)
+		return;
 	// Validate the FEN String...
+
+	// Clear everything
+	//void* self = this;
+	//memset(self, 0, sizeof(UnsafeWaterMelon));
 
 	playerTurn = 8;
 	try
@@ -760,9 +766,9 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 				KingInCheck = true;
 				attacksOnKing |= 0b1ULL << (ourKingPos - 9);
 			}
-		}
+			}
 
-	}
+		}
 
 #ifdef SquareToRender
 	SquaresToRenderByGUIForDebuing.clear();
@@ -788,9 +794,9 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			//Logger::Log("\n");
 
 			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(i, 255, 0, 0));
-		}
-
 	}
+
+}
 #endif
 }
 
@@ -1395,7 +1401,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
-}
+	}
 	else if (!KingInCheck)
 		attacksOnKing = 0xffffffffffffffff;
 
