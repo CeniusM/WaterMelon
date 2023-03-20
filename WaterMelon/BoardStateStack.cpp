@@ -36,6 +36,7 @@ BoardState BoardStateStack::Peek()
 
 BoardState BoardStateStack::Pop()
 {
+	Check(m_top > 0, "BoardStateStack.Pop() at under 1");
 	return m_items[--m_top];
 }
 

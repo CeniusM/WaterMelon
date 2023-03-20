@@ -138,6 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BranchCutter.cpp" />
+    <ClCompile Include="Checker.cpp" />
     <ClCompile Include="ColoredSquare.cpp" />
     <ClCompile Include="Depth.hpp" />
     <ClCompile Include="Evaluator.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="BoardState.hpp" />
     <ClInclude Include="BranchCutter.hpp" />
     <ClInclude Include="CastleRight.hpp" />
+    <ClInclude Include="Checker.hpp" />
     <ClInclude Include="ColoredSquare.hpp" />
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="Direction.hpp" />

@@ -138,6 +138,9 @@
     <ClInclude Include="UnsafeWaterMelonComparerer.hpp">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="Checker.hpp">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -175,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="UnsafeWaterMelonComparerer.cpp">
       <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Checker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

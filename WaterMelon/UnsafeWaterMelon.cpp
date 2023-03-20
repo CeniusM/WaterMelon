@@ -21,7 +21,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	Color OurColor = playerTurn;
 	int OurColorIndex = playerTurn >> 4;
-	bool IsWhiteToMove = !(bool)OurColorIndex;
+	bool IsWhiteToMove = OurColorIndex ^ 0b1;
 
 	BoardState stateSave{ move, capturedPiece, EPSquare, castle, 0, KingInCheck, KingInDoubleCheck };
 
@@ -70,52 +70,12 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			WhitePawnCounts[GetCollum(targetSquare)]--;
 	}
 
-	if (IsWhiteToMove)
-	{
-		AllWhitePosBitboard ^= moveBitboard;
+	// Very unsafe... AllWhitePosBitboard have to be right above AllBlackPosBitboard
+	(&AllWhitePosBitboard)[OurColorIndex] ^= moveBitboard;
 
-		// USE BITBOARDS TO CHECK castle 
-		// also use bitboards to check in the move generation code, and just bitshift after a move
-		// use like whitePeicePoses and black instead of checking board[]
+	castle &= CastleRightAndRemoverForSquare[startSquare];
+	castle &= CastleRightAndRemoverForSquare[targetSquare];
 
-
-		/*
-
-
-
-
-
-
-
-		THIS DOES NOT WORK. CANT STILL CASTLE IF PEICE WAS CAPTURED. USE BITBOARDS TO SEE IF THE DIFRENT PLACES ARE GETTING MOVED/HIT
-
-
-
-
-
-
-
-
-		*/
-
-		if (startSquare == 0) // queen rook
-			castle &= CastleRights::AllBlack | CastleRights::WhiteKingSide;
-		else if (startSquare == 7) // king rook
-			castle &= CastleRights::AllBlack | CastleRights::WhiteQueenSide;
-		else if (startSquare == 4) // king move
-			castle &= CastleRights::AllBlack;
-	}
-	else
-	{
-		AllBlackPosBitboard ^= moveBitboard;
-
-		if (startSquare == 56) // queen rook
-			castle &= CastleRights::AllWhite | CastleRights::BlackKingSide;
-		else if (startSquare == 63) // king rook
-			castle &= CastleRights::AllWhite | CastleRights::BlackQueenSide;
-		else if (startSquare == 60) // king move
-			castle &= CastleRights::AllWhite;
-	}
 
 	board[startSquare] = 0;
 	board[targetSquare] = movingPiece;
@@ -208,13 +168,13 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	}
 
 
-	// debuging
-	//int kingsFound = 0;
-	//for (size_t i = 0; i < 64; i++)
-	//	if (board[i] == BKing)
-	//		kingsFound++;
-	//if (kingsFound > 1)
-	//	std::cout << "huh";
+#ifdef DoChecks
+	int kingsFound = 0;
+	for (size_t i = 0; i < 64; i++)
+		if ((board[i] & typeMask) == King)
+			kingsFound++;
+	Check(kingsFound == 2, "Found more or less than 2 kings");
+#endif
 
 	playerTurn ^= PlayerTurnSwitch;
 
@@ -1443,7 +1403,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
-	}
+}
 	else if (!KingInCheck)
 		attacksOnKing = 0xffffffffffffffff;
 

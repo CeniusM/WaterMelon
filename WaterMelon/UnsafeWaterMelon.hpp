@@ -10,6 +10,7 @@
 #include "TypesIncludes.hpp"
 #include "ThrowHelper.hpp"
 #include "BoardStateStack.hpp"
+#include "Checker.hpp"
 
 #define MaxMovesCount 256
 
@@ -32,7 +33,7 @@ class UnsafeWaterMelon
 public:
 
 	// --- DEBUGING ---
-	
+
 #ifdef SquareToRender
 	std::list<ColoredSquare> SquaresToRenderByGUIForDebuing{}; // Don't mind the name
 #endif
@@ -53,7 +54,7 @@ public:
 
 	int WhitePawnCounts[8]{ 0 };
 	int BlackPawnCounts[8]{ 0 };
-
+	//int PawnCounts[2][8]{ 0 }; // color index ][ file
 
 
 	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
@@ -122,8 +123,10 @@ public:
 	// -- For all the bitboard poses, it is just 3 XOR operations for the start to target square bitboard
 	// Bitboard of all the posses, use piece value as index
 	Bitboard PieceBitboardPos[24]{ 0 };
-	Bitboard AllWhitePosBitboard;
+
+	Bitboard AllWhitePosBitboard; // HAVE TO STAY RIGHT ABOVE AllBlackPosBitboard
 	Bitboard AllBlackPosBitboard;
+
 	Bitboard AllFriendlyPosBitboard;
 	Bitboard AllEnemyPosBitboard;
 	Bitboard AllPiecePosBitboard;
