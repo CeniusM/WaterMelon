@@ -16,28 +16,30 @@ void PerftTest()
 	std::cout << "Note: Test this with graphics so you can see where its goes wrong \n";
 
 
-	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
+	//PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	//std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
 
-	PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
+	//PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	//std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
 
-	PerftRunner perftRunner3{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	std::cout << "3 -> " << perftRunner3.BulkSearch(3) << "\n";
+	//PerftRunner perftRunner3{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	//std::cout << "3 -> " << perftRunner3.BulkSearch(3) << "\n";
 
-	{
-		Timer timer{};
-		std::cout << "4 -> " << perftRunner.BulkSearch(4) << "\n";
-	}
-	{
-		Timer timer{};
-		std::cout << "5 -> " << perftRunner.BulkSearch(5) << "\n";
-	}
 	//{
 	//	Timer timer{};
-	//	std::cout << "6 -> " << perftRunner.BulkSearch(6) << "\n";
+	//	std::cout << "4 -> " << perftRunner.BulkSearch(4) << "\n";
 	//}
+	//{
+	//	Timer timer{};
+	//	std::cout << "5 -> " << perftRunner.BulkSearch(5) << "\n";
+	//}
+	////{
+	////	Timer timer{};
+	////	std::cout << "6 -> " << perftRunner.BulkSearch(6) << "\n";
+	////}
 
+	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	perftRunner.BulkSearchLog(6);
 
 	std::cout << "\n";
 }

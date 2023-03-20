@@ -16,9 +16,9 @@ public:
 	long BulkSearch(int depth);
 	void BulkSearchLog(int depth);
 
+	UnsafeWaterMelon board{};
 private:
 	bool m_running{ 0 };
-	UnsafeWaterMelon board{};
 	//UnsafeWaterMelon board;
 	std::string FEN;
 
@@ -57,7 +57,7 @@ void PerftRunner::BulkSearchLog(int depth)
 	}
 
 	auto TotalStop = high_resolution_clock::now();
-	auto TotalTime = duration_cast<milliseconds>(TotalStart - TotalStop);
+	auto TotalTime = duration_cast<milliseconds>(TotalStop - TotalStart);
 
 	std::cout << "BulkSearchLog at depth " << depth << "\n";
 	std::cout << "FEN: " << FEN << "\n";
@@ -68,8 +68,9 @@ void PerftRunner::BulkSearchLog(int depth)
 		std::cout <<
 			//"Move: " << GetMoveName(moves[i]) <<
 			"Move: " << GetMoveStart(moves[i]) << " to " << GetMoveTarget(moves[i]) <<
-			". Run Time: " << duration_cast<milliseconds>(Times[i][0] - Times[i][1]).count() <<
+			". Run Time: " << duration_cast<milliseconds>(Times[i][1] - Times[i][0]).count() <<
 			"ms. Nodes: " << Counts[i] <<
+			". KNs: " << (Counts[i] / duration_cast<milliseconds>(Times[i][1] - Times[i][0]).count()) <<
 			"\n";
 	}
 
