@@ -14,6 +14,23 @@ void WriteLine(std::string message);
 void WriteErrorMessage(std::string message);
 void WritePassedTest(std::string nameOfTest);
 
-void AssertTrue(bool val, std::string message, bool* Succes);
-void AssertFalse(bool val, std::string message, bool* Succes);
-void AssertInclusiveInBounds(int val, int buttom, int top, std::string message, bool* Succes);
+class Assert
+{
+public:
+	const int MaxErrors = 10;
+
+	Assert();
+	~Assert();
+
+	void AssertTrue(bool val, std::string message);
+	void AssertFalse(bool val, std::string message);
+	void AssertInclusiveInBounds(int val, int buttom, int top, std::string message);
+
+	// Returns "End" if non left
+	std::string GetError();
+
+	bool Succes = true;
+private:
+	std::string* errors;
+	int top;
+};

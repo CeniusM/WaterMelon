@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Assert.hpp"
-//#include "WaterMelon.hpp"
+#include "UnsafeWaterMelon.hpp"
 
-void PieceMaterialCountingTest();
-void CreateMoveTest();
+void PieceMaterialCountingTest(Assert& assert);
+void CreateAndUssageOfMoveTest(Assert& assert);
+void BoardStateStackTest(Assert& assert);

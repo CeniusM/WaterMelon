@@ -42,21 +42,40 @@ void WritePassedTest(std::string nameOfTest)
 	_ResetColor();
 }
 
-void AssertTrue(bool val, std::string message, bool* Succes)
+void Assert::AssertTrue(bool val, std::string message)
 {
 	if (!val)
 	{
-		*Succes = false;
-		WriteErrorMessage(message);
+		Succes = false;
+		if (top < MaxErrors)
+			errors[top++] = message;
 	}
 }
 
-void AssertFalse(bool val, std::string message, bool* Succes)
+void Assert::AssertFalse(bool val, std::string message)
 {
-	AssertTrue(!val, message, Succes);
+	AssertTrue(!val, message);
 }
 
-void AssertInclusiveInBounds(int val, int buttom, int top, std::string message, bool* Succes)
+void Assert::AssertInclusiveInBounds(int val, int buttom, int top, std::string message)
 {
-	AssertTrue(val >= buttom && val <= top, message, Succes);
+	AssertTrue(val >= buttom && val <= top, message);
+}
+
+std::string Assert::GetError()
+{
+	if (top == 0)
+		return std::string("End");
+	return errors[--top];
+}
+
+Assert::Assert()
+{
+	errors = new std::string[MaxErrors];
+	top = 0;
+}
+
+Assert::~Assert()
+{
+	delete[] errors;
 }

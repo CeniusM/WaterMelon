@@ -1,13 +1,9 @@
 #include "Tests.hpp"
 
-void PieceMaterialCountingTest()
+void PieceMaterialCountingTest(Assert& Assert)
 {
-	return; // Notimplemented
-	bool Succes = true;
 
-	AssertTrue(false, "This is not finished... PieceMaterialCountingTest", &Succes);
+	Assert.AssertTrue(false, "This is not finished... PieceMaterialCountingTest");
 
 
-	if (Succes)
-		WritePassedTest("PieceMaterialCountingTest");
 }
