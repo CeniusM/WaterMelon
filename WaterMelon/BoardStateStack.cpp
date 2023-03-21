@@ -14,21 +14,6 @@ BoardStateStack::~BoardStateStack()
 	free(m_items);
 }
 
-void BoardStateStack::Push(BoardState state)
-{
-	m_items[m_top++] = state;
-	if (m_top == m_capacity)
-	{
-		BoardState* temp = 0;
-		while (!temp)
-			temp = (BoardState*)malloc(m_capacity * 2 * sizeof(BoardState));
-		memcpy(temp, m_items, m_capacity * sizeof(BoardState));
-		free(m_items);
-		m_items = temp;
-		m_capacity *= 2;
-	}
-}
-
 BoardState BoardStateStack::Peek()
 {
 	return m_items[m_top - 1];
