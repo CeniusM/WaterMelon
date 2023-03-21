@@ -38,7 +38,7 @@ void PerftTest()
 	////}
 
 	PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	perftRunner.BulkSearchLog(6);
+	perftRunner.BulkSearchLog(5);
 
 	std::cout << "\n";
 }
