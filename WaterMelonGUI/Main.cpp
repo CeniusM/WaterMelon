@@ -15,7 +15,6 @@ void PerftTest()
 {
 	std::cout << "Note: Test this with graphics so you can see where its goes wrong \n";
 
-
 	//PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 	//std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
 
@@ -46,6 +45,8 @@ void PerftTest()
 
 int main()
 {
+	std::cout << "UnsafeBoard in bytes: " << sizeof(UnsafeWaterMelon) << "\n";
+	std::cout << "BoardState in bytes: " << sizeof(BoardState) << "\n";
 	//Logger::LogBitboard(BitboardFromSquare(59) | BitboardFromSquare(58) | BitboardFromSquare(57));
 	//Logger::Log(std::to_string(BitboardFromSquare(59) | BitboardFromSquare(58) | BitboardFromSquare(57)));
 	//return 0;

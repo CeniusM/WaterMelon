@@ -8,8 +8,7 @@
 // [16-20] Captured Piece
 // [21,26] ep pos
 // [25,31] castle
-// 50 move rule
-// 
+// 50 move rule and old move for repetion testing
 //typedef unsigned long long BoardState;
 
 struct BoardState
@@ -21,6 +20,10 @@ struct BoardState
 	short _50MoveRule;
 	bool KingInCheck;
 	bool KingInDoubleCheck;
+
+	BoardState()
+	{
+	}
 
 	BoardState(Move inMove, Piece inCapturedPiece, EnPassantPos inEPPos, CastleRight inCastle, 
 		short in_50MoveRule, bool inKingInCheck, bool inKingInDoubleCheck)

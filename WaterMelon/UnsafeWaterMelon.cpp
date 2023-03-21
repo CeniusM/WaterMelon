@@ -24,6 +24,11 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	bool IsWhiteToMove = OurColorIndex ^ 0b1;
 
 	BoardState stateSave{ move, capturedPiece, EPSquare, castle, 0, KingInCheck, KingInDoubleCheck };
+	//BoardState stateSave =
+	//	(BoardState)move |
+	//	((BoardState)capturedPiece << (sizeof(Move) * 8)) |
+	//	((BoardState)EPSquare << (sizeof(Move) + 1) * 8) |
+	//	((BoardState)castle << (sizeof(Move) + 2) * 8);
 
 
 	// Debbuging
@@ -338,7 +343,6 @@ void UnsafeWaterMelon::UnMakeMove()
 
 
 
-	board[startSquare] = movingPiece;
 	PieceLists[movingPiece].MovePiece(targetSquare, startSquare);
 	AllPiecePosBitboard ^= moveBitboard;
 	PieceBitboardPos[movingPiece] ^= moveBitboard;
@@ -356,6 +360,7 @@ void UnsafeWaterMelon::UnMakeMove()
 	}
 	else
 		board[targetSquare] = 0;
+	board[startSquare] = movingPiece;
 
 	// Very unsafe... AllWhitePosBitboard have to be right above AllBlackPosBitboard
 	(&AllWhitePosBitboard)[OurColorIndex] ^= moveBitboard;
@@ -766,9 +771,9 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 				KingInCheck = true;
 				attacksOnKing |= 0b1ULL << (ourKingPos - 9);
 			}
-			}
-
 		}
+
+	}
 
 #ifdef SquareToRender
 	SquaresToRenderByGUIForDebuing.clear();
@@ -794,7 +799,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			//Logger::Log("\n");
 
 			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(i, 255, 0, 0));
-	}
+		}
 
 }
 #endif
@@ -1401,7 +1406,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
-	}
+}
 	else if (!KingInCheck)
 		attacksOnKing = 0xffffffffffffffff;
 
