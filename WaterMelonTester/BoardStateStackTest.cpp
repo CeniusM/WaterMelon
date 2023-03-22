@@ -6,6 +6,7 @@ void BoardStateStackTest(Assert& assert)
 
 
 
+	assert.AssertTrue(false, "NotImplemented");
 
 
 }

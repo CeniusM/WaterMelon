@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Tests">
       <UniqueIdentifier>{3c6ff486-247f-49d2-87ec-fb87612eccd1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{148387d1-587c-447f-b466-1850ffce3f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{88df1315-5d4a-41ef-b6a7-785c33c9e865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WaterMelonTester.cpp">
@@ -33,6 +39,15 @@
     <ClCompile Include="BoardStateStackTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="PerftFullTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="PerftQuickTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="PerftUtil.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp">
@@ -40,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="Tests.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerftUtil.hpp">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

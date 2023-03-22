@@ -1,9 +1,9 @@
 #include "Tests.hpp"
 
-void PieceMaterialCountingTest(Assert& Assert)
+void PieceMaterialCountingTest(Assert& assert)
 {
 
-	Assert.AssertTrue(false, "This is not finished... PieceMaterialCountingTest");
+	assert.AssertTrue(false, "NotImplemented");
 
 
 }

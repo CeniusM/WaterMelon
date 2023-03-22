@@ -39,5 +39,7 @@ int main()
 {
 	RunTest(&BoardStateStackTest, "BoardStateStackTest");
 	RunTest(&CreateAndUssageOfMoveTest, "CreateAndUssageOfMoveTest");
+	RunTest(&PerftQuickTest, "PerftQuickTest");
+	RunTest(&PerftFullTest, "PerftFullTest");
 	RunTest(&PieceMaterialCountingTest, "PieceMaterialCountingTest");
 }
