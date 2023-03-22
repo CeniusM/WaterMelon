@@ -88,6 +88,7 @@ void GameOfChess::HandleEvents()
 			else if (event.key.keysym.sym == SDLK_SPACE)
 			{
 				board.UnMakeMove();
+				board.UnMakeMove();
 				Render();
 			}
 		}
@@ -173,7 +174,6 @@ void GameOfChess::HandleEvents()
 				std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
-
 			}
 		}
 	}
@@ -184,6 +184,15 @@ int twoFive = 0;
 void GameOfChess::Update()
 {
 	m_Count++;
+	if (board.GetPlayerColour() == Black)
+	{
+		if (board.GetMovesCount() != 0)
+		{
+			Move move = board.TransfomMove(board.GetMovePointer()[rand() % board.GetMovesCount()]);
+			board.MakeMove(move);
+		}
+		SomethingHappend = true;
+	}
 	return;
 	twoFive--;
 	if (twoFive < 0)
@@ -285,7 +294,7 @@ void GameOfChess::RenderBackGround()
 		rect.y = rank * 100;
 		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
-	}
+}
 #endif
 }
 
