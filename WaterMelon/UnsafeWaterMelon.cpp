@@ -1371,7 +1371,7 @@ inline void UnsafeWaterMelon::PushMoveIfPinnsAllowAndBlocksCheck(Square start, S
 	if (AND) // Is pinned
 	{
 		if (pinningPiecesAttack[start] & (0b1ULL << target)) // Blocks pin
-			if (BitboardContains(attacksOnKing, target) || !KingInCheck) // blocks check
+			if (BitboardContains(attacksOnKing, target)) // blocks check
 				PushMove(start, target, flag);
 	}
 	else
