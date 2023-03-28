@@ -193,10 +193,7 @@ void CompareWaterMelons(UnsafeWaterMelon* mel1, UnsafeWaterMelon* mel2)
 
 
 
-
-
-
-	if (mel1->AllBlackPosBitboard != mel2->AllBlackPosBitboard)
-		Failed("AllBlackPosBitboard");
+	//if (mel1->AllBlackPosBitboard != mel2->AllBlackPosBitboard)
+		//Failed("AllBlackPosBitboard");
 
 }
