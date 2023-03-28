@@ -37,6 +37,12 @@ ulong ImprentBitOnBoard(ulong bitboard, int pos)
     return (bitboard | posBitboard);
 }
 
+ulong SetBit(ulong board, int x, int y)
+{
+    board |= (0b1UL << (x + y * 8));
+    return board;
+}
+
 // Would only work for 1d
 //void PrintArrayAndMethod(string type, string name, ulong[] offsets)
 //{
@@ -294,84 +300,110 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 
 // -- Bitboard from square to square -- DIDENT WORK; ONLY MOVED ONE OUT 
 
-ulong[] bitboards = new ulong[0b111111111111 + 1];
-for (int i = 0; i < 64; i++)
+//ulong[] bitboards = new ulong[0b111111111111 + 1];
+//for (int i = 0; i < 64; i++)
+//{
+//    for (int j = 0; j < 64; j++)
+//    {
+//        int startRank = i >> 3;
+//        int startCollum = i % 8;
+//        int endRank = j >> 3;
+//        int endCollum = j % 8;
+
+//        if (startRank == 1 && startCollum == 1 && endRank == 4 && endCollum == 4)
+//            Console.Write("");
+
+//        Diretions.DirectionIndexs index = Diretions.DirectionIndexs.InvalidIndexI;
+
+//        if (startRank == endRank)
+//        {
+//            if (startCollum > endCollum)
+//                index = Diretions.DirectionIndexs.WestI;
+//            else if (startCollum < endCollum)
+//                index = Diretions.DirectionIndexs.EastI;
+//            else
+//                index = Diretions.DirectionIndexs.InvalidIndexI;
+//        }
+//        else if (startCollum == endCollum)
+//        {
+//            if (startRank > endRank)
+//                index = Diretions.DirectionIndexs.NorthI;
+//            else if (startRank < endRank)
+//                index = Diretions.DirectionIndexs.SouthI;
+//            else
+//                index = Diretions.DirectionIndexs.InvalidIndexI;
+//        }
+//        else if (endRank - startRank == -1 && endCollum - startCollum == -1)
+//        {
+//            index = Diretions.DirectionIndexs.NorthWestI;
+//        }
+//        else if (endRank - startRank == -1 && endCollum - startCollum == 1)
+//        {
+//            index = Diretions.DirectionIndexs.NorthEastI;
+//        }
+//        else if (endRank - startRank == 1 && endCollum - startCollum == 1)
+//        {
+//            index = Diretions.DirectionIndexs.SouthEastI;
+//        }
+//        else if (endRank - startRank == 1 && endCollum - startCollum == -1)
+//        {
+//            index = Diretions.DirectionIndexs.SouthWestI;
+//        }
+//        else
+//            index = Diretions.DirectionIndexs.InvalidIndexI;
+
+//        if (index == Diretions.DirectionIndexs.InvalidIndexI)
+//        {
+//            bitboards[i + (j << 6)] = (ulong)index;
+//            continue;
+//        }
+
+
+//        int start = i;
+//        int end = j;
+//        int offset = Diretions.OffsetsIndexed[(int)index];
+//        ulong bitboard = ImprentBitOnBoard(0, start);
+//        while (true)
+//        {
+//            start += offset;
+//            bitboard = ImprentBitOnBoard(bitboard, start);
+//            if (start == end)
+//                break;
+//        }
+
+//        bitboards[i + (j << 6)] = bitboard;
+//    }
+//}
+//int GetSquare(int rank, int collum) => (rank << 3) + collum;
+//ulong GetIndex(int startSquare, int endSquare) => bitboards[startSquare + (endSquare << 6)];
+
+//PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 1)));
+//PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 5)));
+
+//PrintArray("constexpr char", "BitboardFromSquareToSquare", bitboards);
+
+
+
+// Create row and collum arrays
+ulong[] rows = new ulong[8];
+ulong[] collums = new ulong[8];
+for (int i = 0; i < 8; i++)
 {
-    for (int j = 0; j < 64; j++)
+    for (int j = 0; j < 8; j++)
     {
-        int startRank = i >> 3;
-        int startCollum = i % 8;
-        int endRank = j >> 3;
-        int endCollum = j % 8;
-
-        if (startRank == 1 && startCollum == 1 && endRank == 4 && endCollum == 4)
-            Console.Write("");
-
-        Diretions.DirectionIndexs index = Diretions.DirectionIndexs.InvalidIndexI;
-
-        if (startRank == endRank)
-        {
-            if (startCollum > endCollum)
-                index = Diretions.DirectionIndexs.WestI;
-            else if (startCollum < endCollum)
-                index = Diretions.DirectionIndexs.EastI;
-            else
-                index = Diretions.DirectionIndexs.InvalidIndexI;
-        }
-        else if (startCollum == endCollum)
-        {
-            if (startRank > endRank)
-                index = Diretions.DirectionIndexs.NorthI;
-            else if (startRank < endRank)
-                index = Diretions.DirectionIndexs.SouthI;
-            else
-                index = Diretions.DirectionIndexs.InvalidIndexI;
-        }
-        else if (endRank - startRank == -1 && endCollum - startCollum == -1)
-        {
-            index = Diretions.DirectionIndexs.NorthWestI;
-        }
-        else if (endRank - startRank == -1 && endCollum - startCollum == 1)
-        {
-            index = Diretions.DirectionIndexs.NorthEastI;
-        }
-        else if (endRank - startRank == 1 && endCollum - startCollum == 1)
-        {
-            index = Diretions.DirectionIndexs.SouthEastI;
-        }
-        else if (endRank - startRank == 1 && endCollum - startCollum == -1)
-        {
-            index = Diretions.DirectionIndexs.SouthWestI;
-        }
-        else
-            index = Diretions.DirectionIndexs.InvalidIndexI;
-
-        if (index == Diretions.DirectionIndexs.InvalidIndexI)
-        {
-            bitboards[i + (j << 6)] = (ulong)index;
-            continue;
-        }
-
-
-        int start = i;
-        int end = j;
-        int offset = Diretions.OffsetsIndexed[(int)index];
-        ulong bitboard = ImprentBitOnBoard(0, start);
-        while (true)
-        {
-            start += offset;
-            bitboard = ImprentBitOnBoard(bitboard, start);
-            if (start == end)
-                break;
-        }
-
-        bitboards[i + (j << 6)] = bitboard;
+        rows[i] = SetBit(rows[i], j, i);
+        collums[i] = SetBit(collums[i], i, j);
     }
 }
-int GetSquare(int rank, int collum) => (rank << 3) + collum;
-ulong GetIndex(int startSquare, int endSquare) => bitboards[startSquare + (endSquare << 6)];
 
-PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 1)));
-PrintBitboard(GetIndex(GetSquare(1, 1), GetSquare(5, 5)));
+//PrintBitboardColored(collums[0]);
+//PrintBitboardColored(collums[1]);
+//PrintBitboardColored(collums[2]);
+//PrintBitboardColored(collums[3]);
+//PrintBitboardColored(collums[4]);
+//PrintBitboardColored(collums[5]);
+//PrintBitboardColored(collums[6]);
+//PrintBitboardColored(collums[7]);
 
-PrintArray("constexpr char", "BitboardFromSquareToSquare", bitboards);
+PrintArray("Bitboard", "RowBitboards", rows);
+PrintArray("Bitboard", "CollumBitboards", collums);
