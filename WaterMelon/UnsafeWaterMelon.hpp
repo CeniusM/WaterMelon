@@ -209,6 +209,7 @@ private:
 	void AddKingMoves();
 
 	inline void AddPormotionMoves(int from, int to, unsigned short captureBit);
+	void TryEnpassantMove(int movingSquare, int row);
 	void AddPawnMoves();
 	void AddKnightMoves();
 	void AddRookMoves();

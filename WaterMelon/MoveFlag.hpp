@@ -14,17 +14,17 @@ constexpr unsigned short MoveFlagMask = 0b111000000000000;
 enum MoveFlags : unsigned short
 {
 	NoFlag = 0,
-	PawnDoubleForward = 0b001000000000000,
-	EnPassantCapture = 0b010000000000000 | CapturedPieceBitFlag,
-	Castling = 0b011000000000000,
-	PromoteToQueen = 0b100000000000000,
-	PromoteToRook = 0b101000000000000,
-	PromoteToKnight = 0b110000000000000,
-	PromoteToBishop = 0b111000000000000,
+	PawnDoubleForward = 0b001 << 12,
+	EnPassantCapture = 0b010 << 12 | CapturedPieceBitFlag,
+	Castling = 0b011 << 12,
+	PromoteToQueen = 0b100 << 12,
+	PromoteToRook = 0b101 << 12,
+	PromoteToKnight = 0b110 << 12,
+	PromoteToBishop = 0b111 << 12,
 
 	NoFlagCapture = 0 | CapturedPieceBitFlag,
-	PromoteToQueenCapture = 0b100000000000000 | CapturedPieceBitFlag,
-	PromoteToRookCapture = 0b101000000000000 | CapturedPieceBitFlag,
-	PromoteToKnightCapture = 0b110000000000000 | CapturedPieceBitFlag,
-	PromoteToBishopCapture = 0b111000000000000 | CapturedPieceBitFlag,
+	PromoteToQueenCapture = PromoteToQueen | CapturedPieceBitFlag,
+	PromoteToRookCapture = PromoteToRook | CapturedPieceBitFlag,
+	PromoteToKnightCapture = PromoteToKnight | CapturedPieceBitFlag,
+	PromoteToBishopCapture = PromoteToBishop | CapturedPieceBitFlag,
 };

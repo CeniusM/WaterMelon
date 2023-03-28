@@ -5,5 +5,12 @@
 
 //#define DoChecks
 
-void Check(bool succes, const char* message);
+void DoCheck(bool succes, const char* message);
 
+
+
+#ifdef DoChecks
+#define Check(x, y) DoCheck(x, y);
+#else
+#define Check(x, y)
+#endif

@@ -93,11 +93,11 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	if (flag == MoveFlags::PawnDoubleForward)
 	{
 		if (IsWhiteToMove)
-			EPSquare = startSquare - 8;
+			EPSquare = targetSquare - 8;
 		else
-			EPSquare = startSquare + 8;
+			EPSquare = targetSquare + 8;
 	}
-	else if (flag == MoveFlags::EnPassantCapture)
+	else if ((flag | CapturedPieceBitFlag) == MoveFlags::EnPassantCapture)
 	{
 		if (IsWhiteToMove)
 		{
@@ -106,6 +106,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[BPawn].RemovePieceAtSquare(targetSquare - 8);
 			AllPiecePosBitboard ^= (targetBit >> 8);
 			PieceBitboardPos[BPawn] ^= (targetBit >> 8);
+			board[targetSquare - 8] = 0;
 			stateSave.capturedPiece = BPawn;
 		}
 		else
@@ -115,6 +116,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 			PieceLists[WPawn].RemovePieceAtSquare(targetSquare + 8);
 			AllPiecePosBitboard ^= (targetBit << 8);
 			PieceBitboardPos[WPawn] ^= (targetBit << 8);
+			board[targetSquare + 8] = 0;
 			stateSave.capturedPiece = WPawn;
 		}
 	}
@@ -269,13 +271,14 @@ void UnsafeWaterMelon::UnMakeMove()
 	if (flag == MoveFlags::PawnDoubleForward)
 	{
 	}
-	else if (flag == MoveFlags::EnPassantCapture)
+	else if ((flag | CapturedPieceBitFlag) == MoveFlags::EnPassantCapture)
 	{
 		if (IsWhiteToMove)
 		{
 			PieceLists[BPawn].AddPieceAtSquare(targetSquare - 8);
 			AllPiecePosBitboard ^= (targetBit >> 8);
 			PieceBitboardPos[BPawn] ^= (targetBit >> 8);
+			board[targetSquare - 8] = BPawn;
 			capturedPiece = 0;
 		}
 		else
@@ -283,6 +286,7 @@ void UnsafeWaterMelon::UnMakeMove()
 			PieceLists[WPawn].AddPieceAtSquare(targetSquare + 8);
 			AllPiecePosBitboard ^= (targetBit << 8);
 			PieceBitboardPos[WPawn] ^= (targetBit << 8);
+			board[targetSquare + 8] = WPawn;
 			capturedPiece = 0;
 		}
 	}
@@ -474,6 +478,8 @@ void UnsafeWaterMelon::InitFEN(const std::string FEN)
 	{
 		m_HasInit = false;
 	}
+
+	EPSquare = EmptyEnPassantPos;
 
 	GetPossibleMoves(moves); // init boards
 }
@@ -962,14 +968,6 @@ void UnsafeWaterMelon::AddPawnMoves()
 				}
 			}
 		}
-		if (EPSquare != EmptyEnPassantPos)
-		{
-			// becous Enpassant moves two pieces, we do the King check check here.
-			// Just check if the king is on the same rank, and if there by chance 
-			// also is an enemy queen or rook on the same rank now not blocked
-
-
-		}
 	}
 	else
 	{
@@ -1079,14 +1077,68 @@ void UnsafeWaterMelon::AddPawnMoves()
 				}
 			}
 		}
-		if (EPSquare != EmptyEnPassantPos)
+	}
+
+	if (EPSquare != EmptyEnPassantPos)
+	{
+		if (whiteToMove)
 		{
-			// becous Enpassant moves two pieces, we do the King check check here.
-			// Just check if the king is on the same rank, and if there by chance 
-			// also is an enemy queen or rook on the same rank now not blocked
-
-
+			TryEnpassantMove(EPSquare - 9, 4);
+			TryEnpassantMove(EPSquare - 7, 4);
 		}
+		else
+		{
+			TryEnpassantMove(EPSquare + 9, 3);
+			TryEnpassantMove(EPSquare + 7, 3);
+		}
+	}
+}
+
+void UnsafeWaterMelon::TryEnpassantMove(int movingSquare, int row)
+{
+	if (GetRank(movingSquare) != row)
+		return;
+
+	// becous Enpassant moves two pieces, we do the King check check here.
+	// Just check if the king is on the same rank, and if there by chance 
+	// also is an enemy queen or rook on the same rank now not blocked
+
+	// Check for pawns behind
+	// Move like black pawn
+	if (BitboardContains(PieceBitboardPos[OurPawnKey], movingSquare))
+	{
+		// pawn found and check if king is on line
+		if (BitboardContains(RowBitboards[row], ourKingPos))
+		{
+			// Found king on line
+			// now gotta run a line through the two pawns to see if there is a rook or queen on other side attacking
+			// check if king on left side, otherwise on right side
+			DirectionIndex direction = ourKingPos < EPSquare ? DirectionIndexs::EastI : DirectionIndexs::WestI;
+			Bitboard enemySliders = PieceBitboardPos[EnemyRookKey] | PieceBitboardPos[EnemyRookKey];
+			if (BitboardsCollide(enemySliders, GetSlidingPieceBitboardFromInDir(ourKingPos, direction)))
+			{
+				Square pos = ourKingPos;
+				Offset offset = offsetsIndexed[direction];
+				int pieceCount = 0;
+				for (size_t i = 0; i < GetDistanceToBoardInDirection(ourKingPos, direction); i++)
+				{
+					pos += offset;
+					if (BitboardContains(enemySliders, pos))
+						break;
+					else if (BitboardContains(AllPiecePosBitboard, pos))
+						pieceCount++;
+				}
+				Check(pieceCount > 1, "To few pieces detected");
+				if (pieceCount > 2)
+					PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
+			}
+			else
+			{
+				PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
+			}
+		}
+		else
+			PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
 	}
 }
 

@@ -88,7 +88,7 @@ void GameOfChess::HandleEvents()
 			else if (event.key.keysym.sym == SDLK_SPACE)
 			{
 				board.UnMakeMove();
-				board.UnMakeMove();
+				//board.UnMakeMove();
 				Render();
 			}
 		}
@@ -184,6 +184,7 @@ int twoFive = 0;
 void GameOfChess::Update()
 {
 	m_Count++;
+	return;
 	if (board.GetPlayerColour() == Black)
 	{
 		if (board.GetMovesCount() != 0)
