@@ -85,7 +85,7 @@ constexpr bool IsBishopOrQueen(Piece piece)
 
 constexpr bool IsSlidingPiece(Piece piece)
 {
-	return (piece & 0b100) != 0;
+	return piece & 0b100;
 }
 
 /*

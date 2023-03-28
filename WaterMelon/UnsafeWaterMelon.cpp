@@ -31,12 +31,8 @@ void UnsafeWaterMelon::MakeMove(Move move)
 	//	((BoardState)castle << (sizeof(Move) + 2) * 8);
 
 
-	// Debbuging
-	//if (targetSquare == kingPos[0])
-	//	std::cout << "king capture";
-	//if (targetSquare == kingPos[1])
-	//	std::cout << "king capture";
-	// ~Debbuging
+	Check(targetSquare == kingPos[0], "king capture");
+	Check(targetSquare == kingPos[1], "king capture");
 
 
 	if (capturedPiece)
