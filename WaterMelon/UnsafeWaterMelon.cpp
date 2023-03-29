@@ -489,25 +489,6 @@ std::string UnsafeWaterMelon::GetFEN()
 	return str;
 }
 
-#pragma region Evaluation code
-
-int UnsafeWaterMelon::GetEvaluation()
-{
-
-	if (movesCount == 0)
-	{
-		if (KingInCheck) // King in check
-			return playerTurn == White ? -999999 : 999999;
-		return 0;
-	}
-
-
-	return 0;
-}
-
-#pragma endregion
-
-
 #pragma region Move generation code
 
 //#define PushMove(move) moves[movesCount] = (move); movesCount++;

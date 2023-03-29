@@ -2,44 +2,32 @@
 
 
 
-Eval GetFullBoardEval(const  UnsafeWaterMelon& board)
+Eval GetFullBoardEval(UnsafeWaterMelon& board)
 {
-	GameStage gameStage = GetLateGameMultiplier(board);
+	board.GenerateBitboards();
+
+	bool isEndGame = GetLateGameMultiplier(board);
 	Eval eval = Eval_Equal;
-	eval += GetMaterialEval(board, gameStage);
-	eval += GetPiecePlacementMapEval(board, gameStage);
-	eval += GetPawnStructureEval(board, gameStage);
-	eval += GetKingSafetyEval(board, gameStage);
-	eval += GetOutpostEval(board, gameStage);
-	eval += GetPieceActivationEval(board, gameStage);
+	eval += GetMaterialEval(board, isEndGame);
+	eval += GetPiecePlacementMapEval(board, isEndGame);
+	eval += GetPawnStructureEval(board, isEndGame);
+	eval += GetKingSafetyEval(board, isEndGame);
+	eval += GetOutpostEval(board, isEndGame);
+	eval += GetPieceActivationEval(board, isEndGame);
 
 	return eval;
 }
 
-GameStage GetLateGameMultiplier(const UnsafeWaterMelon& board)
+bool GetLateGameMultiplier(const UnsafeWaterMelon& board)
 {
-	return GameStage();
+	return 0;
 }
 
-Eval GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	Eval eval = 0;
 
-	if (gameStage < 0.33f) // early game
-	{
-		eval += board.PieceLists[WPawn].PieceNum * PawnEarlyGameValue;
-		eval += board.PieceLists[WKnight].PieceNum * KnightEarlyGameValue;
-		eval += board.PieceLists[WBishop].PieceNum * BishopEarlyGameValue;
-		eval += board.PieceLists[WRook].PieceNum * RookEarlyGameValue;
-		eval += board.PieceLists[WQueen].PieceNum * QueenEarlyGameValue;
-
-		eval -= board.PieceLists[BPawn].PieceNum * PawnEarlyGameValue;
-		eval -= board.PieceLists[BKnight].PieceNum * KnightEarlyGameValue;
-		eval -= board.PieceLists[BBishop].PieceNum * BishopEarlyGameValue;
-		eval -= board.PieceLists[BRook].PieceNum * RookEarlyGameValue;
-		eval -= board.PieceLists[BQueen].PieceNum * QueenEarlyGameValue;
-	}
-	else if (gameStage < 0.66f) // mid game
+	if (!isEndGame) // early to mid game
 	{
 		eval += board.PieceLists[WPawn].PieceNum * PawnMidGameValue;
 		eval += board.PieceLists[WKnight].PieceNum * KnightMidGameValue;
@@ -71,16 +59,16 @@ Eval GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
 	return Eval_Equal;
 }
 
-Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	Eval eval = 0;
 
 	for (size_t pieceType = 9; pieceType < 24; pieceType++) // From WKing to BQueen
 	{
-		int count = board.PieceLists[pieceType].PieceNum;
+		bool count = board.PieceLists[pieceType].PieceNum;
 		for (size_t num = 0; num < count; num++)
 		{
-			int pos = board.PieceLists->OccupiedSquares[num];
+			bool pos = board.PieceLists->OccupiedSquares[num];
 			eval += GetPiecePlacementBonus(pieceType, pos);
 		}
 	}
@@ -88,7 +76,7 @@ Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameStage)
 	return Eval_Equal;
 }
 
-Eval GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPawnStructureEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	// Evaluates things like passed pawns, how they defend each other, and how much they attack the enemy
 	// If they attack heigh valued peices like queens its good
@@ -111,8 +99,8 @@ Eval GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
 			eval -= TriplePawnPenelty;
 	}
 
-	const int whitePawnCount = board.PieceLists[WPawn].PieceNum;
-	const int blackPawnCount = board.PieceLists[BPawn].PieceNum;
+	const bool whitePawnCount = board.PieceLists[WPawn].PieceNum;
+	const bool blackPawnCount = board.PieceLists[BPawn].PieceNum;
 
 	for (size_t i = 0; i < whitePawnCount; i++)
 		if (BitboardContains(whitePawnAttacks, board.PieceLists[WPawn].OccupiedSquares[i]))
@@ -125,7 +113,7 @@ Eval GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
 	return Eval_Equal;
 }
 
-Eval GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetKingSafetyEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	// this is tricky beacous it also changes between the difrent game stages
 	// in the begining the enemy cant attack the king to much
@@ -141,12 +129,12 @@ Eval GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
 	return 0;
 }
 
-Eval GetOutpostEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetOutpostEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	return Eval_Equal;
 }
 
-Eval GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	// Bishops attacking the long files is good, bishop close together is good
 	// Also rook open files are really good
@@ -157,3 +145,12 @@ Eval GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage)
 
 	return Eval_Equal;
 }
+
+#pragma region GeNonPawnPieceActivity
+
+Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
+{
+
+}
+
+#pragma endregion

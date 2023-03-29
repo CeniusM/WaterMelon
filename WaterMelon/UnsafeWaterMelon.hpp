@@ -73,8 +73,8 @@ public:
 	// Checks for the current enemy, and only works after GenerateBitboards() or GetPossibleMoves()
 	bool IsSquareSafe(Square square);
 
-	/// WARNING: ONLY CALL THIS AFTER GetPossibleMoves() IS CALLED. Positiv is good for white and negativ is good for black.
-	int GetEvaluation();
+	// Used to generate non sliding piece attacks
+	void GenerateBitboards();
 
 	void InitFEN(const std::string FEN);
 	std::string GetFEN();
@@ -198,8 +198,6 @@ private:
 	// Sets the draw flag if the game is a draw
 	void CheckDraw();
 
-	// Used to generate non sliding piece attacks
-	void GenerateBitboards();
 
 	/// <summary>
 	/// Generate the bitboards for the pinned pieces to the king.
