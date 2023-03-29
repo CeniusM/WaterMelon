@@ -26,3 +26,6 @@ Eval GetOutpostEval(const UnsafeWaterMelon& board, bool isEndGame);
 
 // The more the peices can see the better, this also looks at what can attack each other
 Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame);
+
+// Gets the piece activity of all the none pawn material
+Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame);

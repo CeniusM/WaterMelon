@@ -6,6 +6,9 @@ Eval GetFullBoardEval(UnsafeWaterMelon& board)
 {
 	board.GenerateBitboards();
 
+	// Check if it is a draw
+	
+
 	bool isEndGame = GetLateGameMultiplier(board);
 	Eval eval = Eval_Equal;
 	eval += GetMaterialEval(board, isEndGame);
@@ -150,7 +153,42 @@ Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
 
 Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 {
+	// For testing
+	int ActivationBonus[] = { 5, 6 };
 
+	Eval eval = 0;
+
+	// King, king works difrently tho, we would like around 1-4 mg, and 5+ in eg, so just counting wont work
+	int wKing = board.kingPos[0];
+	int bKing = board.kingPos[1];
+	Bitboard wPieces = board.AllWhitePosBitboard;
+	Bitboard bPieces = board.AllBlackPosBitboard;
+
+	int wKingCount = 0;
+	for (size_t i = 0; i < 8; i++)
+		if (!BitboardContains(wPieces, wKing + offsetsIndexed[i]))
+			wKingCount++;
+
+	int bKingCount = 0;
+	for (size_t i = 0; i < 8; i++)
+		if (!BitboardContains(bPieces, bKing + offsetsIndexed[i]))
+			bKingCount--;
+
+
+	// Knight
+
+
+	// Bishop
+
+	// Rook
+
+	// Queen
+
+
+
+	if (isEndGame)
+		return count * ActivationBonus[1];
+	return count * ActivationBonus[0];
 }
 
 #pragma endregion

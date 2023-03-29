@@ -9,12 +9,6 @@ constexpr Eval Eval_NegInfinit = -999999;
 
 #pragma region Material
 
-constexpr Eval PawnEarlyGameValue = 100;
-constexpr Eval KnightEarlyGameValue = 400;
-constexpr Eval BishopEarlyGameValue = 440;
-constexpr Eval RookEarlyGameValue = 450;
-constexpr Eval QueenEarlyGameValue = 950;
-
 constexpr Eval PawnMidGameValue = 100;
 constexpr Eval KnightMidGameValue = 305;
 constexpr Eval BishopMidGameValue = 333;
@@ -51,6 +45,13 @@ constexpr Eval PawnLinkBonus = 20;
 #pragma endregion
 
 #pragma region PieceActivation
+
+// [GameState][MoveCount] Gives the eval for how many moves possbile by king
+//Eval KingMovement[2][8] =
+//{
+//	{0,},
+//	{0,}
+//};
 
 #pragma endregion
 
