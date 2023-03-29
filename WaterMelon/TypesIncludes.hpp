@@ -5,7 +5,7 @@
 #include "Board.hpp"
 #include "BoardState.hpp"
 #include "CastleRight.hpp"
-#include "Evaluation.hpp"
+#include "Eval.hpp"
 #include "Direction.hpp"
 #include "EnPassantPos.hpp"
 #include "GameStage.hpp"

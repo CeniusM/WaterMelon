@@ -108,7 +108,7 @@
     <ClInclude Include="Timer.hpp">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Evaluation.hpp">
+    <ClInclude Include="Eval.hpp">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
     <ClInclude Include="ZobristKey.hpp">

@@ -2,10 +2,10 @@
 
 
 
-EvaluationF GetFullBoardEval(const  UnsafeWaterMelon& board)
+Eval GetFullBoardEval(const  UnsafeWaterMelon& board)
 {
 	GameStage gameStage = GetLateGameMultiplier(board);
-	EvaluationF eval = Eval_Equal;
+	Eval eval = Eval_Equal;
 	eval += GetMaterialEval(board, gameStage);
 	eval += GetPiecePlacementMapEval(board, gameStage);
 	eval += GetPawnStructureEval(board, gameStage);
@@ -21,9 +21,9 @@ GameStage GetLateGameMultiplier(const UnsafeWaterMelon& board)
 	return GameStage();
 }
 
-EvaluationF GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
 {
-	EvaluationF eval = 0;
+	Eval eval = 0;
 
 	if (gameStage < 0.33f) // early game
 	{
@@ -71,9 +71,9 @@ EvaluationF GetMaterialEval(const UnsafeWaterMelon& board, float gameStage)
 	return Eval_Equal;
 }
 
-EvaluationF GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameStage)
 {
-	EvaluationF eval = 0;
+	Eval eval = 0;
 
 	for (size_t pieceType = 9; pieceType < 24; pieceType++) // From WKing to BQueen
 	{
@@ -88,12 +88,12 @@ EvaluationF GetPiecePlacementMapEval(const UnsafeWaterMelon& board, float gameSt
 	return Eval_Equal;
 }
 
-EvaluationF GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
 {
 	// Evaluates things like passed pawns, how they defend each other, and how much they attack the enemy
 	// If they attack heigh valued peices like queens its good
 
-	EvaluationF eval = 0;
+	Eval eval = 0;
 
 	const Bitboard whitePawnAttacks = board.pieceAttackBitboards[WPawn];
 	const Bitboard blackPawnAttacks = board.pieceAttackBitboards[BPawn];
@@ -125,7 +125,7 @@ EvaluationF GetPawnStructureEval(const UnsafeWaterMelon& board, float gameStage)
 	return Eval_Equal;
 }
 
-EvaluationF GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
 {
 	// this is tricky beacous it also changes between the difrent game stages
 	// in the begining the enemy cant attack the king to much
@@ -133,20 +133,20 @@ EvaluationF GetKingSafetyEval(const UnsafeWaterMelon& board, float gameStage)
 	// late game the king needs to come out and help, 
 	// it does not help the king just stands with 3 pawns in the cornor not promoting
 
-	EvaluationF kingSafetyEval = 0; // important early game, but more so mid
-	EvaluationF kingActivationEval = 0; // more and more imporatan the later the game
+	Eval kingSafetyEval = 0; // important early game, but more so mid
+	Eval kingActivationEval = 0; // more and more imporatan the later the game
 
 
 
 	return 0;
 }
 
-EvaluationF GetOutpostEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetOutpostEval(const UnsafeWaterMelon& board, float gameStage)
 {
 	return Eval_Equal;
 }
 
-EvaluationF GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage)
+Eval GetPieceActivationEval(const UnsafeWaterMelon& board, float gameStage)
 {
 	// Bishops attacking the long files is good, bishop close together is good
 	// Also rook open files are really good

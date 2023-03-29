@@ -160,7 +160,7 @@
     <ClInclude Include="Defines.hpp" />
     <ClInclude Include="Direction.hpp" />
     <ClInclude Include="EnPassantPos.hpp" />
-    <ClInclude Include="Evaluation.hpp" />
+    <ClInclude Include="Eval.hpp" />
     <ClInclude Include="Evaluator.hpp" />
     <ClInclude Include="FENString.hpp" />
     <ClInclude Include="FENUtility.hpp" />
