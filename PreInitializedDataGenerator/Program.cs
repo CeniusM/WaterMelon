@@ -384,26 +384,57 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 
 
 
-// Create row and collum arrays
-ulong[] rows = new ulong[8];
+//// Create row and collum arrays
+//ulong[] rows = new ulong[8];
+//ulong[] collums = new ulong[8];
+//for (int i = 0; i < 8; i++)
+//{
+//    for (int j = 0; j < 8; j++)
+//    {
+//        rows[i] = SetBit(rows[i], j, i);
+//        collums[i] = SetBit(collums[i], i, j);
+//    }
+//}
+
+////PrintBitboardColored(collums[0]);
+////PrintBitboardColored(collums[1]);
+////PrintBitboardColored(collums[2]);
+////PrintBitboardColored(collums[3]);
+////PrintBitboardColored(collums[4]);
+////PrintBitboardColored(collums[5]);
+////PrintBitboardColored(collums[6]);
+////PrintBitboardColored(collums[7]);
+
+//PrintArray("Bitboard", "RowBitboards", rows);
+//PrintArray("Bitboard", "CollumBitboards", collums);
+
+
+// Create isolation pawn checker
 ulong[] collums = new ulong[8];
 for (int i = 0; i < 8; i++)
-{
     for (int j = 0; j < 8; j++)
-    {
-        rows[i] = SetBit(rows[i], j, i);
         collums[i] = SetBit(collums[i], i, j);
-    }
+
+ulong[] isolationCheck = new ulong[8];
+for (int i = 0; i < 8; i++)
+{
+    if (i - 1 >= 0)
+        isolationCheck[i] = isolationCheck[i] | collums[i - 1];
+    if (i + 1 <= 7)
+        isolationCheck[i] = isolationCheck[i] | collums[i + 1];
 }
 
-//PrintBitboardColored(collums[0]);
-//PrintBitboardColored(collums[1]);
-//PrintBitboardColored(collums[2]);
-//PrintBitboardColored(collums[3]);
-//PrintBitboardColored(collums[4]);
-//PrintBitboardColored(collums[5]);
-//PrintBitboardColored(collums[6]);
-//PrintBitboardColored(collums[7]);
+PrintBitboardColored(isolationCheck[0]);
+PrintBitboardColored(isolationCheck[1]);
+PrintBitboardColored(isolationCheck[2]);
+PrintBitboardColored(isolationCheck[3]);
+PrintBitboardColored(isolationCheck[4]);
+PrintBitboardColored(isolationCheck[5]);
+PrintBitboardColored(isolationCheck[6]);
+PrintBitboardColored(isolationCheck[7]);
 
-PrintArray("Bitboard", "RowBitboards", rows);
-PrintArray("Bitboard", "CollumBitboards", collums);
+PrintArray("Bitboard", "IsolationCollums", isolationCheck);
+
+
+// Create passed pawn checker
+// not implemented
