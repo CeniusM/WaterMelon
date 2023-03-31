@@ -146,12 +146,18 @@
   <ItemGroup>
     <ClCompile Include="BoardRenderer.cpp" />
     <ClCompile Include="GameOfChess.cpp" />
+    <ClCompile Include="IScene.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="SDLHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoardRenderer.hpp" />
     <ClInclude Include="GameOfChess.hpp" />
+    <ClInclude Include="IScene.hpp" />
+    <ClInclude Include="Renderer.hpp" />
+    <ClInclude Include="WindowManager.hpp" />
     <ClInclude Include="SDLHelper.hpp" />
   </ItemGroup>
   <ItemGroup>

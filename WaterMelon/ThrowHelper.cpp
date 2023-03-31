@@ -15,3 +15,7 @@ void ThrowOutOfRangeException(std::string message)
 	throw std::out_of_range("__OutOfRangeException__ " + message);
 }
 
+void ThrowException(std::string message)
+{
+	throw std::out_of_range("__Exception__ " + message);
+}

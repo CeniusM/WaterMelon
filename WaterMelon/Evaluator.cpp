@@ -149,9 +149,9 @@ Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
 	return Eval_Equal;
 }
 
-#pragma region GeNonPawnPieceActivity
+#pragma region GetNonPawnPieceActivity
 
-Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	// For testing
 	int ActivationBonus[] = { 5, 6 };
@@ -186,9 +186,10 @@ Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 
 
 
-	if (isEndGame)
-		return count * ActivationBonus[1];
-	return count * ActivationBonus[0];
+	//if (isEndGame)
+		//return count * ActivationBonus[1];
+	//return count * ActivationBonus[0];
+	ThrowNotImplementedException("GetNonPawnPieceActivity");
 }
 
 #pragma endregion

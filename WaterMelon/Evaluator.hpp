@@ -28,4 +28,4 @@ Eval GetOutpostEval(const UnsafeWaterMelon& board, bool isEndGame);
 Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame);
 
 // Gets the piece activity of all the none pawn material
-Eval GeNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame);
+Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame);
