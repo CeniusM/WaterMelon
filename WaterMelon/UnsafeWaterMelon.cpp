@@ -837,6 +837,8 @@ inline void UnsafeWaterMelon::AddPormotionMoves(int from, int to, unsigned short
 
 void UnsafeWaterMelon::AddPawnMoves()
 {
+	// Use magic bitboards to generate the pawn moves
+
 	if (whiteToMove)
 	{
 		Bitboard whitePawnAttacksBitboard = pieceAttackBitboards[WPawn];
@@ -1097,7 +1099,8 @@ void UnsafeWaterMelon::TryEnpassantMove(int movingSquare, int row)
 				Square pos = ourKingPos;
 				Offset offset = offsetsIndexed[direction];
 				int pieceCount = 0;
-				for (size_t i = 0; i < GetDistanceToBoardInDirection(ourKingPos, direction); i++)
+				int distance = GetDistanceToBoardInDirection(ourKingPos, direction);
+				for (size_t i = 0; i < distance; i++)
 				{
 					pos += offset;
 					if (BitboardContains(enemySliders, pos))
@@ -1274,7 +1277,7 @@ void UnsafeWaterMelon::AddRookMoves()
 				Piece hitPiece = board[ray];
 				if (hitPiece)
 				{
-					if (IsPieceColor(hitPiece, enemyColour))
+					if (IsPieceColor(hitPiece, enemyColour)) // Use bitboard like with the queen
 						PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlagCapture);
 					break;
 				}
@@ -1305,7 +1308,7 @@ void UnsafeWaterMelon::AddBishopMoves()
 				Piece hitPiece = board[ray];
 				if (hitPiece)
 				{
-					if (IsPieceColor(hitPiece, enemyColour))
+					if (IsPieceColor(hitPiece, enemyColour)) // Use bitboard like with the queen
 						PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlagCapture);
 					break;
 				}
@@ -1420,6 +1423,18 @@ inline void UnsafeWaterMelon::PushMoveIfBlocksCheck(Square start, Square target,
 
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
+	/*
+	
+		*Other then the king moves
+		When we add the moves we just use the normal PushMove, then at the end we
+		do the quad if statement check to see what we acually have to check for (checks and pins)
+		and if there is none we dont even have to do anything with it.
+		But if we have to check for pins or checks or both, we make a while loop to remove all
+		the invalid moves by moving the last move into the removed move space until we are at the end
+	
+	*/
+
+
 	InitBoard();
 	if (gameState == Draw)
 		return 0;
@@ -1575,7 +1590,6 @@ Code for later
 	}
 	else
 	{
-		AddPawnMovesPinnedAndKingNotInCheckVersion();
 		if (KingInCheck)
 		{
 		}
