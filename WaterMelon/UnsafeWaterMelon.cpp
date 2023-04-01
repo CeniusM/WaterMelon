@@ -600,9 +600,9 @@ void UnsafeWaterMelon::GenerateBitboards()
 	for (size_t i = 0; i < PieceLists[BKnight].PieceNum; i++)
 		pieceAttackBitboards[BKnight] |= GetKnightAllDirBitboard(PieceLists[BKnight].OccupiedSquares[i]);
 
-	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]) & (FullBitboardBoard ^ AllWhitePosBitboard);
+	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]);
 
-	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]) & (FullBitboardBoard ^ AllBlackPosBitboard);
+	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]);
 
 
 
@@ -801,7 +801,7 @@ void UnsafeWaterMelon::AddKingMoves()
 	{ -9,-8,-7,-1,1,7,8,9 };
 	constexpr Offset KingmovesLineoffsets[]
 	{ -1,-1,-1,0,0,1,1,1 };
-	Bitboard KingAttacksBitboard = pieceAttackBitboards[OurKingKey];
+	Bitboard KingAttacksBitboard = pieceAttackBitboards[OurKingKey] & (FullBitboardBoard ^ AllFriendlyPosBitboard);
 	// plz unwrap mister compiler
 	for (size_t i = 0; i < 8; i++)
 	{
@@ -1478,9 +1478,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 						moves[i--] = moves[--movesCount];
 						continue;
 					}
-					}
 				}
 			}
+		}
 		else
 		{
 			// Just in check
@@ -1494,7 +1494,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 				}
 			}
 		}
-		}
+	}
 	else if (pinnedPieces)
 	{
 		// Just pinned
@@ -1531,7 +1531,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 	return movesCount;
-	}
+}
 
 void UnsafeWaterMelon::InitBoard()
 {
