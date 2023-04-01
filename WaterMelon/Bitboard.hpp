@@ -15,8 +15,12 @@ constexpr Bitboard WhiteTwoMoveLine = 0xFF00ULL;
 constexpr Bitboard BlackPromotionLine = TopSide;
 constexpr Bitboard BlackTwoMoveLine = 0xFF000000000000ULL;
 
+constexpr Bitboard FullBitboardBoard = 0xffffffffffffffff;
+
 constexpr Bitboard RightSideIs0 = 0b0111111101111111011111110111111101111111011111110111111101111111ULL;
 constexpr Bitboard LeftSideIs0 = 0b1111111011111110111111101111111011111110111111101111111011111110ULL;
+constexpr Bitboard RightSideIs1 = FullBitboardBoard ^ RightSideIs0;
+constexpr Bitboard LeftSideIs1 = FullBitboardBoard ^ LeftSideIs0;
 
 // Bitboard across a row
 constexpr Bitboard RowBitboards[]
