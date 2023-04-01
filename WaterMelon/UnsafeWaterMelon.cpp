@@ -869,77 +869,17 @@ void UnsafeWaterMelon::AddPawnMoves()
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
 					if (IsPieceColor(GetColor(board[leftPos]), Black))
 					{
-						if (AND) // Is pinned
-						{
-							if (pinningPiecesAttack[pos] & (0b1ULL << leftPos)) // Blocks pin
-								if (BitboardContains(attacksOnKing, leftPos) || !KingInCheck) // blocks check
-								{
-									PushMove(pos, leftPos, MoveFlags::PromoteToQueenCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToKnightCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToRookCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToBishopCapture);
-								}
-						}
-						else
-						{
-							if (BitboardContains(attacksOnKing, leftPos))
-							{
-								PushMove(pos, leftPos, MoveFlags::PromoteToQueenCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToKnightCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToRookCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToBishopCapture);
-							}
-						}
+						AddPromotionMoves<true>(pos, leftPos);
 					}
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), Black))
 					{
-						if (AND) // Is pinned
-						{
-							if (pinningPiecesAttack[pos] & (0b1ULL << rightPos)) // Blocks pin
-								if (BitboardContains(attacksOnKing, rightPos) || !KingInCheck) // blocks check
-								{
-									PushMove(pos, rightPos, MoveFlags::PromoteToQueenCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToKnightCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToRookCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToBishopCapture);
-								}
-						}
-						else
-						{
-							if (BitboardContains(attacksOnKing, rightPos))
-							{
-								PushMove(pos, rightPos, MoveFlags::PromoteToQueenCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToKnightCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToRookCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToBishopCapture);
-							}
-						}
+						AddPromotionMoves<true>(pos, rightPos);
 					}
 
 				if (board[oneMove] == 0)
 				{
-					if (AND) // Is pinned
-					{
-						if (pinningPiecesAttack[pos] & (0b1ULL << oneMove)) // Blocks pin
-							if (BitboardContains(attacksOnKing, oneMove) || !KingInCheck) // blocks check
-							{
-								PushMove(pos, oneMove, MoveFlags::PromoteToQueen);
-								PushMove(pos, oneMove, MoveFlags::PromoteToKnight);
-								PushMove(pos, oneMove, MoveFlags::PromoteToRook);
-								PushMove(pos, oneMove, MoveFlags::PromoteToBishop);
-							}
-					}
-					else
-					{
-						if (BitboardContains(attacksOnKing, oneMove))
-						{
-							PushMove(pos, oneMove, MoveFlags::PromoteToQueen);
-							PushMove(pos, oneMove, MoveFlags::PromoteToKnight);
-							PushMove(pos, oneMove, MoveFlags::PromoteToRook);
-							PushMove(pos, oneMove, MoveFlags::PromoteToBishop);
-						}
-					}
+					AddPromotionMoves<false>(pos, oneMove);
 				}
 			}
 			else
@@ -978,77 +918,17 @@ void UnsafeWaterMelon::AddPawnMoves()
 				if (BitboardContains(blackPawnAttacksBitboard, leftPos))
 					if (IsPieceColor(GetColor(board[leftPos]), White)) // this could again just be with bitboards
 					{
-						if (AND) // Is pinned
-						{
-							if (pinningPiecesAttack[pos] & (0b1ULL << leftPos)) // Blocks pin
-								if (BitboardContains(attacksOnKing, leftPos) || !KingInCheck) // blocks check
-								{
-									PushMove(pos, leftPos, MoveFlags::PromoteToQueenCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToKnightCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToRookCapture);
-									PushMove(pos, leftPos, MoveFlags::PromoteToBishopCapture);
-								}
-						}
-						else
-						{
-							if (BitboardContains(attacksOnKing, leftPos))
-							{
-								PushMove(pos, leftPos, MoveFlags::PromoteToQueenCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToKnightCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToRookCapture);
-								PushMove(pos, leftPos, MoveFlags::PromoteToBishopCapture);
-							}
-						}
+						AddPromotionMoves<true>(pos, leftPos);
 					}
 				if (BitboardContains(blackPawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), White))
 					{
-						if (AND) // Is pinned
-						{
-							if (pinningPiecesAttack[pos] & (0b1ULL << rightPos)) // Blocks pin
-								if (BitboardContains(attacksOnKing, rightPos) || !KingInCheck) // blocks check
-								{
-									PushMove(pos, rightPos, MoveFlags::PromoteToQueenCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToKnightCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToRookCapture);
-									PushMove(pos, rightPos, MoveFlags::PromoteToBishopCapture);
-								}
-						}
-						else
-						{
-							if (BitboardContains(attacksOnKing, rightPos))
-							{
-								PushMove(pos, rightPos, MoveFlags::PromoteToQueenCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToKnightCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToRookCapture);
-								PushMove(pos, rightPos, MoveFlags::PromoteToBishopCapture);
-							}
-						}
+						AddPromotionMoves<true>(pos, rightPos);
 					}
 
 				if (board[oneMove] == 0)
 				{
-					if (AND) // Is pinned
-					{
-						if (pinningPiecesAttack[pos] & (0b1ULL << oneMove)) // Blocks pin
-							if (BitboardContains(attacksOnKing, oneMove) || !KingInCheck) // blocks check
-							{
-								PushMove(pos, oneMove, MoveFlags::PromoteToQueen);
-								PushMove(pos, oneMove, MoveFlags::PromoteToKnight);
-								PushMove(pos, oneMove, MoveFlags::PromoteToRook);
-								PushMove(pos, oneMove, MoveFlags::PromoteToBishop);
-							}
-					}
-					else
-					{
-						if (BitboardContains(attacksOnKing, oneMove))
-						{
-							PushMove(pos, oneMove, MoveFlags::PromoteToQueen);
-							PushMove(pos, oneMove, MoveFlags::PromoteToKnight);
-							PushMove(pos, oneMove, MoveFlags::PromoteToRook);
-							PushMove(pos, oneMove, MoveFlags::PromoteToBishop);
-						}
-					}
+					AddPromotionMoves<false>(pos, oneMove);
 				}
 			}
 			else
@@ -1634,9 +1514,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 						moves[i--] = moves[--movesCount];
 						continue;
 					}
+					}
 				}
 			}
-		}
 		else
 		{
 			// Just in check
@@ -1650,7 +1530,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 				}
 			}
 		}
-	}
+		}
 	else if (pinnedPieces)
 	{
 		// Just pinned
@@ -1687,7 +1567,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 	return movesCount;
-}
+	}
 
 void UnsafeWaterMelon::InitBoard()
 {
