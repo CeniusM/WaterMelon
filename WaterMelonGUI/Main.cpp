@@ -143,7 +143,9 @@ int main()
 	//std::cout << sizeof(BoardState);
 	//return 0;
 
-	PerftTest();
+	//PerftTest();
+	//PerftRunner perft{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	//perft.BulkSearchLog(4);
 
 	//return 0;
 	/*int start = 0;

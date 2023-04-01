@@ -90,9 +90,6 @@
     <ClInclude Include="AllPiecesBitboardMoves.hpp">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Perft.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FENString.hpp">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
@@ -141,6 +138,12 @@
     <ClInclude Include="Checker.hpp">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="MoveMisc.hpp">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Perft.hpp">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="UnsafeWaterMelon.cpp">
@@ -181,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="Checker.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveMisc.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Perft.cpp">
+      <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

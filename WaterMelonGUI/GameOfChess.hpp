@@ -7,6 +7,7 @@
 #include "SDLHelper.hpp"
 #include "SafeWaterMelon.hpp"
 #include "UnsafeWaterMelonComparerer.hpp"
+#include "Perft.hpp"
 
 class GameOfChess
 {
@@ -37,7 +38,7 @@ private:
 	void RenderAllPieces(int PieceToLeaveOut = -1);
 	void RenderPiece(SDL_Rect* rect, SDL_Texture* sprite);
 
-	//SafeWaterMelon board = SafeWaterMelon();
+	SafeWaterMelon board = SafeWaterMelon();
 	//SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("rnbqkbnr/ppp2p2/8/8/p4p1p/3pP3/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("k7/4r2q/8/3PPB2/1r1PK3/8/1P6/b7 w - - 0 1");
@@ -45,14 +46,15 @@ private:
 	//SafeWaterMelon board = SafeWaterMelon("6q1/kp1R4/1p2n2r/2B1b3/8/4N2P/6PK/1Q6 w - - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("n2bqkn1/2q5/q3q1q1/8/5q2/3q4/1q5K/8 w - - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("8/8/8/8/2KP1rk1/8/8/8 w - - 0 1");
-	SafeWaterMelon board = SafeWaterMelon("8/8/3N4/8/2K2rk1/4P3/8/8 w - - 0 1");
+	//SafeWaterMelon board = SafeWaterMelon("8/8/3N4/8/2K2rk1/4P3/8/8 w - - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
-	
+
+
 	bool m_isRunning;
 	long m_Count;
 	SDL_Window* window;
@@ -68,4 +70,7 @@ private:
 	int m_PieceTypeBeingDraged;
 	int m_piecePickedIndex;
 	bool MouseDraging = false;
+
+	PerftRunner debug_Perft{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	int debug_Depth = 4;
 };

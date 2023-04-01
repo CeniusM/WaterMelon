@@ -74,14 +74,3 @@ constexpr Move CreateMove(Square start, Square target, MoveFlag flag)
 	return start | (target << 6) | flag;
 }
 #endif
-
-//constexpr std::string GetMoveName(Move move)
-//{
-//	int start = GetMoveStart(move);
-//	int target = GetMoveTarget(move);
-//	std::string str;
-//	str += start;
-//	str += " to ";
-//	str += target;
-//	return str;
-//}

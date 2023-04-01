@@ -145,6 +145,8 @@
     <ClCompile Include="BoardStateStack.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Memcompare.cpp" />
+    <ClCompile Include="MoveMisc.cpp" />
+    <ClCompile Include="Perft.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="ThrowHelper.cpp" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Memcompare.hpp" />
     <ClInclude Include="Move.hpp" />
     <ClInclude Include="MoveFlag.hpp" />
+    <ClInclude Include="MoveMisc.hpp" />
     <ClInclude Include="Offset.hpp" />
     <ClInclude Include="Perft.hpp" />
     <ClInclude Include="Piece.hpp" />
