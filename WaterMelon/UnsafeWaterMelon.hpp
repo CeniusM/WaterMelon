@@ -222,9 +222,6 @@ private:
 	void AddCastleMoves();
 
 	inline void PushMove(Square start, Square target, MoveFlag flag);
-	inline void PushMoveIfPinnsAllow(Square start, Square target, MoveFlag flag);
-	inline void PushMoveIfPinnsAllowAndBlocksCheck(Square start, Square target, MoveFlag flag);
-	inline void PushMoveIfBlocksCheck(Square start, Square target, MoveFlag flag);
 
 	constexpr bool IsPiecePinned(Square pos)
 	{
