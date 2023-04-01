@@ -210,7 +210,7 @@ private:
 	void AddKingMoves();
 
 	template<bool CAPTURE>
-	inline void AddPormotionMoves(int from, int to);
+	inline void AddPromotionMoves(int from, int to);
 	void TryEnpassantMove(int movingSquare, int row);
 	void AddPawnMoves();
 	void AddPawnMovesBitboardTest();

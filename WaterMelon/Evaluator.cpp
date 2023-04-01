@@ -190,6 +190,7 @@ Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 		//return count * ActivationBonus[1];
 	//return count * ActivationBonus[0];
 	ThrowNotImplementedException("GetNonPawnPieceActivity");
+	return 0;
 }
 
 #pragma endregion

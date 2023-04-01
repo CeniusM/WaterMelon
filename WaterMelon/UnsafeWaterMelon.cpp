@@ -829,7 +829,7 @@ void UnsafeWaterMelon::AddKingMoves()
 }
 
 template <bool CAPTURE>
-inline void UnsafeWaterMelon::AddPormotionMoves(int from, int to)
+inline void UnsafeWaterMelon::AddPromotionMoves(int from, int to)
 {
 	if (CAPTURE)
 	{
@@ -946,16 +946,16 @@ void UnsafeWaterMelon::AddPawnMoves()
 			{
 				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
 					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, leftPos, NoFlagCapture);
+						PushMove(pos, leftPos, NoFlagCapture);
 				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, rightPos, NoFlagCapture);
+						PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
 				{
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, oneMove, NoFlag);
+					PushMove(pos, oneMove, NoFlag);
 					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, twoMove, PawnDoubleForward);
+						PushMove(pos, twoMove, PawnDoubleForward);
 				}
 			}
 		}
@@ -1055,16 +1055,16 @@ void UnsafeWaterMelon::AddPawnMoves()
 			{
 				if (BitboardContains(blackPawnAttacksBitboard, leftPos))
 					if (IsPieceColor(GetColor(board[leftPos]), White))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, leftPos, NoFlagCapture);
+						PushMove(pos, leftPos, NoFlagCapture);
 				if (BitboardContains(blackPawnAttacksBitboard, rightPos))
 					if (IsPieceColor(GetColor(board[rightPos]), White))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, rightPos, NoFlagCapture);
+						PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
 				{
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, oneMove, NoFlag);
+					PushMove(pos, oneMove, NoFlag);
 					if (board[twoMove] == 0 && BitboardContains(BlackTwoMoveLine, pos))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, twoMove, PawnDoubleForward);
+						PushMove(pos, twoMove, PawnDoubleForward);
 				}
 			}
 		}
@@ -1084,21 +1084,6 @@ void UnsafeWaterMelon::AddPawnMoves()
 		}
 	}
 }
-
-//inline Square GetNextSquare(Bitboard& board)
-//{
-//	Check(board != 0, "Cant use a zero board in GetNextSquare");
-//
-//	Square index = 0;
-//	while (true)
-//	{
-//		if (board & 1)
-//			break;
-//		index++;
-//	}
-//	board ^= (0b1UL << index);
-//	return index;
-//}
 
 void UnsafeWaterMelon::AddPawnMovesFastTest()
 {
@@ -1203,24 +1188,15 @@ void UnsafeWaterMelon::AddPawnMovesBitboardTest()
 			{
 				if (rightAttackPawns & 1)
 				{
-					PushMove(index - 9, index, MoveFlags::PromoteToQueenCapture);
-					PushMove(index - 9, index, MoveFlags::PromoteToRookCapture);
-					PushMove(index - 9, index, MoveFlags::PromoteToBishopCapture);
-					PushMove(index - 9, index, MoveFlags::PromoteToKnightCapture);
+					AddPromotionMoves<true>(index - 9, index);
 				}
 				if (leftAttackPawns & 1)
 				{
-					PushMove(index - 7, index, MoveFlags::PromoteToQueenCapture);
-					PushMove(index - 7, index, MoveFlags::PromoteToRookCapture);
-					PushMove(index - 7, index, MoveFlags::PromoteToBishopCapture);
-					PushMove(index - 7, index, MoveFlags::PromoteToKnightCapture);
+					AddPromotionMoves<true>(index - 7, index);
 				}
 				if (singlePawnMove & 1)
 				{
-					PushMove(index - 8, index, MoveFlags::PromoteToQueen);
-					PushMove(index - 8, index, MoveFlags::PromoteToRook);
-					PushMove(index - 8, index, MoveFlags::PromoteToBishop);
-					PushMove(index - 8, index, MoveFlags::PromoteToKnight);
+					AddPromotionMoves<false>(index - 8, index);
 				}
 			}
 			index++;
@@ -1284,15 +1260,15 @@ void UnsafeWaterMelon::TryEnpassantMove(int movingSquare, int row)
 				}
 				Check(pieceCount > 1, "To few pieces detected");
 				if (pieceCount > 2)
-					PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
+					PushMove(movingSquare, EPSquare, EnPassantCapture);
 			}
 			else
 			{
-				PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
+				PushMove(movingSquare, EPSquare, EnPassantCapture);
 			}
 		}
 		else
-			PushMoveIfPinnsAllowAndBlocksCheck(movingSquare, EPSquare, EnPassantCapture);
+			PushMove(movingSquare, EPSquare, EnPassantCapture);
 	}
 }
 
@@ -1312,9 +1288,9 @@ void UnsafeWaterMelon::AddKnightMoves()
 			if (BitboardContains(attacksBitboard & FreeOfFriendlies, newPos))
 			{
 				if (BitboardContains(AllEnemyPosBitboard, newPos))
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, newPos, NoFlag);
+					PushMove(pos, newPos, NoFlag);
 				else
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, newPos, NoFlagCapture);
+					PushMove(pos, newPos, NoFlagCapture);
 			}
 		}
 	}
@@ -1452,12 +1428,12 @@ void UnsafeWaterMelon::AddRookMoves()
 				if (hitPiece)
 				{
 					if (IsPieceColor(hitPiece, enemyColour)) // Use bitboard like with the queen
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlagCapture);
+						PushMove(pos, ray, NoFlagCapture);
 					break;
 				}
 				else
 				{
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlag);
+					PushMove(pos, ray, NoFlag);
 				}
 			}
 		}
@@ -1483,12 +1459,12 @@ void UnsafeWaterMelon::AddBishopMoves()
 				if (hitPiece)
 				{
 					if (IsPieceColor(hitPiece, enemyColour)) // Use bitboard like with the queen
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlagCapture);
+						PushMove(pos, ray, NoFlagCapture);
 					break;
 				}
 				else
 				{
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlag);
+					PushMove(pos, ray, NoFlag);
 				}
 			}
 		}
@@ -1514,12 +1490,12 @@ void UnsafeWaterMelon::AddQueenMoves()
 				if (BitboardContains(AllPiecePosBitboard, ray))
 				{
 					if (BitboardContains(AllEnemyPosBitboard, ray))
-						PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlagCapture);
+						PushMove(pos, ray, NoFlagCapture);
 					break;
 				}
 				else
 				{
-					PushMoveIfPinnsAllowAndBlocksCheck(pos, ray, NoFlag);
+					PushMove(pos, ray, NoFlag);
 				}
 			}
 		}
@@ -1637,7 +1613,61 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 
 	// Remove invalid moves
-
+	if (KingInCheck)
+	{
+		if (pinnedPieces)
+		{
+			// Pinned and in check
+			for (size_t i = 0; i < movesCount; i++)
+			{
+				int start = GetMoveStart(moves[i]);
+				int target = GetMoveTarget(moves[i]);
+				if (!BitboardContains(attacksOnKing, target))
+				{
+					moves[i--] = moves[--movesCount];
+					continue;
+				}
+				if (BitboardContains(pinnedPieces, start))
+				{
+					if (!BitboardContains(pinningPiecesAttack[start], target))
+					{
+						moves[i--] = moves[--movesCount];
+						continue;
+					}
+				}
+			}
+		}
+		else
+		{
+			// Just in check
+			for (size_t i = 0; i < movesCount; i++)
+			{
+				int target = GetMoveTarget(moves[i]);
+				if (!BitboardContains(attacksOnKing, target))
+				{
+					moves[i--] = moves[--movesCount];
+					continue;
+				}
+			}
+		}
+	}
+	else if (pinnedPieces)
+	{
+		// Just pinned
+		for (size_t i = 0; i < movesCount; i++)
+		{
+			int start = GetMoveStart(moves[i]);
+			int target = GetMoveTarget(moves[i]);
+			if (BitboardContains(pinnedPieces, start))
+			{
+				if (!BitboardContains(pinningPiecesAttack[start], target))
+				{
+					moves[i--] = moves[--movesCount];
+					continue;
+				}
+			}
+		}
+	}
 
 	if (onlyCaptures)
 		RemoveNoneCaptures();
