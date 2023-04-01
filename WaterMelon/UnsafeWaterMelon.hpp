@@ -124,12 +124,15 @@ public:
 	// Bitboard of all the posses, use piece value as index
 	Bitboard PieceBitboardPos[24]{ 0 };
 
+
 	Bitboard AllWhitePosBitboard; // HAVE TO STAY RIGHT ABOVE AllBlackPosBitboard
 	Bitboard AllBlackPosBitboard;
 
 	Bitboard AllFriendlyPosBitboard;
 	Bitboard AllEnemyPosBitboard;
+
 	Bitboard AllPiecePosBitboard;
+	Bitboard AllEmptyPosBitboard;
 
 #pragma endregion
 
@@ -206,9 +209,12 @@ private:
 
 	void AddKingMoves();
 
-	inline void AddPormotionMoves(int from, int to, unsigned short captureBit);
+	template<bool CAPTURE>
+	inline void AddPormotionMoves(int from, int to);
 	void TryEnpassantMove(int movingSquare, int row);
 	void AddPawnMoves();
+	void AddPawnMovesBitboardTest();
+	void AddPawnMovesFastTest();
 	void AddKnightMoves();
 	void AddRookMoves();
 	void AddBishopMoves();

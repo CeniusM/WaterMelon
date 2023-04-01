@@ -190,6 +190,7 @@ void UnsafeWaterMelon::MakeMove(Move move)
 
 	// Save state
 	boardStateStack.Push(stateSave); // Use a Cache instead of going out to heap memory again and again
+	AllEmptyPosBitboard = (FullBitboardBoard ^ AllPiecePosBitboard);
 }
 
 // Just have to undo what MakeMove did
@@ -365,6 +366,7 @@ void UnsafeWaterMelon::UnMakeMove()
 	// Very unsafe... AllWhitePosBitboard have to be right above AllBlackPosBitboard
 	(&AllWhitePosBitboard)[OurColorIndex] ^= moveBitboard;
 
+	AllEmptyPosBitboard = (FullBitboardBoard ^ AllPiecePosBitboard);
 	gameState = Running;
 }
 
@@ -581,19 +583,23 @@ void UnsafeWaterMelon::GenerateBitboards()
 	pieceAttackBitboards[BQueen] = 0;
 	pieceAttackBitboards[BKing] = 0;
 
-	for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
-		pieceAttackBitboards[WPawn] |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+	//for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
+		//pieceAttackBitboards[WPawn] |= GetWhitePawnAttacks(PieceLists[WPawn].OccupiedSquares[i]);
+
+	//for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
+		//pieceAttackBitboards[BPawn] |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
+
+
+	pieceAttackBitboards[WPawn] = ((PieceBitboardPos[WPawn] & RightSideIs0) << 9) | ((PieceBitboardPos[WPawn] & LeftSideIs0) << 7);
+	pieceAttackBitboards[BPawn] = ((PieceBitboardPos[BPawn] & RightSideIs0) >> 7) | ((PieceBitboardPos[BPawn] & LeftSideIs0) >> 9);
 
 	for (size_t i = 0; i < PieceLists[WKnight].PieceNum; i++)
 		pieceAttackBitboards[WKnight] |= GetKnightAllDirBitboard(PieceLists[WKnight].OccupiedSquares[i]);
 
-	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]);
-
-	for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
-		pieceAttackBitboards[BPawn] |= GetBlackPawnAttacks(PieceLists[BPawn].OccupiedSquares[i]);
-
 	for (size_t i = 0; i < PieceLists[BKnight].PieceNum; i++)
 		pieceAttackBitboards[BKnight] |= GetKnightAllDirBitboard(PieceLists[BKnight].OccupiedSquares[i]);
+
+	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]);
 
 	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]);
 
@@ -784,7 +790,7 @@ void UnsafeWaterMelon::GeneratePinsAndAttacksOnKing() // This method cast a ray 
 			SquaresToRenderByGUIForDebuing.push_front(ColoredSquare(i, 255, 0, 0));
 		}
 
-}
+	}
 #endif
 }
 
@@ -827,12 +833,23 @@ void UnsafeWaterMelon::AddKingMoves()
 	}
 }
 
-inline void UnsafeWaterMelon::AddPormotionMoves(int from, int to, unsigned short captureBit)
+template <bool CAPTURE>
+inline void UnsafeWaterMelon::AddPormotionMoves(int from, int to)
 {
-	PushMove(from, to, MoveFlags::PromoteToQueenCapture | captureBit);
-	PushMove(from, to, MoveFlags::PromoteToKnightCapture | captureBit);
-	PushMove(from, to, MoveFlags::PromoteToRookCapture | captureBit);
-	PushMove(from, to, MoveFlags::PromoteToBishopCapture | captureBit);
+	if (CAPTURE)
+	{
+		PushMove(from, to, MoveFlags::PromoteToQueenCapture);
+		PushMove(from, to, MoveFlags::PromoteToKnightCapture);
+		PushMove(from, to, MoveFlags::PromoteToRookCapture);
+		PushMove(from, to, MoveFlags::PromoteToBishopCapture);
+	}
+	else
+	{
+		PushMove(from, to, MoveFlags::PromoteToQueen);
+		PushMove(from, to, MoveFlags::PromoteToKnight);
+		PushMove(from, to, MoveFlags::PromoteToRook);
+		PushMove(from, to, MoveFlags::PromoteToBishop);
+	}
 }
 
 void UnsafeWaterMelon::AddPawnMoves()
@@ -1072,6 +1089,168 @@ void UnsafeWaterMelon::AddPawnMoves()
 		}
 	}
 }
+
+//inline Square GetNextSquare(Bitboard& board)
+//{
+//	Check(board != 0, "Cant use a zero board in GetNextSquare");
+//
+//	Square index = 0;
+//	while (true)
+//	{
+//		if (board & 1)
+//			break;
+//		index++;
+//	}
+//	board ^= (0b1UL << index);
+//	return index;
+//}
+
+void UnsafeWaterMelon::AddPawnMovesFastTest()
+{
+	// Use magic bitboards to generate the pawn moves
+	if (whiteToMove)
+	{
+		for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
+		{
+			int pos = PieceLists[BPawn].OccupiedSquares[i];
+			bool isPromotion = BitboardContains(WhitePromotionLine, pos + 8);
+
+			int doubleMoveLine = BitboardFromSquare(pos) & WhiteTwoMoveLine;
+			if (((doubleMoveLine << 8) | (doubleMoveLine << 16)) & (AllPiecePosBitboard ^ FullBitboardBoard))
+				PushMove(pos, pos + 16, MoveFlags::PawnDoubleForward);
+
+			if ((BitboardFromSquare(pos) << 8) & (AllPiecePosBitboard ^ FullBitboardBoard))
+				PushMove(pos, pos + 16, MoveFlags::NoFlag);
+
+			Bitboard PawnAttacks = (((PieceBitboardPos[WPawn] & RightSideIs0) << 9) & AllEnemyPosBitboard) | (((PieceBitboardPos[WPawn] & LeftSideIs0) << 7) & AllEnemyPosBitboard);
+
+		}
+	}
+	else
+	{
+		//PawnAttacks = (((PieceBitboardPos[BPawn] & RightSideIs0) >> 7) & AllEnemyPosBitboard) | (((PieceBitboardPos[BPawn] & LeftSideIs0) >> 9) & AllEnemyPosBitboard);
+
+	}
+
+	if (EPSquare != EmptyEnPassantPos)
+	{
+		if (whiteToMove)
+		{
+			TryEnpassantMove(EPSquare - 9, 4);
+			TryEnpassantMove(EPSquare - 7, 4);
+		}
+		else
+		{
+			TryEnpassantMove(EPSquare + 9, 3);
+			TryEnpassantMove(EPSquare + 7, 3);
+		}
+	}
+}
+
+void UnsafeWaterMelon::AddPawnMovesBitboardTest()
+{
+	// Use magic bitboards to generate the pawn moves
+	if (whiteToMove)
+	{
+		Bitboard pawns = PieceBitboardPos[WPawn];
+		//Bitboard piece2MoveGap = 
+		Bitboard rightAttackPawns = ((pawns & RightSideIs0) << 9) & AllEnemyPosBitboard;
+		Bitboard leftAttackPawns = ((pawns & LeftSideIs0) << 7) & AllEnemyPosBitboard;
+		Bitboard singlePawnMove = (pawns << 8) & (AllPiecePosBitboard ^ FullBitboardBoard);
+		Bitboard doublePawnMove = ((pawns & WhiteTwoMoveLine) << 16) & ((AllPiecePosBitboard | (AllPiecePosBitboard >> 8)) ^ FullBitboardBoard);
+
+		Bitboard rightAttackPawnsPromotion = rightAttackPawns & WhitePromotionLine;
+		Bitboard leftAttackPawnsPromotion = leftAttackPawns & WhitePromotionLine;
+		Bitboard singlePawnMovePromotion = singlePawnMove & WhitePromotionLine;
+
+		rightAttackPawns &= FullBitboardBoard ^ WhitePromotionLine;
+		leftAttackPawns &= FullBitboardBoard ^ WhitePromotionLine;
+		singlePawnMove &= FullBitboardBoard ^ WhitePromotionLine;
+
+		Bitboard allStanderd = rightAttackPawns | leftAttackPawns | singlePawnMove | doublePawnMove;
+		Bitboard allPromotion = rightAttackPawnsPromotion | leftAttackPawnsPromotion | singlePawnMovePromotion;
+
+		int index = 16;
+		rightAttackPawns >>= 16;
+		leftAttackPawns >>= 16;
+		singlePawnMove >>= 16;
+		doublePawnMove >>= 16;
+		allStanderd >>= 16;
+		while (allStanderd)
+		{
+			if (allStanderd & 1)
+			{
+				if (rightAttackPawns & 1)
+					PushMove(index - 9, index, MoveFlags::NoFlagCapture);
+				if (leftAttackPawns & 1)
+					PushMove(index - 7, index, MoveFlags::NoFlagCapture);
+				if (singlePawnMove & 1)
+					PushMove(index - 8, index, MoveFlags::NoFlag);
+				if (doublePawnMove & 1)
+					PushMove(index - 16, index, MoveFlags::PawnDoubleForward);
+			}
+			index++;
+			rightAttackPawns >>= 1;
+			leftAttackPawns >>= 1;
+			singlePawnMove >>= 1;
+			doublePawnMove >>= 1;
+			allStanderd >>= 1;
+		}
+
+		index = 56;
+		rightAttackPawnsPromotion >>= 56;
+		leftAttackPawnsPromotion >>= 56;
+		singlePawnMovePromotion >>= 56;
+		allStanderd >>= 56;
+		while (allPromotion)
+		{
+			if (allPromotion & 1)
+			{
+				if (rightAttackPawns & 1)
+				{
+					PushMove(index - 9, index, MoveFlags::PromoteToQueenCapture);
+					PushMove(index - 9, index, MoveFlags::PromoteToRookCapture);
+					PushMove(index - 9, index, MoveFlags::PromoteToBishopCapture);
+					PushMove(index - 9, index, MoveFlags::PromoteToKnightCapture);
+				}
+				if (leftAttackPawns & 1)
+				{
+					PushMove(index - 7, index, MoveFlags::PromoteToQueenCapture);
+					PushMove(index - 7, index, MoveFlags::PromoteToRookCapture);
+					PushMove(index - 7, index, MoveFlags::PromoteToBishopCapture);
+					PushMove(index - 7, index, MoveFlags::PromoteToKnightCapture);
+				}
+				if (singlePawnMove & 1)
+				{
+					PushMove(index - 8, index, MoveFlags::PromoteToQueen);
+					PushMove(index - 8, index, MoveFlags::PromoteToRook);
+					PushMove(index - 8, index, MoveFlags::PromoteToBishop);
+					PushMove(index - 8, index, MoveFlags::PromoteToKnight);
+				}
+			}
+			index++;
+			rightAttackPawnsPromotion >>= 1;
+			leftAttackPawnsPromotion >>= 1;
+			singlePawnMovePromotion >>= 1;
+			allPromotion >>= 1;
+		}
+	}
+
+	if (EPSquare != EmptyEnPassantPos)
+	{
+		if (whiteToMove)
+		{
+			TryEnpassantMove(EPSquare - 9, 4);
+			TryEnpassantMove(EPSquare - 7, 4);
+		}
+		else
+		{
+			TryEnpassantMove(EPSquare + 9, 3);
+			TryEnpassantMove(EPSquare + 7, 3);
+		}
+	}
+}
+
 
 void UnsafeWaterMelon::TryEnpassantMove(int movingSquare, int row)
 {
@@ -1424,14 +1603,14 @@ inline void UnsafeWaterMelon::PushMoveIfBlocksCheck(Square start, Square target,
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
 {
 	/*
-	
+
 		*Other then the king moves
 		When we add the moves we just use the normal PushMove, then at the end we
 		do the quad if statement check to see what we acually have to check for (checks and pins)
 		and if there is none we dont even have to do anything with it.
 		But if we have to check for pins or checks or both, we make a while loop to remove all
 		the invalid moves by moving the last move into the removed move space until we are at the end
-	
+
 	*/
 
 
@@ -1450,7 +1629,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		//Logger::Log(std::to_string(movesCount));
 		memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 		return movesCount;
-}
+	}
 	else if (!KingInCheck)
 		attacksOnKing = 0xffffffffffffffff;
 

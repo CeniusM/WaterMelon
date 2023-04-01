@@ -109,7 +109,7 @@ int main()
 	//std::cout << sizeof(BoardState);
 	//return 0;
 
-	PerftTest();
+	//PerftTest();
 
 	//return 0;
 	/*int start = 0;
