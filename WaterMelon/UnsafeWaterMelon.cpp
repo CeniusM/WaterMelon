@@ -561,6 +561,7 @@ MovesGoneOver++;
 void UnsafeWaterMelon::CheckDraw()
 {
 	// Check repetition and 50 move rule
+	// and for stalemate if it is possible without GenerateMoves
 	if (false)
 		gameState = Draw;
 }
@@ -599,9 +600,9 @@ void UnsafeWaterMelon::GenerateBitboards()
 	for (size_t i = 0; i < PieceLists[BKnight].PieceNum; i++)
 		pieceAttackBitboards[BKnight] |= GetKnightAllDirBitboard(PieceLists[BKnight].OccupiedSquares[i]);
 
-	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]);
+	pieceAttackBitboards[WKing] |= GetKingAllDirBitboard(kingPos[0]) & (FullBitboardBoard ^ AllWhitePosBitboard);
 
-	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]);
+	pieceAttackBitboards[BKing] |= GetKingAllDirBitboard(kingPos[1]) & (FullBitboardBoard ^ AllBlackPosBitboard);
 
 
 
@@ -800,34 +801,28 @@ void UnsafeWaterMelon::AddKingMoves()
 	{ -9,-8,-7,-1,1,7,8,9 };
 	constexpr Offset KingmovesLineoffsets[]
 	{ -1,-1,-1,0,0,1,1,1 };
-	Bitboard KingAttacksBitboard = GetKingAllDirBitboard(ourKingPos);
+	Bitboard KingAttacksBitboard = pieceAttackBitboards[OurKingKey];
 	// plz unwrap mister compiler
 	for (size_t i = 0; i < 8; i++)
 	{
 		int newPos = ourKingPos + Kingmoves[i];
 		//if ((newPos >> 3) - KingmovesLineoffsets[i] != ourKingPos >> 3)
 			//continue;
-		if (KingAttacksBitboard & 0b1ULL << newPos)
+		if (KingAttacksBitboard & (0b1ULL << newPos))
 		{
-			if (IsSquareInBounds(newPos))
+			if (board[newPos] & enemyColour)
 			{
-				if (board[newPos])
-				{
-					if (board[newPos] & enemyColour)
-					{
-						board[ourKingPos] = 0;
-						if (IsSquareSafe(newPos))
-							PushMove(ourKingPos, newPos, MoveFlags::NoFlagCapture);
-						board[ourKingPos] = OurKingKey;
-					}
-				}
-				else
-				{
-					board[ourKingPos] = 0;
-					if (IsSquareSafe(newPos))
-						PushMove(ourKingPos, newPos, MoveFlags::NoFlag);
-					board[ourKingPos] = OurKingKey;
-				}
+				board[ourKingPos] = 0;
+				if (IsSquareSafe(newPos))
+					PushMove(ourKingPos, newPos, MoveFlags::NoFlagCapture);
+				board[ourKingPos] = OurKingKey;
+			}
+			else
+			{
+				board[ourKingPos] = 0;
+				if (IsSquareSafe(newPos))
+					PushMove(ourKingPos, newPos, MoveFlags::NoFlag);
+				board[ourKingPos] = OurKingKey;
 			}
 		}
 	}
@@ -1170,7 +1165,7 @@ void UnsafeWaterMelon::AddPawnMovesBitboardTest()
 		Bitboard allStanderd = rightAttackPawns | leftAttackPawns | singlePawnMove | doublePawnMove;
 		Bitboard allPromotion = rightAttackPawnsPromotion | leftAttackPawnsPromotion | singlePawnMovePromotion;
 
-		int index = 16;
+		int index = 16; // In standerd chess cant there be any moves to before 16
 		rightAttackPawns >>= 16;
 		leftAttackPawns >>= 16;
 		singlePawnMove >>= 16;
@@ -1197,7 +1192,7 @@ void UnsafeWaterMelon::AddPawnMovesBitboardTest()
 			allStanderd >>= 1;
 		}
 
-		index = 56;
+		index = 56; // There is no promotions before number 56 aka PromotionLine
 		rightAttackPawnsPromotion >>= 56;
 		leftAttackPawnsPromotion >>= 56;
 		singlePawnMovePromotion >>= 56;
@@ -1639,6 +1634,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 	AddBishopMoves();
 	AddQueenMoves();
 	AddCastleMoves();
+
+
+	// Remove invalid moves
 
 
 	if (onlyCaptures)

@@ -40,10 +40,26 @@ void PerftTest()
 		Timer timer{};
 		std::cout << "5 -> " << perftRunner5.BulkSearch(5) << "\n";
 	}
-	PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 	{
-		Timer timer{};
-		std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
+		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
+		}
+	}
+	{
+		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
+		}
+	}
+	{
+		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
+		}
 	}
 	//PerftRunner perftRunner7{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 	//{
@@ -109,7 +125,7 @@ int main()
 	//std::cout << sizeof(BoardState);
 	//return 0;
 
-	//PerftTest();
+	PerftTest();
 
 	//return 0;
 	/*int start = 0;
