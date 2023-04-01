@@ -21,7 +21,7 @@ std::string GetMoveName(Move move)
 	std::string str{};
 	str += static_cast<char>('a' + xStart);
 	str += static_cast<char>('1' + yStart);
-	str += " to ";
+	//str += " to ";
 	str += static_cast<char>('a' + xTarget);
 	str += static_cast<char>('1' + yTarget);
 	return str;
