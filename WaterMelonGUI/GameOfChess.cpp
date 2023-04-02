@@ -187,7 +187,7 @@ void GameOfChess::HandleEvents()
 				std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
-				debug_Perft.board.MakeMove(move);
+				debug_Perft.board.MakeMove(board.TransfomMove(move));
 			}
 		}
 	}
@@ -309,7 +309,7 @@ void GameOfChess::RenderBackGround()
 		rect.y = rank * 100;
 		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
-}
+	}
 #endif
 }
 
