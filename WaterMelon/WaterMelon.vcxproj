@@ -147,6 +147,7 @@
     <ClCompile Include="Memcompare.cpp" />
     <ClCompile Include="SafeWaterMelon.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="ThreadPool.cpp" />
     <ClCompile Include="ThrowHelper.cpp" />
     <ClCompile Include="UnsafeWaterMelon.cpp" />
     <ClCompile Include="UnsafeWaterMelonComparerer.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="SafeWaterMelon.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="Square.hpp" />
+    <ClInclude Include="ThreadPool.hpp" />
     <ClInclude Include="ThrowHelper.hpp" />
     <ClInclude Include="Timer.hpp" />
     <ClInclude Include="TypesIncludes.hpp" />

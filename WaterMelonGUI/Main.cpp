@@ -7,6 +7,7 @@
 #include "GameOfChess.hpp"
 #include "Perft.hpp"
 #include "Timer.hpp"
+#include "ThreadPool.hpp"
 //#include "../WaterMelon/Timer.hpp"
 
 #undef main
@@ -40,6 +41,9 @@ void PerftTest()
 		Timer timer{};
 		std::cout << "5 -> " << perftRunner5.BulkSearch(5) << "\n";
 	}
+
+	return;
+
 	{
 		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 		{
@@ -74,6 +78,21 @@ void PerftTest()
 	std::cout << "\n";
 }
 
+void Hello()
+{
+	std::cout << "Hello\n";
+}
+
+void HelloWorld()
+{
+	std::cout << "Hello World\n";
+}
+
+void World()
+{
+	std::cout << "World\n";
+}
+
 int main()
 {
 	std::cout << "UnsafeBoard in bytes: " << sizeof(UnsafeWaterMelon) << "\n";
@@ -83,6 +102,12 @@ int main()
 	//return 0;
 
 	srand(312345654);
+
+	//ThreadPool pool{2};
+	//pool.StartTask(&Hello);
+	//pool.StartTask(&HelloWorld);
+	//pool.StartTask(&World);
+	//return 0;
 
 	//UnsafeWaterMelon obj1;
 	//void* temp = nullptr;
