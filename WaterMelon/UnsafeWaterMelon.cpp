@@ -831,7 +831,7 @@ void UnsafeWaterMelon::AddKingMoves()
 template <bool CAPTURE>
 inline void UnsafeWaterMelon::AddPromotionMoves(int from, int to)
 {
-	if (CAPTURE)
+	if constexpr (CAPTURE)
 	{
 		PushMove(from, to, MoveFlags::PromoteToQueenCapture);
 		PushMove(from, to, MoveFlags::PromoteToKnightCapture);
