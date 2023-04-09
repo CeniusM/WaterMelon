@@ -210,6 +210,8 @@ void UnsafeWaterMelon::UnMakeMove()
 	if (boardStateStack.GetCount() == 0)
 		return;
 
+	gameState = Running;
+
 	playerTurn ^= PlayerTurnSwitch;
 
 	BoardState state = boardStateStack.Pop();
@@ -1451,7 +1453,8 @@ inline void UnsafeWaterMelon::PushMoveIfBlocksCheck(Square start, Square target,
 		PushMove(start, target, flag);
 }
 
-int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool moveOrder)
+template<MoveType type, MoveOrderingTypes order>
+int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 {
 	/*
 
@@ -1514,9 +1517,9 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 						moves[i--] = moves[--movesCount];
 						continue;
 					}
-					}
 				}
 			}
+		}
 		else
 		{
 			// Just in check
@@ -1530,7 +1533,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 				}
 			}
 		}
-		}
+	}
 	else if (pinnedPieces)
 	{
 		// Just pinned
@@ -1549,11 +1552,13 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 		}
 	}
 
-	if (onlyCaptures)
-		RemoveNoneCaptures();
-	if (moveOrder)
-		OrderMoves();
+	if constexpr (type == CAPTURE_Moves)
+		RemoveNoneCaptures(); // Only temperary, later use a more effictive method where itergrate the Catpures only into the AddPiece methods
 
+	if constexpr (order == SIMPLE_MoveOrder)
+		OrderMoves();
+	if constexpr (order == ADVANCED_MoveOrder)
+		ThrowNotImplementedException("ADVANCED_MoveOrder have not been implemented");
 
 #ifdef SquareToRender
 	for (size_t i = 0; i < movesCount; i++)
@@ -1567,7 +1572,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr, bool onlyCaptures, bool m
 
 	memcpy_s(movesPtr, MaxMovesCount * sizeof(Move), moves, movesCount * sizeof(Move));
 	return movesCount;
-	}
+}
 
 void UnsafeWaterMelon::InitBoard()
 {

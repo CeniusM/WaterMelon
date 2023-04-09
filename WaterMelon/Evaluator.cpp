@@ -2,12 +2,18 @@
 
 
 
-Eval GetFullBoardEval(UnsafeWaterMelon& board)
+Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false)
 {
-	board.GenerateBitboards();
+	// Uses +-board.boardStateStack.GetCount(), to make earlier check mates better rather than seeing a checkmate at move 10 the same as one at 4
+	if (noMoves) 
+		return board.whiteToMove == 8 ? Eval_NegInfinit + board.boardStateStack.GetCount() : Eval_Infinit - board.boardStateStack.GetCount();
 
 	// Check if it is a draw
-	
+	//foo
+
+	// Check for known ends, like a bishop and a king vs a single king is a draw
+	// And just do this with as many know combinations
+	//foo
 
 	bool isEndGame = GetLateGameMultiplier(board);
 	Eval eval = Eval_Equal;
@@ -23,7 +29,7 @@ Eval GetFullBoardEval(UnsafeWaterMelon& board)
 
 bool GetLateGameMultiplier(const UnsafeWaterMelon& board)
 {
-	return 0;
+	return false;
 }
 
 Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame)
@@ -59,14 +65,14 @@ Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame)
 		eval -= board.PieceLists[BQueen].PieceNum * QueenLateGameValue;
 	}
 
-	return Eval_Equal;
+	return eval;
 }
 
 Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
 	Eval eval = 0;
 
-	for (size_t pieceType = 9; pieceType < 24; pieceType++) // From WKing to BQueen
+	for (Piece pieceType = 9; pieceType < 24; pieceType++) // From WKing to BQueen
 	{
 		bool count = board.PieceLists[pieceType].PieceNum;
 		for (size_t num = 0; num < count; num++)
@@ -76,7 +82,7 @@ Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, bool isEndGame)
 		}
 	}
 
-	return Eval_Equal;
+	return eval;
 }
 
 Eval GetPawnStructureEval(const UnsafeWaterMelon& board, bool isEndGame)
@@ -113,7 +119,7 @@ Eval GetPawnStructureEval(const UnsafeWaterMelon& board, bool isEndGame)
 		if (BitboardContains(blackPawnAttacks, board.PieceLists[WPawn].OccupiedSquares[i]))
 			eval -= PawnLinkBonus;
 
-	return Eval_Equal;
+	return eval;
 }
 
 Eval GetKingSafetyEval(const UnsafeWaterMelon& board, bool isEndGame)
@@ -125,16 +131,17 @@ Eval GetKingSafetyEval(const UnsafeWaterMelon& board, bool isEndGame)
 	// it does not help the king just stands with 3 pawns in the cornor not promoting
 
 	Eval kingSafetyEval = 0; // important early game, but more so mid
-	Eval kingActivationEval = 0; // more and more imporatan the later the game
 
 
 
-	return 0;
+	return kingSafetyEval;
 }
 
 Eval GetOutpostEval(const UnsafeWaterMelon& board, bool isEndGame)
 {
-	return Eval_Equal;
+	Eval eval = 0;
+
+	return eval;
 }
 
 Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
@@ -145,8 +152,9 @@ Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
 	// Another thing is if there for example is a queen inside the enemy pawn attacks
 	// this will give a bad eval for when its the queens turn, and even worse if the pawns turn
 	// This does that for all the pieces EXECPT pawns (that is allready done)
+	Eval eval = 0;
 
-	return Eval_Equal;
+	return eval;
 }
 
 #pragma region GetNonPawnPieceActivity
@@ -177,7 +185,6 @@ Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 
 	// Knight
 
-
 	// Bishop
 
 	// Rook
@@ -185,12 +192,11 @@ Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 	// Queen
 
 
-
 	//if (isEndGame)
 		//return count * ActivationBonus[1];
 	//return count * ActivationBonus[0];
 	ThrowNotImplementedException("GetNonPawnPieceActivity");
-	return 0;
+	return eval;
 }
 
 #pragma endregion

@@ -25,7 +25,7 @@ BoardState BoardStateStack::Pop()
 	return m_items[--m_top];
 }
 
-int BoardStateStack::GetCount()
+int BoardStateStack::GetCount() const
 {
 	return m_top;
 }

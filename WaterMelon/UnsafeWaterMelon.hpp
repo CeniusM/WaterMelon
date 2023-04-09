@@ -23,6 +23,19 @@ constexpr int BlackIndex = 1;
 constexpr int PlayerTurnSwitch = 0b11000;
 #pragma endregion
 
+enum MoveType
+{
+	NORMAL_Moves,
+	CAPTURE_Moves,
+};
+
+enum MoveOrderingTypes
+{
+	NO_MoveOrder,
+	SIMPLE_MoveOrder,
+	ADVANCED_MoveOrder,
+};
+
 /// <summary>
 /// Used to make moves on the board, and can generate possible moves from the given position, and evaluate a position.
 /// And is very very error prone, so be care full. Very much optimized for speed.
@@ -56,6 +69,8 @@ public:
 	int BlackPawnCounts[8]{ 1 };
 	//int PawnCounts[2][8]{ 0 }; // color index ][ file
 
+	// Sets the draw flag if the game is a draw
+	void CheckDraw();
 
 	// Will consider the move completly valid, this can be done by making sure it comes from the generated moves
 	void MakeMove(Move move);
@@ -68,7 +83,8 @@ public:
 	void InitBoard();
 
 	/// This will generate the moves and copy them to the pointer, and return the count. The pointer size is expected to be atlist "MaxMovesCount"
-	int GetPossibleMoves(Move* movesPtr, bool onlyCaptures = false, bool moveOrder = false);
+	template<MoveType type = NORMAL_Moves, MoveOrderingTypes order = NO_MoveOrder>
+	int GetPossibleMoves(Move* movesPtr);
 
 	// Checks for the current enemy, and only works after GenerateBitboards() or GetPossibleMoves()
 	bool IsSquareSafe(Square square);
@@ -197,9 +213,6 @@ private:
 
 	void RemoveNoneCaptures();
 	void OrderMoves();
-
-	// Sets the draw flag if the game is a draw
-	void CheckDraw();
 
 
 	/// <summary>

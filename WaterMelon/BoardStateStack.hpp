@@ -14,11 +14,11 @@ public:
 	BoardState Peek();
 	BoardState Pop();
 
-	int GetCount();
+	int GetCount() const;
 
 private:
-	int m_capacity;
 	int m_top;
+	int m_capacity;
 	BoardState* m_items;
 };
 
