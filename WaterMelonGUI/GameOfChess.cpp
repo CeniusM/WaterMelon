@@ -88,11 +88,24 @@ void GameOfChess::HandleEvents()
 			else if (event.key.keysym.sym == SDLK_SPACE)
 			{
 				board.UnMakeMove();
-				//board.UnMakeMove();
+				debug_Perft.board.UnMakeMove();
 				Render();
 			}
+			else if (event.key.keysym.sym == SDLK_b)
+			{
+				debug_Perft.BulkSearchLog(debug_Depth);
+			}
+			else if (event.key.keysym.sym == SDLK_n)
+			{
+				debug_Depth--;
+				std::cout << debug_Depth << "\n";
+			}
+			else if (event.key.keysym.sym == SDLK_m)
+			{
+				debug_Depth++;
+				std::cout << debug_Depth << "\n";
+			}
 		}
-
 		/*
 
 
@@ -174,6 +187,7 @@ void GameOfChess::HandleEvents()
 				std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
+				debug_Perft.board.MakeMove(board.TransfomMove(move));
 			}
 		}
 	}
@@ -295,7 +309,7 @@ void GameOfChess::RenderBackGround()
 		rect.y = rank * 100;
 		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
-}
+	}
 #endif
 }
 

@@ -23,26 +23,44 @@ void PerftTest()
 	//std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
 
 	{
+		PerftRunner perftRunner1{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "1 -> " << perftRunner1.BulkSearch(1) << "\n";
+		}
+	}
+	{
+		PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
+		}
+	}
+	{
 		PerftRunner perftRunner3{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 		{
 			Timer timer{};
 			std::cout << "3 -> " << perftRunner3.BulkSearch(3) << "\n";
 		}
 	}
-
-
-	//PerftRunner perftRunner4{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	//{
-	//	Timer timer{};
-	//	std::cout << "4 -> " << perftRunner4.BulkSearch(4) << "\n";
-	//}
-	PerftRunner perftRunner5{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 	{
-		Timer timer{};
-		std::cout << "5 -> " << perftRunner5.BulkSearch(5) << "\n";
+		PerftRunner perftRunner4{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "4 -> " << perftRunner4.BulkSearch(4) << "\n";
+		}
 	}
 
 	return;
+
+	{
+		PerftRunner perftRunner5{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+		{
+			Timer timer{};
+			std::cout << "5 -> " << perftRunner5.BulkSearch(5) << "\n";
+		}
+	}
+
 
 	{
 		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
@@ -151,6 +169,8 @@ int main()
 	//return 0;
 
 	PerftTest();
+	//PerftRunner perft{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
+	//perft.BulkSearchLog(4);
 
 	//return 0;
 	/*int start = 0;

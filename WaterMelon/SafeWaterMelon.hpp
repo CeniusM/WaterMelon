@@ -1,6 +1,6 @@
 #pragma once
 
-#define TransformSquareEnabled false
+#define TransformSquareEnabled true
 
 #include "UnsafeWaterMelon.hpp"
 
