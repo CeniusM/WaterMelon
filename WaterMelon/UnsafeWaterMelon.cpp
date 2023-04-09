@@ -1415,44 +1415,6 @@ inline void UnsafeWaterMelon::PushMove(Square start, Square target, MoveFlag fla
 	moves[movesCount++] = CreateMove(start, target, flag);
 }
 
-inline void UnsafeWaterMelon::PushMoveIfPinnsAllow(Square start, Square target, MoveFlag flag)
-{
-	Bitboard AND = pinnedPieces & (0b1ULL << start);
-	if (AND) // Is pinned
-	{
-		if (pinningPiecesAttack[start] & (0b1ULL << target)) // Blocks pin
-			PushMove(start, target, flag);
-	}
-	else
-	{
-		PushMove(start, target, flag);
-	}
-}
-
-inline void UnsafeWaterMelon::PushMoveIfPinnsAllowAndBlocksCheck(Square start, Square target, MoveFlag flag)
-{
-	Bitboard AND = pinnedPieces & (0b1ULL << start);
-	if (AND) // Is pinned
-	{
-		if (pinningPiecesAttack[start] & (0b1ULL << target)) // Blocks pin
-			if (BitboardContains(attacksOnKing, target)) // blocks check
-				PushMove(start, target, flag);
-	}
-	else
-	{
-		if (BitboardContains(attacksOnKing, target))
-			PushMove(start, target, flag);
-	}
-}
-
-inline void UnsafeWaterMelon::PushMoveIfBlocksCheck(Square start, Square target, MoveFlag flag)
-{
-	if (!KingInCheck)
-		PushMove(start, target, flag);
-	if (BitboardContains(attacksOnKing, target)) // blocks check
-		PushMove(start, target, flag);
-}
-
 template<MoveType type, MoveOrderingTypes order>
 int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 {
