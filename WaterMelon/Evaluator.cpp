@@ -5,7 +5,7 @@
 Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false)
 {
 	// Uses +-board.boardStateStack.GetCount(), to make earlier check mates better rather than seeing a checkmate at move 10 the same as one at 4
-	if (noMoves) 
+	if (noMoves)
 		return board.whiteToMove == 8 ? Eval_NegInfinit + board.boardStateStack.GetCount() : Eval_Infinit - board.boardStateStack.GetCount();
 
 	// Check if it is a draw
@@ -29,7 +29,23 @@ Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false)
 
 int GetLateGameMultiplier(const UnsafeWaterMelon& board)
 {
-	return false;
+	return 0;
+}
+
+int MultiplyByLateGameMultiplier(int value, int lateGameMultiplier)
+{
+	if (value < 0)
+	{
+		value = -value;
+		value *= lateGameMultiplier;
+		value >> 10;
+		return -value;
+	}
+	else
+	{
+		value *= lateGameMultiplier;
+		return value >> 10; // value /= 1024;
+	}
 }
 
 Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame)
