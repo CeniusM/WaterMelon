@@ -7,7 +7,7 @@
 Eval GetFullBoardEval(const UnsafeWaterMelon& board);
 
 // Returns a guess for the game stage
-bool GetLateGameMultiplier(const UnsafeWaterMelon& board);
+int GetLateGameMultiplier(const UnsafeWaterMelon& board);
 
 // Counts the material coint compared to the isEndGame
 Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame);

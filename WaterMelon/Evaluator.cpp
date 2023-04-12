@@ -15,19 +15,19 @@ Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false)
 	// And just do this with as many know combinations
 	//foo
 
-	bool isEndGame = GetLateGameMultiplier(board);
+	int lateGameMultiplier = GetLateGameMultiplier(board);
 	Eval eval = Eval_Equal;
-	eval += GetMaterialEval(board, isEndGame);
-	eval += GetPiecePlacementMapEval(board, isEndGame);
-	eval += GetPawnStructureEval(board, isEndGame);
-	eval += GetKingSafetyEval(board, isEndGame);
-	eval += GetOutpostEval(board, isEndGame);
-	eval += GetPieceActivationEval(board, isEndGame);
+	eval += GetMaterialEval(board, lateGameMultiplier);
+	eval += GetPiecePlacementMapEval(board, lateGameMultiplier);
+	eval += GetPawnStructureEval(board, lateGameMultiplier);
+	eval += GetKingSafetyEval(board, lateGameMultiplier);
+	eval += GetOutpostEval(board, lateGameMultiplier);
+	eval += GetPieceActivationEval(board, lateGameMultiplier);
 
 	return eval;
 }
 
-bool GetLateGameMultiplier(const UnsafeWaterMelon& board)
+int GetLateGameMultiplier(const UnsafeWaterMelon& board)
 {
 	return false;
 }
