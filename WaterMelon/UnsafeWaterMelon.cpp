@@ -1449,6 +1449,8 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 	else if (!KingInCheck)
 		attacksOnKing = 0xffffffffffffffff;
 
+	int kingMovesCount = movesCount;
+
 	AddPawnMoves();
 	AddKnightMoves();
 	AddRookMoves();
@@ -1463,7 +1465,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 		if (pinnedPieces)
 		{
 			// Pinned and in check
-			for (size_t i = 0; i < movesCount; i++)
+			for (size_t i = kingMovesCount; i < movesCount; i++)
 			{
 				int start = GetMoveStart(moves[i]);
 				int target = GetMoveTarget(moves[i]);
@@ -1485,7 +1487,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 		else
 		{
 			// Just in check
-			for (size_t i = 0; i < movesCount; i++)
+			for (size_t i = kingMovesCount; i < movesCount; i++)
 			{
 				int target = GetMoveTarget(moves[i]);
 				if (!BitboardContains(attacksOnKing, target))
@@ -1499,7 +1501,7 @@ int UnsafeWaterMelon::GetPossibleMoves(Move* movesPtr)
 	else if (pinnedPieces)
 	{
 		// Just pinned
-		for (size_t i = 0; i < movesCount; i++)
+		for (size_t i = kingMovesCount; i < movesCount; i++)
 		{
 			int start = GetMoveStart(moves[i]);
 			int target = GetMoveTarget(moves[i]);

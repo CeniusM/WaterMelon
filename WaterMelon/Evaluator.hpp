@@ -4,13 +4,13 @@
 #include "UnsafeWaterMelon.hpp"
 
 // Returns an evaluation that uses all the difrent methods of evaluating the board
-Eval GetFullBoardEval(const UnsafeWaterMelon& board);
+Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false);
 
 // Returns a guess for the game stage, It is a range between 0 and 1024, wich we can use as a 0-1 range, just with integers
 int GetLateGameMultiplier(const UnsafeWaterMelon& board);
 
 // Multiplies the value that is influenced by LateGameMultiplier
-void MultiplyByLateGameMultiplier(int& value, int& lateGameMultiplier);
+int MultiplyByLateGameMultiplier(int value, int lateGameMultiplier);
 
 // Counts the material coint compared to the isEndGame
 Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame);

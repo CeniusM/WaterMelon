@@ -2,7 +2,7 @@
 
 
 
-Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves = false)
+Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves)
 {
 	// Uses +-board.boardStateStack.GetCount(), to make earlier check mates better rather than seeing a checkmate at move 10 the same as one at 4
 	if (noMoves)
@@ -38,11 +38,11 @@ int MultiplyByLateGameMultiplier(int value, int lateGameMultiplier)
 	{
 		value = -value;
 		value *= lateGameMultiplier;
-		value >> 10;
+		value >>= 10;
 		return -value;
 	}
 	else
-	{
+	{	
 		value *= lateGameMultiplier;
 		return value >> 10; // value /= 1024;
 	}

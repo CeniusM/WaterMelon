@@ -48,6 +48,9 @@
     <ClCompile Include="PerftUtil.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="EvaluatorMultiplyByLateGameMultiplierTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp">
