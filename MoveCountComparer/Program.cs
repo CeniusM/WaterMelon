@@ -12,10 +12,10 @@ WriteLine("Input");
 //List<string> str2 = ReadLine()!.Split("\n").ToList();
 
 List<string> str1 =
-    "a2a3: 420\r\nb2b3: 462\r\nc2c3: 462\r\nd2d3: 586\r\ne2e3: 650\r\nf2f3: 420\r\ng2g3: 462\r\nh4h5: 478\r\na2a4: 462\r\nb2b4: 463\r\nc2c4: 484\r\nd2d4: 608\r\ne2e4: 651\r\nf2f4: 442\r\ng2g4: 463\r\nb1a3: 441\r\nb1c3: 483\r\ng1f3: 483\r\ng1h3: 462\r\nh1h2: 441\r\nh1h3: 567"
+    "b4b3: 1\r\ng6g5: 1\r\nc7c6: 1\r\nd7d6: 1\r\nc7c5: 1\r\nh3g2: 1\r\nb4a3: 1\r\ne6d5: 1\r\nb4c3: 1\r\nb6a4: 1\r\nb6c4: 1\r\nb6d5: 1\r\nb6c8: 1\r\nf6e4: 1\r\nf6g4: 1\r\nf6d5: 1\r\nf6h5: 1\r\nf6h7: 1\r\nf6g8: 1\r\na6e2: 1\r\na6d3: 1\r\na6c4: 1\r\na6b5: 1\r\na6b7: 1\r\na6c8: 1\r\ng7h6: 1\r\ng7f8: 1\r\na8b8: 1\r\na8c8: 1\r\na8d8: 1\r\nh8h4: 1\r\nh8h5: 1\r\nh8h6: 1\r\nh8h7: 1\r\nh8f8: 1\r\nh8g8: 1\r\ne7c5: 1\r\ne7d6: 1\r\ne7d8: 1\r\ne7f8: 1\r\ne8d8: 1\r\ne8f8: 1\r\ne8g8: 1\r\ne8c8: 1"
     .Split("\n").ToList();
 List<string> str2 =
-    "a7a6: 440\r\na7a5: 484\r\nb7b6: 485\r\nb7b5: 486\r\nc7c6: 485\r\nc7c5: 508\r\nd7d6: 615\r\nd7d5: 638\r\ne7e6: 682\r\ne7e5: 683\r\nf7f6: 441\r\nf7f5: 464\r\nh7h6: 419\r\nh7h5: 442\r\ng6g5: 502\r\nb8a6: 463\r\nb8c6: 507\r\ng8f6: 507\r\ng8h6: 442\r\nf8g7: 593\r\nf8h6: 507"
+    "e8d8: 1\r\ne8f8: 1\r\nc7c6: 1\r\nc7c5: 1\r\ng6g5: 1\r\nd7d6: 1\r\ne6d5: 1\r\nb4a3: 1\r\nb4c3: 1\r\nb4b3: 1\r\nh3g2: 1\r\nh3a3: 1\r\nb6a4: 1\r\nb6c4: 1\r\nb6d5: 1\r\nb6c8: 1\r\nf6e4: 1\r\nf6g4: 1\r\nf6d5: 1\r\nf6h5: 1\r\nf6h7: 1\r\nf6g8: 1\r\na8b8: 1\r\na8c8: 1\r\na8d8: 1\r\nh8h7: 1\r\nh8h6: 1\r\nh8h5: 1\r\nh8h4: 1\r\nh8g8: 1\r\nh8f8: 1\r\ng7h6: 1\r\ng7f8: 1\r\na6b5: 1\r\na6c4: 1\r\na6d3: 1\r\na6e2: 1\r\na6b7: 1\r\na6c8: 1\r\ne7f8: 1\r\ne7d8: 1\r\ne7d6: 1\r\ne7c5: 1\r\ne8g8: 1\r\ne8c8: 1"
     .Split("\n").ToList();
 
 
@@ -105,3 +105,4 @@ else
 // Originaly at top
 Start:
 Console.WriteLine();
+Console.ReadLine();

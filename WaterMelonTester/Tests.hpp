@@ -7,6 +7,7 @@
 
 void PieceMaterialCountingTest(Assert& assert);
 void CreateAndUssageOfMoveTest(Assert& assert);
+void EvaluatorEarlyCheckmatesBetterTest(Assert& assert);
 void EvaluatorMultiplyByLateGameMultiplierTest(Assert& assert);
 void PerftQuickTest(Assert& assert);
 void PerftFullTest(Assert& assert);

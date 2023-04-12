@@ -15,11 +15,11 @@ constexpr Eval BishopMidGameValue = 333;
 constexpr Eval RookMidGameValue = 563;
 constexpr Eval QueenMidGameValue = 950;
 
-constexpr Eval PawnLateGameValue = 100;
-constexpr Eval KnightLateGameValue = 305;
-constexpr Eval BishopLateGameValue = 333;
-constexpr Eval RookLateGameValue = 563;
-constexpr Eval QueenLateGameValue = 950;
+//constexpr Eval PawnLateGameValue = 100;
+//constexpr Eval KnightLateGameValue = 305;
+//constexpr Eval BishopLateGameValue = 333;
+//constexpr Eval RookLateGameValue = 563;
+//constexpr Eval QueenLateGameValue = 950;
 
 #pragma endregion
 

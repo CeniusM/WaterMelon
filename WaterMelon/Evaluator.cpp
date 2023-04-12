@@ -6,7 +6,11 @@ Eval GetFullBoardEval(const UnsafeWaterMelon& board, bool noMoves)
 {
 	// Uses +-board.boardStateStack.GetCount(), to make earlier check mates better rather than seeing a checkmate at move 10 the same as one at 4
 	if (noMoves)
+	{
+		if (board.IsSquareSafe(board.kingPos[board.playerTurn >> 4]))
+			return Eval_Equal;
 		return board.whiteToMove == 8 ? Eval_NegInfinit + board.boardStateStack.GetCount() : Eval_Infinit - board.boardStateStack.GetCount();
+	}
 
 	// Check if it is a draw
 	//foo
@@ -42,50 +46,51 @@ int MultiplyByLateGameMultiplier(int value, int lateGameMultiplier)
 		return -value;
 	}
 	else
-	{	
+	{
 		value *= lateGameMultiplier;
 		return value >> 10; // value /= 1024;
 	}
 }
 
-Eval GetMaterialEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetMaterialEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	Eval eval = 0;
 
-	if (!isEndGame) // early to mid game
-	{
-		eval += board.PieceLists[WPawn].PieceNum * PawnMidGameValue;
-		eval += board.PieceLists[WKnight].PieceNum * KnightMidGameValue;
-		eval += board.PieceLists[WBishop].PieceNum * BishopMidGameValue;
-		eval += board.PieceLists[WRook].PieceNum * RookMidGameValue;
-		eval += board.PieceLists[WQueen].PieceNum * QueenMidGameValue;
+	//if (lateGameMultiplier < 512) // early to mid game
+	//{
+	eval += board.PieceLists[WPawn].PieceNum * PawnMidGameValue;
+	eval += board.PieceLists[WKnight].PieceNum * KnightMidGameValue;
+	eval += board.PieceLists[WBishop].PieceNum * BishopMidGameValue;
+	eval += board.PieceLists[WRook].PieceNum * RookMidGameValue;
+	eval += board.PieceLists[WQueen].PieceNum * QueenMidGameValue;
 
-		eval -= board.PieceLists[BPawn].PieceNum * PawnMidGameValue;
-		eval -= board.PieceLists[BKnight].PieceNum * KnightMidGameValue;
-		eval -= board.PieceLists[BBishop].PieceNum * BishopMidGameValue;
-		eval -= board.PieceLists[BRook].PieceNum * RookMidGameValue;
-		eval -= board.PieceLists[BQueen].PieceNum * QueenMidGameValue;
-	}
-	else // late game
-	{
-		eval += board.PieceLists[WPawn].PieceNum * PawnLateGameValue;
-		eval += board.PieceLists[WKnight].PieceNum * KnightLateGameValue;
-		eval += board.PieceLists[WBishop].PieceNum * BishopLateGameValue;
-		eval += board.PieceLists[WRook].PieceNum * RookLateGameValue;
-		eval += board.PieceLists[WQueen].PieceNum * QueenLateGameValue;
+	eval -= board.PieceLists[BPawn].PieceNum * PawnMidGameValue;
+	eval -= board.PieceLists[BKnight].PieceNum * KnightMidGameValue;
+	eval -= board.PieceLists[BBishop].PieceNum * BishopMidGameValue;
+	eval -= board.PieceLists[BRook].PieceNum * RookMidGameValue;
+	eval -= board.PieceLists[BQueen].PieceNum * QueenMidGameValue;
+	//}
+	//else // late game
+	//{
+	//	eval += board.PieceLists[WPawn].PieceNum * PawnLateGameValue;
+	//	eval += board.PieceLists[WKnight].PieceNum * KnightLateGameValue;
+	//	eval += board.PieceLists[WBishop].PieceNum * BishopLateGameValue;
+	//	eval += board.PieceLists[WRook].PieceNum * RookLateGameValue;
+	//	eval += board.PieceLists[WQueen].PieceNum * QueenLateGameValue;
 
-		eval -= board.PieceLists[BPawn].PieceNum * PawnLateGameValue;
-		eval -= board.PieceLists[BKnight].PieceNum * KnightLateGameValue;
-		eval -= board.PieceLists[BBishop].PieceNum * BishopLateGameValue;
-		eval -= board.PieceLists[BRook].PieceNum * RookLateGameValue;
-		eval -= board.PieceLists[BQueen].PieceNum * QueenLateGameValue;
-	}
+	//	eval -= board.PieceLists[BPawn].PieceNum * PawnLateGameValue;
+	//	eval -= board.PieceLists[BKnight].PieceNum * KnightLateGameValue;
+	//	eval -= board.PieceLists[BBishop].PieceNum * BishopLateGameValue;
+	//	eval -= board.PieceLists[BRook].PieceNum * RookLateGameValue;
+	//	eval -= board.PieceLists[BQueen].PieceNum * QueenLateGameValue;
+	//}
 
 	return eval;
 }
 
-Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
+	return 0;
 	Eval eval = 0;
 
 	for (Piece pieceType = 9; pieceType < 24; pieceType++) // From WKing to BQueen
@@ -101,7 +106,7 @@ Eval GetPiecePlacementMapEval(const UnsafeWaterMelon& board, bool isEndGame)
 	return eval;
 }
 
-Eval GetPawnStructureEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetPawnStructureEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	// Evaluates things like passed pawns, how they defend each other, and how much they attack the enemy
 	// If they attack heigh valued peices like queens its good
@@ -138,7 +143,7 @@ Eval GetPawnStructureEval(const UnsafeWaterMelon& board, bool isEndGame)
 	return eval;
 }
 
-Eval GetKingSafetyEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetKingSafetyEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	// this is tricky beacous it also changes between the difrent game stages
 	// in the begining the enemy cant attack the king to much
@@ -153,14 +158,14 @@ Eval GetKingSafetyEval(const UnsafeWaterMelon& board, bool isEndGame)
 	return kingSafetyEval;
 }
 
-Eval GetOutpostEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetOutpostEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	Eval eval = 0;
 
 	return eval;
 }
 
-Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetPieceActivationEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	// Bishops attacking the long files is good, bishop close together is good
 	// Also rook open files are really good
@@ -175,7 +180,7 @@ Eval GetPieceActivationEval(const UnsafeWaterMelon& board, bool isEndGame)
 
 #pragma region GetNonPawnPieceActivity
 
-Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
+Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, int lateGameMultiplier)
 {
 	// For testing
 	int ActivationBonus[] = { 5, 6 };
@@ -213,6 +218,11 @@ Eval GetNonPawnPieceActivity(const UnsafeWaterMelon& board, bool isEndGame)
 	//return count * ActivationBonus[0];
 	ThrowNotImplementedException("GetNonPawnPieceActivity");
 	return eval;
+}
+
+Eval GetSpaceEval(const UnsafeWaterMelon& board, int lateGameMultiplier)
+{
+	return 0;
 }
 
 #pragma endregion

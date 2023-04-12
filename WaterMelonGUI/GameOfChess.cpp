@@ -88,7 +88,7 @@ void GameOfChess::HandleEvents()
 			else if (event.key.keysym.sym == SDLK_SPACE)
 			{
 				board.UnMakeMove();
-				debug_Perft.board.UnMakeMove();
+				debug_Perft.board->UnMakeMove();
 				Render();
 			}
 			else if (event.key.keysym.sym == SDLK_b)
@@ -104,6 +104,20 @@ void GameOfChess::HandleEvents()
 			{
 				debug_Depth++;
 				std::cout << debug_Depth << "\n";
+			}
+			else if (event.key.keysym.sym == SDLK_e)
+			{
+				UnsafeWaterMelon* b = board.GetUnsafeBoardPtr();
+				int lateGame = GetLateGameMultiplier(*b);
+				std::cout << "Static board evaluation\n";
+				std::cout << "* Late game multiplier (0-1): " + std::to_string((float)lateGame / 1024) + "\n";
+				std::cout << "Material:          " + std::to_string(GetMaterialEval(*b, lateGame)) + "\n";
+				std::cout << "PiecePlacementMap: " + std::to_string(GetPiecePlacementMapEval(*b, lateGame)) + "\n";
+				std::cout << "PawnStructure:     " + std::to_string(GetPawnStructureEval(*b, lateGame)) + "\n";
+				std::cout << "KingSafety:        " + std::to_string(GetKingSafetyEval(*b, lateGame)) + "\n";
+				std::cout << "Outpost:           " + std::to_string(GetOutpostEval(*b, lateGame)) + "\n";
+				std::cout << "PieceActivation:   " + std::to_string(GetPieceActivationEval(*b, lateGame)) + "\n";
+				std::cout << "Space:             " + std::to_string(GetSpaceEval(*b, lateGame)) + "\n";
 			}
 		}
 		/*
@@ -143,7 +157,7 @@ void GameOfChess::HandleEvents()
 
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			std::cout << "mouseDown" << std::endl;
+			//std::cout << "mouseDown" << std::endl;
 			xMousePos = event.button.x;
 			yMousePos = event.button.y;
 			SomethingHappend = true;
@@ -184,10 +198,10 @@ void GameOfChess::HandleEvents()
 			else
 			{
 				//Log("Making a move");
-				std::cout << "Making Move\n";
+				//std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
-				debug_Perft.board.MakeMove(board.TransfomMove(move));
+				debug_Perft.board->MakeMove(board.TransfomMove(move));
 			}
 		}
 	}
@@ -309,9 +323,9 @@ void GameOfChess::RenderBackGround()
 		rect.y = rank * 100;
 		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
-	}
+		}
 #endif
-}
+	}
 
 void GameOfChess::RenderPossibleMoves()
 {

@@ -864,39 +864,30 @@ void UnsafeWaterMelon::AddPawnMoves()
 			int oneMove = pos + 8;
 			int twoMove = pos + 16;
 			bool isPromotion = BitboardContains(WhitePromotionLine, oneMove);
-			Bitboard AND = pinnedPieces & (0b1ULL << pos);
 
 			if (isPromotion)
 			{
-				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), Black))
-					{
-						AddPromotionMoves<true>(pos, leftPos);
-					}
-				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), Black))
-					{
-						AddPromotionMoves<true>(pos, rightPos);
-					}
+				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, leftPos))
+					AddPromotionMoves<true>(pos, leftPos);
+
+				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, rightPos))
+					AddPromotionMoves<true>(pos, rightPos);
 
 				if (board[oneMove] == 0)
-				{
 					AddPromotionMoves<false>(pos, oneMove);
-				}
 			}
 			else
 			{
-				if (BitboardContains(whitePawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), Black))
-						PushMove(pos, leftPos, NoFlagCapture);
-				if (BitboardContains(whitePawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), Black))
-						PushMove(pos, rightPos, NoFlagCapture);
+				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, leftPos))
+					PushMove(pos, leftPos, NoFlagCapture);
+
+				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, rightPos))
+					PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
 				{
 					PushMove(pos, oneMove, NoFlag);
-					if (board[twoMove] == 0 && BitboardContains(WhiteTwoMoveLine, pos))
+					if (BitboardContains(WhiteTwoMoveLine, pos) && board[twoMove] == 0)
 						PushMove(pos, twoMove, PawnDoubleForward);
 				}
 			}
@@ -913,43 +904,71 @@ void UnsafeWaterMelon::AddPawnMoves()
 			int oneMove = pos - 8;
 			int twoMove = pos - 16;
 			bool isPromotion = BitboardContains(BlackPromotionLine, oneMove);
-			Bitboard AND = pinnedPieces & (0b1ULL << pos);
 
 			if (isPromotion)
 			{
-				if (BitboardContains(blackPawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), White)) // this could again just be with bitboards
-					{
-						AddPromotionMoves<true>(pos, leftPos);
-					}
-				if (BitboardContains(blackPawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), White))
-					{
-						AddPromotionMoves<true>(pos, rightPos);
-					}
+				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+					AddPromotionMoves<true>(pos, leftPos);
+
+				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+					AddPromotionMoves<true>(pos, rightPos);
 
 				if (board[oneMove] == 0)
-				{
 					AddPromotionMoves<false>(pos, oneMove);
-				}
 			}
 			else
 			{
-				if (BitboardContains(blackPawnAttacksBitboard, leftPos))
-					if (IsPieceColor(GetColor(board[leftPos]), White))
-						PushMove(pos, leftPos, NoFlagCapture);
-				if (BitboardContains(blackPawnAttacksBitboard, rightPos))
-					if (IsPieceColor(GetColor(board[rightPos]), White))
-						PushMove(pos, rightPos, NoFlagCapture);
+				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+					PushMove(pos, leftPos, NoFlagCapture);
+
+				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+					PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
 				{
 					PushMove(pos, oneMove, NoFlag);
-					if (board[twoMove] == 0 && BitboardContains(BlackTwoMoveLine, pos))
+					if (BitboardContains(BlackTwoMoveLine, pos) && board[twoMove] == 0)
 						PushMove(pos, twoMove, PawnDoubleForward);
 				}
 			}
 		}
+
+		/*
+		int pos = PieceLists[BPawn].OccupiedSquares[i];
+			Bitboard posBitboard = BitboardFromSquare(pos);
+			Bitboard leftPos = (posBitboard & LeftSideIs0) >> 9;
+			Bitboard rightPos = (posBitboard & RightSideIs0) >> 7;
+			Bitboard oneMove = (posBitboard & AllEmptyPosBitboard) >> 8;
+			Bitboard twoMove = (posBitboard & AllEmptyPosBitboard) >> 16;
+			bool isPromotion = BitboardsCollide(BlackPromotionLine, oneMove);
+
+			if (isPromotion)
+			{
+				if (BitboardsCollide(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+					AddPromotionMoves<true>(pos, pos - 9);
+
+				if (BitboardsCollide(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+					AddPromotionMoves<true>(pos, pos - 7);
+
+				if (oneMove == 0)
+					AddPromotionMoves<false>(pos, pos - 8);
+			}
+			else
+			{
+				if (BitboardsCollide(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+					PushMove(pos, pos - 9, NoFlagCapture);
+
+				if (BitboardsCollide(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+					PushMove(pos, pos - 7, NoFlagCapture);
+
+				if (oneMove == 0)
+				{
+					PushMove(pos, pos - 8, NoFlag);
+					if (BitboardsCollide(BlackTwoMoveLine, posBitboard) && twoMove == 0)
+						PushMove(pos, pos - 16, PawnDoubleForward);
+				}
+			}
+		*/
 	}
 
 	if (EPSquare != EmptyEnPassantPos)
@@ -1178,7 +1197,7 @@ void UnsafeWaterMelon::AddKnightMoves()
 	}
 }
 
-bool UnsafeWaterMelon::IsSquareSafe(Square square)
+bool UnsafeWaterMelon::IsSquareSafe(Square square) const
 {
 	//Logger::LogBitboard(allEnemyAttacks);
 

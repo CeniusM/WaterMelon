@@ -18,7 +18,7 @@ public:
 	long BulkSearch(int depth);
 	void BulkSearchLog(int depth);
 
-	UnsafeWaterMelon board{};
+	UnsafeWaterMelon* board;
 private:
 	bool m_running{ 0 };
 	//UnsafeWaterMelon board;

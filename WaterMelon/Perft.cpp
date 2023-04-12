@@ -3,19 +3,21 @@
 PerftRunner::PerftRunner(std::string FEN)
 {
 	this->FEN = FEN;
+	board = new	UnsafeWaterMelon{ FEN };
 	//UnsafeWaterMelon temp{ FEN };
 	//memcpy_s(&board, sizeof(UnsafeWaterMelon), &temp, sizeof(UnsafeWaterMelon));
 }
 
 PerftRunner::~PerftRunner()
 {
+	delete board;
 }
 
 void PerftRunner::BulkSearchLog(int depth)
 {
 	long Counts[MaxMovesCount]{};
 	Move moves[MaxMovesCount]{};
-	int movesCount = board.GetPossibleMoves(moves);
+	int movesCount = board->GetPossibleMoves(moves);
 
 	steady_clock::time_point Times[MaxMovesCount][2]{}; // Start and stop time
 	auto TotalStart = high_resolution_clock::now();
@@ -24,9 +26,9 @@ void PerftRunner::BulkSearchLog(int depth)
 	{
 		Times[i][0] = high_resolution_clock::now();
 
-		board.MakeMove(moves[i]);
+		board->MakeMove(moves[i]);
 		Counts[i] += Perft(depth - 1);
-		board.UnMakeMove();
+		board->UnMakeMove();
 
 		Times[i][1] = high_resolution_clock::now();
 	}
@@ -70,13 +72,13 @@ long PerftRunner::Perft(int depth)
 		return 1;
 	long Count = 0;
 	Move moves[MaxMovesCount];
-	int movesCount = board.GetPossibleMoves(moves);
+	int movesCount = board->GetPossibleMoves(moves);
 
 	for (size_t i = 0; i < movesCount; i++)
 	{
-		board.MakeMove(moves[i]);
+		board->MakeMove(moves[i]);
 		Count += Perft(depth - 1);
-		board.UnMakeMove();
+		board->UnMakeMove();
 	}
 
 	return Count;

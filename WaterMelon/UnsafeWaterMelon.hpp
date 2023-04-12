@@ -87,7 +87,7 @@ public:
 	int GetPossibleMoves(Move* movesPtr);
 
 	// Checks for the current enemy, and only works after GenerateBitboards() or GetPossibleMoves()
-	bool IsSquareSafe(Square square);
+	bool IsSquareSafe(Square square) const;
 
 	// Used to generate non sliding piece attacks
 	void GenerateBitboards();

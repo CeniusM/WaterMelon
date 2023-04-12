@@ -51,6 +51,9 @@
     <ClCompile Include="EvaluatorMultiplyByLateGameMultiplierTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="EvaluatorEarlyCheckmatesBetterTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp">

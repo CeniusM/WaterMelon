@@ -51,7 +51,7 @@ void PerftTest()
 		}
 	}
 
-	return;
+	//return;
 
 	{
 		PerftRunner perftRunner5{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
@@ -69,6 +69,7 @@ void PerftTest()
 			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
 		}
 	}
+	return;
 	{
 		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 		{
