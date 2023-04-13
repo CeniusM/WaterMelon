@@ -10,19 +10,18 @@ using namespace std::chrono;
 class PerftRunner
 {
 public:
-	PerftRunner(std::string FEN);
+	PerftRunner();
 	~PerftRunner();
 
-	//void InitFEN(std::string FEN);
+	long BulkSearch(UnsafeWaterMelon* b, int depth);
+	void BulkSearchLog(UnsafeWaterMelon* b, int depth);
 
-	long BulkSearch(int depth);
-	void BulkSearchLog(int depth);
-
-	UnsafeWaterMelon* board;
 private:
 	bool m_running{ 0 };
 	//UnsafeWaterMelon board;
 	std::string FEN;
+
+	UnsafeWaterMelon* board;
 
 	long Perft(int depth);
 };

@@ -1,6 +1,24 @@
 
 #include "MoveMisc.hpp"
 
+std::string GetSquareName(Square square)
+{
+	std::string str{};
+
+	if (!TransformSquareEnabled)
+	{
+		square = FlipSquareY(square);
+	}
+
+	int xSquare = GetCollum(square);
+	int ySquare = GetRank(square);
+
+	str += static_cast<char>('a' + xSquare);
+	str += static_cast<char>('1' + ySquare);
+	
+	return str;
+}
+
 std::string GetMoveName(Move move)
 {
 	int start = GetMoveStart(move);

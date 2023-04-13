@@ -485,10 +485,91 @@ void UnsafeWaterMelon::InitFEN(const std::string FEN)
 }
 #pragma endregion
 
-std::string UnsafeWaterMelon::GetFEN()
+std::string UnsafeWaterMelon::GetFEN() const
 {
-	ThrowNotImplementedException("The GetFEN function is not implemented");
+	//ThrowNotImplementedException("The GetFEN function is not implemented");
 	std::string str = "";
+
+	int space = 0;
+	for (size_t j = 0; j < 64; j++)
+	{
+		int i = FlipSquareY(j);
+		if (board[i] != 0)
+		{
+			if (space != 0)
+			{
+				str += std::to_string(space);
+				space = 0;
+			}
+			str += FENUtility::IntToChar[board[i]];
+		}
+		else
+		{
+			space++;
+		}
+
+		if ((j+1) % 8 == 0 && j != 63)
+		{
+			if (space != 0)
+			{
+				str += std::to_string(space);
+				space = 0;
+			}
+			str += "/";
+		}
+	}
+	
+	str += " ";
+	
+	if (playerTurn == White)
+		str += "w";
+	else
+		str += "b";
+
+	str += " ";
+
+	bool wasCastle = false;
+	if (castle & CastleRights::WhiteKingSide)
+	{
+		wasCastle = true;
+		str += "K";
+	}
+	if (castle & CastleRights::WhiteQueenSide)
+	{
+		wasCastle = true;
+		str += "Q";
+	}
+	if (castle & CastleRights::BlackKingSide)
+	{
+		wasCastle = true;
+		str += "k";
+	}
+	if (castle & CastleRights::BlackQueenSide)
+	{
+		wasCastle = true;
+		str += "q";
+	}
+
+	str += " ";
+
+
+	if (EPSquare != 0)
+	{
+		//int v = FlipSquareY(EPSquare);
+		int v = EPSquare;
+		int xSquare = GetCollum(v);
+		int ySquare = GetRank(v);
+		str += static_cast<char>('a' + xSquare);
+		str += static_cast<char>('1' + ySquare);
+	}
+	else str += "-";
+
+	//str += std::to_string(EPSquare);
+	//str += GetSquareName(EPSquare);
+
+
+
+	str += " 0 0";
 
 	return str;
 }
@@ -859,6 +940,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 		for (size_t i = 0; i < PieceLists[WPawn].PieceNum; i++)
 		{
 			int pos = PieceLists[WPawn].OccupiedSquares[i];
+			Bitboard posBoard = BitboardFromSquare(pos);
 			int leftPos = pos + 7;
 			int rightPos = pos + 9;
 			int oneMove = pos + 8;
@@ -867,10 +949,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 			if (isPromotion)
 			{
-				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, leftPos))
+				if ((posBoard & RightSideIs0) << 7 & AllBlackPosBitboard)
 					AddPromotionMoves<true>(pos, leftPos);
 
-				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, rightPos))
+				if ((posBoard & RightSideIs0) << 9 & AllBlackPosBitboard)
 					AddPromotionMoves<true>(pos, rightPos);
 
 				if (board[oneMove] == 0)
@@ -878,10 +960,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 			}
 			else
 			{
-				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, leftPos))
+				if ((posBoard & RightSideIs0) << 7 & AllBlackPosBitboard)
 					PushMove(pos, leftPos, NoFlagCapture);
 
-				if (BitboardContains(whitePawnAttacksBitboard & AllBlackPosBitboard, rightPos))
+				if ((posBoard & RightSideIs0) << 9 & AllBlackPosBitboard)
 					PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
@@ -899,6 +981,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 		for (size_t i = 0; i < PieceLists[BPawn].PieceNum; i++)
 		{
 			int pos = PieceLists[BPawn].OccupiedSquares[i];
+			Bitboard posBoard = BitboardFromSquare(pos);
 			int leftPos = pos - 9;
 			int rightPos = pos - 7;
 			int oneMove = pos - 8;
@@ -907,10 +990,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 			if (isPromotion)
 			{
-				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+				if ((posBoard & LeftSideIs0) >> 9 & AllWhitePosBitboard)
 					AddPromotionMoves<true>(pos, leftPos);
 
-				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+				if ((posBoard & RightSideIs0) >> 7 & AllWhitePosBitboard)
 					AddPromotionMoves<true>(pos, rightPos);
 
 				if (board[oneMove] == 0)
@@ -918,10 +1001,10 @@ void UnsafeWaterMelon::AddPawnMoves()
 			}
 			else
 			{
-				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, leftPos))
+				if ((posBoard & LeftSideIs0) >> 9 & AllWhitePosBitboard)
 					PushMove(pos, leftPos, NoFlagCapture);
 
-				if (BitboardContains(blackPawnAttacksBitboard & AllWhitePosBitboard, rightPos))
+				if ((posBoard & RightSideIs0) >> 7 & AllWhitePosBitboard)
 					PushMove(pos, rightPos, NoFlagCapture);
 
 				if (board[oneMove] == 0)
@@ -1630,9 +1713,6 @@ void UnsafeWaterMelon::InitBoard()
 }
 
 #pragma endregion
-
-
-
 
 /*
 

@@ -72,9 +72,6 @@
     <ClInclude Include="TypesIncludes.hpp">
       <Filter>Header Files\BoardLogic\PreInitializeData\Types</Filter>
     </ClInclude>
-    <ClInclude Include="FENUtility.hpp">
-      <Filter>Header Files\BoardLogic\PreInitializeData</Filter>
-    </ClInclude>
     <ClInclude Include="PieceList.hpp">
       <Filter>Header Files\BoardLogic</Filter>
     </ClInclude>
@@ -145,6 +142,9 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="MoveMisc.hpp">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="FENUtility.hpp">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>

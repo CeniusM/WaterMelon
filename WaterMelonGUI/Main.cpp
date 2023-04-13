@@ -12,83 +12,31 @@
 
 #undef main
 
+void RunTime(std::string fen, int depth)
+{
+	UnsafeWaterMelon b{ fen };
+	PerftRunner perftRunner1{};
+	auto start = std::chrono::high_resolution_clock::now();
+	long long count = perftRunner1.BulkSearch(&b, depth);
+	auto finish = std::chrono::high_resolution_clock::now();
+	long long time = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
+
+	std::cout << std::to_string(depth) + " Count: " << std::to_string(count) << " Nps: " << std::to_string((count * 1000) / time) << "\n";
+}
+
 void PerftTest()
 {
 	std::cout << "Note: Test this with graphics so you can see where its goes wrong \n";
 
-	//PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	//std::cout << "1 -> " << perftRunner.BulkSearch(1) << "\n";
-
-	//PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	//std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
-
-	{
-		PerftRunner perftRunner1{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "1 -> " << perftRunner1.BulkSearch(1) << "\n";
-		}
-	}
-	{
-		PerftRunner perftRunner2{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "2 -> " << perftRunner2.BulkSearch(2) << "\n";
-		}
-	}
-	{
-		PerftRunner perftRunner3{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "3 -> " << perftRunner3.BulkSearch(3) << "\n";
-		}
-	}
-	{
-		PerftRunner perftRunner4{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "4 -> " << perftRunner4.BulkSearch(4) << "\n";
-		}
-	}
-
-	//return;
-
-	{
-		PerftRunner perftRunner5{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "5 -> " << perftRunner5.BulkSearch(5) << "\n";
-		}
-	}
-
-
-	{
-		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
-		}
-	}
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 1);
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 2);
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 3);
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4);
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 5);
 	return;
-	{
-		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
-		}
-	}
-	{
-		PerftRunner perftRunner6{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-		{
-			Timer timer{};
-			std::cout << "6 -> " << perftRunner6.BulkSearch(6) << "\n";
-		}
-	}
-	//PerftRunner perftRunner7{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	//{
-	//	Timer timer{};
-	//	std::cout << "7 -> " << perftRunner7.BulkSearch(7) << "\n";
-	//}
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 6);
+	RunTime("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 7);
+
 
 	//PerftRunner perftRunner{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
 	//perftRunner.BulkSearchLog(5);

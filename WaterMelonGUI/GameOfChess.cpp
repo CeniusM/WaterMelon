@@ -88,12 +88,11 @@ void GameOfChess::HandleEvents()
 			else if (event.key.keysym.sym == SDLK_SPACE)
 			{
 				board.UnMakeMove();
-				debug_Perft.board->UnMakeMove();
 				Render();
 			}
 			else if (event.key.keysym.sym == SDLK_b)
 			{
-				debug_Perft.BulkSearchLog(debug_Depth);
+				debug_Perft.BulkSearchLog(board.GetUnsafeBoardPtr(), debug_Depth);
 			}
 			else if (event.key.keysym.sym == SDLK_n)
 			{
@@ -110,6 +109,7 @@ void GameOfChess::HandleEvents()
 				UnsafeWaterMelon* b = board.GetUnsafeBoardPtr();
 				int lateGame = GetLateGameMultiplier(*b);
 				std::cout << "Static board evaluation\n";
+				std::cout << "Fen: " + b->GetFEN() + "\n";
 				std::cout << "* Late game multiplier (0-1): " + std::to_string((float)lateGame / 1024) + "\n";
 				std::cout << "Material:          " + std::to_string(GetMaterialEval(*b, lateGame)) + "\n";
 				std::cout << "PiecePlacementMap: " + std::to_string(GetPiecePlacementMapEval(*b, lateGame)) + "\n";
@@ -201,7 +201,6 @@ void GameOfChess::HandleEvents()
 				//std::cout << "Making Move\n";
 				Move move = CreateMove(m_piecePickedIndex, indexPlacements, NoFlag);
 				board.MakeMove(move);
-				debug_Perft.board->MakeMove(board.TransfomMove(move));
 			}
 		}
 	}
@@ -323,7 +322,7 @@ void GameOfChess::RenderBackGround()
 		rect.y = rank * 100;
 		SDL_SetRenderDrawColor(renderer, square.red, square.green, square.blue, 255);
 		SDL_RenderFillRect(renderer, &rect);
-		}
+}
 #endif
 	}
 

@@ -50,7 +50,7 @@ private:
 	//SafeWaterMelon board = SafeWaterMelon("8/8/3N4/8/2K2rk1/4P3/8/8 w - - 0 1");
 	//SafeWaterMelon board = SafeWaterMelon("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -");
 	SafeWaterMelon board = SafeWaterMelon("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");
-	//SafeWaterMelon board = SafeWaterMelon("");
+	//SafeWaterMelon board = SafeWaterMelon("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
 	//SafeWaterMelon board = SafeWaterMelon("");
@@ -73,6 +73,6 @@ private:
 	bool MouseDraging = false;
 
 	//PerftRunner debug_Perft{ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1" };
-	PerftRunner debug_Perft{ "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -" };
+	PerftRunner debug_Perft{ };
 	int debug_Depth = 4;
 };

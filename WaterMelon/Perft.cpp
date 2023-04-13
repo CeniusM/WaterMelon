@@ -1,20 +1,16 @@
 #include "Perft.hpp"
 
-PerftRunner::PerftRunner(std::string FEN)
+PerftRunner::PerftRunner()
 {
-	this->FEN = FEN;
-	board = new	UnsafeWaterMelon{ FEN };
-	//UnsafeWaterMelon temp{ FEN };
-	//memcpy_s(&board, sizeof(UnsafeWaterMelon), &temp, sizeof(UnsafeWaterMelon));
 }
 
 PerftRunner::~PerftRunner()
 {
-	delete board;
 }
 
-void PerftRunner::BulkSearchLog(int depth)
+void PerftRunner::BulkSearchLog(UnsafeWaterMelon* b, int depth)
 {
+	board = b;
 	long Counts[MaxMovesCount]{};
 	Move moves[MaxMovesCount]{};
 	int movesCount = board->GetPossibleMoves(moves);
@@ -61,8 +57,9 @@ void PerftRunner::BulkSearchLog(int depth)
 	}
 }
 
-long PerftRunner::BulkSearch(int depth)
+long PerftRunner::BulkSearch(UnsafeWaterMelon* b, int depth)
 {
+	board = b;
 	return Perft(depth);
 }
 

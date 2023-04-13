@@ -11,6 +11,7 @@
 #include "ThrowHelper.hpp"
 #include "BoardStateStack.hpp"
 #include "Checker.hpp"
+//#include "MoveMisc.hpp"
 
 #define MaxMovesCount 256
 
@@ -93,7 +94,7 @@ public:
 	void GenerateBitboards();
 
 	void InitFEN(const std::string FEN);
-	std::string GetFEN();
+	std::string GetFEN() const;
 
 	UnsafeWaterMelon();
 	UnsafeWaterMelon(const std::string FEN);
