@@ -12,10 +12,10 @@ WriteLine("Input");
 //List<string> str2 = ReadLine()!.Split("\n").ToList();
 
 List<string> str1 =
-    "b4b3: 49\r\ng6g5: 49\r\nc7c6: 51\r\nd7d6: 49\r\nc7c5: 51\r\nh3g2: 48\r\nb4a3: 51\r\ne6d5: 50\r\nb4c3: 48\r\nb6a4: 49\r\nb6c4: 48\r\nb6d5: 50\r\nb6c8: 50\r\nf6e4: 53\r\nf6g4: 49\r\nf6d5: 51\r\nf6h5: 51\r\nf6h7: 51\r\nf6g8: 51\r\na6e2: 43\r\na6d3: 48\r\na6c4: 48\r\na6b5: 49\r\na6b7: 50\r\na6c8: 50\r\ng7h6: 50\r\ng7f8: 50\r\na8b8: 50\r\na8c8: 50\r\na8d8: 50\r\nh8h4: 50\r\nh8h5: 50\r\nh8h6: 50\r\nh8h7: 50\r\nh8f8: 50\r\nh8g8: 50\r\ne7c5: 50\r\ne7d6: 49\r\ne7d8: 50\r\ne7f8: 50\r\ne8d8: 50\r\ne8f8: 50\r\ne8g8: 50\r\ne8c8: 50"
+    "f3f2: 20\r\nd6d5: 22\r\nc7c6: 23\r\nc7c5: 7\r\nf3e2: 18\r\nf3g2: 18\r\nh5b5: 5\r\nh5c5: 20\r\nh5d5: 22\r\nh5e5: 22\r\nh5f5: 22\r\nh5g5: 22\r\nh5h6: 22\r\nh5h7: 22\r\nh5h8: 22\r\nh4g3: 20\r\nh4g5: 22\r\nh4g4: 21"
     .Split("\n").ToList();
 List<string> str2 =
-    "e8d8: 51\r\ne8f8: 51\r\nb4a3: 51\r\nb4c3: 49\r\nb4b3: 50\r\ng6g5: 50\r\nd7d6: 50\r\nc7c6: 52\r\nc7c5: 52\r\ne6d5: 51\r\nh3g2: 48\r\nb6a4: 50\r\nb6c4: 49\r\nb6d5: 51\r\nb6c8: 51\r\nf6e4: 54\r\nf6g4: 50\r\nf6d5: 52\r\nf6h5: 52\r\nf6h7: 52\r\nf6g8: 52\r\na8b8: 51\r\na8c8: 51\r\na8d8: 51\r\nh8h7: 51\r\nh8h6: 51\r\nh8h5: 51\r\nh8h4: 51\r\nh8g8: 51\r\nh8f8: 51\r\ng7h6: 51\r\ng7f8: 51\r\na6b5: 50\r\na6c4: 49\r\na6d3: 49\r\na6e2: 44\r\na6b7: 51\r\na6c8: 51\r\ne7f8: 51\r\ne7d8: 51\r\ne7d6: 50\r\ne7c5: 51\r\ne8g8: 51\r\ne8c8: 51"
+    "h4g3: 20\r\nh4g4: 21\r\nh4g5: 22\r\nc7c6: 23\r\nc7c5: 6\r\nd6d5: 22\r\nf3e2: 18\r\nf3g2: 18\r\nf3f2: 20\r\nh5h6: 22\r\nh5h7: 22\r\nh5h8: 22\r\nh5g5: 22\r\nh5f5: 22\r\nh5e5: 22\r\nh5d5: 22\r\nh5c5: 20\r\nh5b5: 5"
     .Split("\n").ToList();
 
 
