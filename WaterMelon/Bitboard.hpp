@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Square.hpp"
+#include "Checker.hpp"
 
 typedef unsigned long long Bitboard;
 
@@ -32,6 +33,29 @@ constexpr Bitboard CollumBitboards[]
 {
 72340172838076673,144680345676153346,289360691352306692,578721382704613384,1157442765409226768,2314885530818453536,4629771061636907072,9259542123273814144
 };
+
+constexpr int DistanceToNextBit[]
+{
+	1
+};
+
+// Only takes in a bitboard that is not 0, returns the distance to next bit, and shifts the board
+constexpr int GetNextBit(Bitboard& b)
+{
+	Check(b != 0, "GetNextBit can not take in an empty bitboard");
+
+	ThrowNotImplementedException("Have not implemented DistanceToNextBit");
+
+	int count = 0;
+	while ((b & 0b1) == 0)
+	{
+		int distance = DistanceToNextBit[b & 0xff];
+		count += distance;
+		b <<= distance;
+	}
+
+	return count;
+}
 
 constexpr bool BitboardContains(Bitboard bitboard, Square pos)
 {
