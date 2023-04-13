@@ -949,7 +949,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 
 			if (isPromotion)
 			{
-				if ((posBoard & RightSideIs0) << 7 & AllBlackPosBitboard)
+				if ((posBoard & LeftSideIs0) << 7 & AllBlackPosBitboard)
 					AddPromotionMoves<true>(pos, leftPos);
 
 				if ((posBoard & RightSideIs0) << 9 & AllBlackPosBitboard)
@@ -960,7 +960,7 @@ void UnsafeWaterMelon::AddPawnMoves()
 			}
 			else
 			{
-				if ((posBoard & RightSideIs0) << 7 & AllBlackPosBitboard)
+				if ((posBoard & LeftSideIs0) << 7 & AllBlackPosBitboard)
 					PushMove(pos, leftPos, NoFlagCapture);
 
 				if ((posBoard & RightSideIs0) << 9 & AllBlackPosBitboard)
