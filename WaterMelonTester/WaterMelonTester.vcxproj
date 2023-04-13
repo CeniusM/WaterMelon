@@ -138,6 +138,7 @@
     <ClCompile Include="CreateMoveTest.cpp" />
     <ClCompile Include="EvaluatorEarlyCheckmatesBetterTest.cpp" />
     <ClCompile Include="EvaluatorMultiplyByLateGameMultiplierTest.cpp" />
+    <ClCompile Include="GetNextBitTest.cpp" />
     <ClCompile Include="PerftQuickTest.cpp" />
     <ClCompile Include="PerftFullTest.cpp" />
     <ClCompile Include="PerftUtil.cpp" />

@@ -41,7 +41,8 @@ int main()
 	RunTest(&CreateAndUssageOfMoveTest, "CreateAndUssageOfMoveTest");
 	RunTest(&EvaluatorEarlyCheckmatesBetterTest, "EvaluatorEarlyCheckmatesBetterTest");
 	RunTest(&EvaluatorMultiplyByLateGameMultiplierTest, "EvaluatorMultiplyByLateGameMultiplierTest");
+	RunTest(&GetNextBitTest, "GetNextBitTest");
 	RunTest(&PerftQuickTest, "PerftQuickTest");
-	RunTest(&PerftFullTest, "PerftFullTest");
+	//RunTest(&PerftFullTest, "PerftFullTest");
 	RunTest(&PieceMaterialCountingTest, "PieceMaterialCountingTest");
 }

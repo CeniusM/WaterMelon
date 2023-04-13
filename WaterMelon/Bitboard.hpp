@@ -36,23 +36,23 @@ constexpr Bitboard CollumBitboards[]
 
 constexpr int DistanceToNextBit[]
 {
-	1
+	7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,7,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,6,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,5,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0,4,0,1,0,2,0,1,0,3,0,1,0,2,0,1,0
 };
 
-// Only takes in a bitboard that is not 0, returns the distance to next bit, and shifts the board
+// Only takes in a bitboard that is not 0, returns the bits removed count, and shifts the board
 constexpr int GetNextBit(Bitboard& b)
 {
 	Check(b != 0, "GetNextBit can not take in an empty bitboard");
 
-	ThrowNotImplementedException("Have not implemented DistanceToNextBit");
+	//ThrowNotImplementedException("Have not implemented DistanceToNextBit");
 
 	int count = 0;
-	while ((b & 0b1) == 0)
+	do
 	{
 		int distance = DistanceToNextBit[b & 0xff];
 		count += distance;
-		b <<= distance;
-	}
+		b >>= distance;
+	} while ((b & 0b1) == 0);
 
 	return count;
 }

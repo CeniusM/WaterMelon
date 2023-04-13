@@ -410,31 +410,59 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 
 
 // Create isolation pawn checker
-ulong[] collums = new ulong[8];
-for (int i = 0; i < 8; i++)
-    for (int j = 0; j < 8; j++)
-        collums[i] = SetBit(collums[i], i, j);
+//ulong[] collums = new ulong[8];
+//for (int i = 0; i < 8; i++)
+//    for (int j = 0; j < 8; j++)
+//        collums[i] = SetBit(collums[i], i, j);
 
-ulong[] isolationCheck = new ulong[8];
-for (int i = 0; i < 8; i++)
-{
-    if (i - 1 >= 0)
-        isolationCheck[i] = isolationCheck[i] | collums[i - 1];
-    if (i + 1 <= 7)
-        isolationCheck[i] = isolationCheck[i] | collums[i + 1];
-}
+//ulong[] isolationCheck = new ulong[8];
+//for (int i = 0; i < 8; i++)
+//{
+//    if (i - 1 >= 0)
+//        isolationCheck[i] = isolationCheck[i] | collums[i - 1];
+//    if (i + 1 <= 7)
+//        isolationCheck[i] = isolationCheck[i] | collums[i + 1];
+//}
 
-PrintBitboardColored(isolationCheck[0]);
-PrintBitboardColored(isolationCheck[1]);
-PrintBitboardColored(isolationCheck[2]);
-PrintBitboardColored(isolationCheck[3]);
-PrintBitboardColored(isolationCheck[4]);
-PrintBitboardColored(isolationCheck[5]);
-PrintBitboardColored(isolationCheck[6]);
-PrintBitboardColored(isolationCheck[7]);
+//PrintBitboardColored(isolationCheck[0]);
+//PrintBitboardColored(isolationCheck[1]);
+//PrintBitboardColored(isolationCheck[2]);
+//PrintBitboardColored(isolationCheck[3]);
+//PrintBitboardColored(isolationCheck[4]);
+//PrintBitboardColored(isolationCheck[5]);
+//PrintBitboardColored(isolationCheck[6]);
+//PrintBitboardColored(isolationCheck[7]);
 
-PrintArray("Bitboard", "IsolationCollums", isolationCheck);
+//PrintArray("Bitboard", "IsolationCollums", isolationCheck);
 
 
 // Create passed pawn checker
 // not implemented
+
+
+
+
+
+
+
+
+int length = 256;
+ulong[] distanceToNextBit = new ulong[length];
+
+for (int i = 0; i < length; i++)
+{
+    int bitArray = i;
+    ulong dis = 0;
+    for (int j = 0; j < 8; j++)
+    {
+        if ((bitArray & 0b1) == 0b1)
+        {
+            break;
+        }
+        dis++;
+        bitArray >>= 1;
+    }
+    distanceToNextBit[i] = Math.Clamp(dis, 0, 7);
+}
+
+PrintArray("", "", distanceToNextBit);

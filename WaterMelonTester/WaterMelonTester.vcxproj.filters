@@ -54,6 +54,9 @@
     <ClCompile Include="EvaluatorEarlyCheckmatesBetterTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="GetNextBitTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp">
