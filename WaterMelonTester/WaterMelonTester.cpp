@@ -42,6 +42,6 @@ int main()
 	RunTest(&EvaluatorEarlyCheckmatesBetterTest, "EvaluatorEarlyCheckmatesBetterTest");
 	RunTest(&EvaluatorMultiplyByLateGameMultiplierTest, "EvaluatorMultiplyByLateGameMultiplierTest");
 	RunTest(&PerftQuickTest, "PerftQuickTest");
-	//RunTest(&PerftFullTest, "PerftFullTest");
+	RunTest(&PerftFullTest, "PerftFullTest");
 	RunTest(&PieceMaterialCountingTest, "PieceMaterialCountingTest");
 }

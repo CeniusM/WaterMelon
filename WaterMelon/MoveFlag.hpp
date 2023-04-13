@@ -10,7 +10,7 @@ typedef unsigned short MoveFlag;
 constexpr unsigned short CapturedPieceBitFlag = 0b1000000000000000;
 constexpr unsigned short MoveFlagMask = 0b111000000000000;
 
-// in order of what is most likly to happend, well kinda ok
+// in order of what is most likly to happend, well kinda ok the castle is moved around with en passant, and in passant is maby more unliky than promotion
 enum MoveFlags : unsigned short
 {
 	NoFlag = 0,

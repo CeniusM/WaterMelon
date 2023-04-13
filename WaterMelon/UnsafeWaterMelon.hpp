@@ -225,7 +225,8 @@ private:
 
 	template<bool CAPTURE>
 	inline void AddPromotionMoves(int from, int to);
-	void TryEnpassantMove(int movingSquare, int row);
+	void TryEnpassantMove(int movingSquare, int row, Square pieceCapturedAt);
+	void AddEnPassantMoves();
 	void AddPawnMoves();
 	void AddPawnMovesBitboardTest();
 	void AddPawnMovesFastTest();

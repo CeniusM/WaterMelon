@@ -12,10 +12,10 @@ WriteLine("Input");
 //List<string> str2 = ReadLine()!.Split("\n").ToList();
 
 List<string> str1 =
-    "f3f2: 20\r\nd6d5: 22\r\nc7c6: 23\r\nc7c5: 7\r\nf3e2: 18\r\nf3g2: 18\r\nh5b5: 5\r\nh5c5: 20\r\nh5d5: 22\r\nh5e5: 22\r\nh5f5: 22\r\nh5g5: 22\r\nh5h6: 22\r\nh5h7: 22\r\nh5h8: 22\r\nh4g3: 20\r\nh4g5: 22\r\nh4g4: 21"
+    "e2e3: 11427551\r\ng2g3: 4190119\r\na5a6: 16022983\r\ne2e4: 8853383\r\ng2g4: 13629805\r\nb4b1: 19481757\r\nb4b2: 12755330\r\nb4b3: 15482610\r\nb4a4: 11996400\r\nb4c4: 17400108\r\nb4d4: 15996777\r\nb4e4: 14187097\r\nb4f4: 3069955\r\na5a4: 14139786"
     .Split("\n").ToList();
 List<string> str2 =
-    "h4g3: 20\r\nh4g4: 21\r\nh4g5: 22\r\nc7c6: 23\r\nc7c5: 6\r\nd6d5: 22\r\nf3e2: 18\r\nf3g2: 18\r\nf3f2: 20\r\nh5h6: 22\r\nh5h7: 22\r\nh5h8: 22\r\nh5g5: 22\r\nh5f5: 22\r\nh5e5: 22\r\nh5d5: 22\r\nh5c5: 20\r\nh5b5: 5"
+    "a4a5: 14139786\r\na4a3: 16022990\r\ng7g6: 4190119\r\ng7g5: 13629788\r\ne7e6: 11427551\r\ne7e5: 8853383\r\nb5a5: 11996400\r\nb5b6: 15482610\r\nb5b7: 12755330\r\nb5b8: 19481757\r\nb5c5: 17400108\r\nb5d5: 15996777\r\nb5e5: 14187097\r\nb5f5: 3069955"
     .Split("\n").ToList();
 
 

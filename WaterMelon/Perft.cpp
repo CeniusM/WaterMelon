@@ -63,6 +63,57 @@ long PerftRunner::BulkSearch(UnsafeWaterMelon* b, int depth)
 	return Perft(depth);
 }
 
+void PerftRunner::PerftCountLog(UnsafeWaterMelon* b, int depth)
+{
+	board = b;
+	long Counts[MaxMovesCount]{};
+	Move moves[MaxMovesCount]{};
+	int movesCount = board->GetPossibleMoves(moves);
+
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		board->MakeMove(moves[i]);
+		Counts[i] += PerftCount(depth - 1);
+		board->UnMakeMove();
+	}
+
+	long totalMoves = 0;
+	for (size_t i = 0; i < Counts[i]; i++)
+		totalMoves += Counts[i];
+
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		std::cout << GetMoveName(moves[i]) << ": " << Counts[i] << "\n";
+	}
+}
+
+long PerftRunner::GetPerftCount(UnsafeWaterMelon* b, int depth)
+{
+	board = b;
+	return PerftCount(depth);
+}
+
+long PerftRunner::PerftCount(int depth)
+{
+	if (depth == 0)
+		return 1;
+	long Count = 0;
+	Move moves[MaxMovesCount];
+	int movesCount = board->GetPossibleMoves(moves);
+
+	if (depth == 1)
+		return movesCount;
+
+	for (size_t i = 0; i < movesCount; i++)
+	{
+		board->MakeMove(moves[i]);
+		Count += Perft(depth - 1);
+		board->UnMakeMove();
+	}
+
+	return Count;
+}
+
 long PerftRunner::Perft(int depth)
 {
 	if (depth == 0)
