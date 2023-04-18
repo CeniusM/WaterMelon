@@ -57,6 +57,9 @@
     <ClCompile Include="GetNextBitTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="StabilityTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="PerftUtil.hpp">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="StabilityTest.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

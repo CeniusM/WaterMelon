@@ -21,7 +21,7 @@ void RunTime(std::string fen, int depth)
 	auto finish = std::chrono::high_resolution_clock::now();
 	long long time = std::chrono::duration_cast<std::chrono::microseconds>(finish - start).count();
 
-	std::cout << std::to_string(depth) + " Count: " << std::to_string(count) << " Nps: " << std::to_string((count * 1000) / time) << "\n";
+	std::cout << std::to_string(depth) + " Count: " << std::to_string(count) << " KNps: " << std::to_string((long long)((double)count / ((double)time / 1000))) << "\n";
 }
 
 void PerftTest()

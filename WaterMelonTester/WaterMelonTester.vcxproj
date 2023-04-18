@@ -143,11 +143,13 @@
     <ClCompile Include="PerftFullTest.cpp" />
     <ClCompile Include="PerftUtil.cpp" />
     <ClCompile Include="PieceMaterialCountingTest.cpp" />
+    <ClCompile Include="StabilityTest.cpp" />
     <ClCompile Include="WaterMelonTester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hpp" />
     <ClInclude Include="PerftUtil.hpp" />
+    <ClInclude Include="StabilityTest.h" />
     <ClInclude Include="Tests.hpp" />
   </ItemGroup>
   <ItemGroup>

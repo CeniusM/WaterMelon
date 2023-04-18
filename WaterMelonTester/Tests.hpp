@@ -4,6 +4,7 @@
 #include "UnsafeWaterMelon.hpp"
 #include "Evaluator.hpp"
 #include "PerftUtil.hpp"
+#include "StabilityTest.h"
 
 void PieceMaterialCountingTest(Assert& assert);
 void CreateAndUssageOfMoveTest(Assert& assert);

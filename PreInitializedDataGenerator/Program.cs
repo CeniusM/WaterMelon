@@ -446,23 +446,31 @@ void PrintBitboardColored(Bitboard board, int start = -1)
 
 
 
-int length = 256;
-ulong[] distanceToNextBit = new ulong[length];
+//int length = 256;
+//ulong[] distanceToNextBit = new ulong[length];
 
-for (int i = 0; i < length; i++)
-{
-    int bitArray = i;
-    ulong dis = 0;
-    for (int j = 0; j < 8; j++)
-    {
-        if ((bitArray & 0b1) == 0b1)
-        {
-            break;
-        }
-        dis++;
-        bitArray >>= 1;
-    }
-    distanceToNextBit[i] = Math.Clamp(dis, 0, 7);
-}
+//for (int i = 0; i < length; i++)
+//{
+//    int bitArray = i;
+//    ulong dis = 0;
+//    for (int j = 0; j < 8; j++)
+//    {
+//        if ((bitArray & 0b1) == 0b1)
+//        {
+//            break;
+//        }
+//        dis++;
+//        bitArray >>= 1;
+//    }
+//    distanceToNextBit[i] = Math.Clamp(dis, 0, 7);
+//}
 
-PrintArray("", "", distanceToNextBit);
+//PrintArray("", "", distanceToNextBit);
+
+
+ulong[] Bit256Count = new ulong[256];
+Bit256Count[0] = 0;
+for (ulong i = 1; i < 256; i++)
+    Bit256Count[i] = Bit256Count[i / 2] + (i & 1);
+
+PrintArray("constexpr unsigned char", "Bit256Count", Bit256Count);

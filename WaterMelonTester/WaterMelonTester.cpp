@@ -37,6 +37,9 @@ void RunTest(void(*TestFunc)(Assert&), std::string name)
 
 int main()
 {
+	std::cout << sizeof(UnsafeWaterMelon) << "\n";
+	StartStabilityTest(10000);
+	return 0;
 	RunTest(&BoardStateStackTest, "BoardStateStackTest");
 	RunTest(&CreateAndUssageOfMoveTest, "CreateAndUssageOfMoveTest");
 	RunTest(&EvaluatorEarlyCheckmatesBetterTest, "EvaluatorEarlyCheckmatesBetterTest");
